@@ -1,0 +1,138 @@
+# Johnny.Decimal Index - Great Literature 103
+
+## Area 30-39: Literature 103 (Poetry)
+
+This area contains all materials for the Great Literature 103 course focused on poetry, with emphasis on Romanticism and Naturalism. The structure is designed to scale as you add more poets and materials.
+
+---
+
+## Category 31: Poetry Collections
+
+Primary reading list. Each poet/collection gets a sequential ID (31.01, 31.02, etc.). You can add up to 99 poets in this category (31.01 through 31.99).
+
+### Current Poets/Collections
+
+- **31.01** Leaves of Grass (Selected Poems) — Walt Whitman
+- **31.02** Selected Poems — William Wordsworth
+- **31.03** Selected Poems — John Keats
+- **31.04** Selected Poems — Emily Dickinson
+- **31.05** Selected Poems — Samuel Taylor Coleridge
+- **31.06** Selected Poems — Percy Bysshe Shelley
+- **31.07** Selected Poems — T.S. Eliot
+- **31.08** Selected Poems — Langston Hughes
+- **31.09** Selected Poems — Robert Frost
+- **31.10** Selected Poems — Sylvia Plath
+
+### Adding New Poets
+
+When you add a new poet to the syllabus:
+1. Create a folder: `31.XX [Collection Title] - [Poet Name]`
+2. Use the next available number (currently 31.11)
+3. Create the three study documents (see STUDY GUIDE STRUCTURE.md)
+4. Update this index with the new entry
+
+**Note:** For poetry, the templates should be adapted - "Chapter-by-Chapter" becomes "Poem-by-Poem" or "Section-by-Section" as appropriate.
+
+---
+
+## Category 32: Supplemental Readings
+
+For additional poems, essays, and other shorter works that complement the main reading list.
+
+*Currently empty - ready for future additions*
+
+**Examples of what might go here:**
+- Individual poems not in main collections
+- Critical essays on poetry
+- Companion pieces and related works
+- Poetry in translation
+
+**Format:** `32.XX [Title] - [Poet/Author]`
+
+---
+
+## Category 33: Resources
+
+Reference materials, guides, and course resources.
+
+*Currently empty - ready for future additions*
+
+**Examples:**
+- Poetry form guides (sonnet, villanelle, free verse, etc.)
+- Historical context documents
+- Literary movement overviews
+- Audio recordings of poems
+- Bibliography and reference lists
+
+**Format:** `33.XX [Resource Name]`
+
+---
+
+## Category 34: Notes and Reflections
+
+General course notes, reflection prompts, and meta-materials about the course itself.
+
+*Currently empty - ready for future additions*
+
+**Examples:**
+- Course reflection notes
+- Reading pace adjustments
+- Poet swap decisions
+- General observations about the syllabus
+- Personal poetry attempts
+
+**Format:** `34.XX [Topic/Date]`
+
+---
+
+## Categories 35-39: Reserved for Future Expansion
+
+These categories are reserved for future needs. Use them as your course evolves:
+- **35**: [Available]
+- **36**: [Available]
+- **37**: [Available]
+- **38**: [Available]
+- **39**: [Available]
+
+---
+
+## How to Use This System
+
+### For Each Poet/Collection Folder (31.XX)
+
+Each poet should have three study documents:
+- **01 Pre-Reading Guide.md** - Read before starting
+- **02 Poem-by-Poem Notes.md** - Use while reading (adapted from chapter template)
+- **03 Post-Reading Analysis.md** - Read after finishing
+
+See `00-09 Templates and Resources/01 Study Guide Templates/STUDY GUIDE STRUCTURE.md` for details.
+
+**Note:** The templates are designed for books but can be adapted for poetry. Adjust "Chapter" to "Poem" or organize by sections as needed.
+
+### Numbering Guidelines
+
+- **Areas** (30-39): Major collections (we're using one area for the whole course)
+- **Categories** (31-39): Types of materials (poetry collections, supplements, etc.)
+- **IDs** (.01-.99): Individual items within a category
+
+### Benefits of This System
+
+- **Stability**: Numbers don't move when you add new items (unlike alphabetical sorting)
+- **Scalability**: Room for 99 items per category, multiple categories per area
+- **Clarity**: Easy to reference ("thirty-one oh one" for Whitman)
+- **Flexibility**: Add poets in any order, swap them out, expand categories as needed
+
+### When You Add a New Poet
+
+1. Determine the next available number in Category 31
+2. Create folder: `31.XX [Collection] - [Poet]`
+3. Copy templates from `00-09 Templates and Resources/01 Study Guide Templates/`
+4. Adapt templates for poetry (change "Chapter" to "Poem" or organize by sections)
+5. Fill in poet-specific information
+6. Update this index
+
+---
+
+*Last updated: 2025-12-24*
+*System version: 1.0 (Flexible structure for future expansion)*
+

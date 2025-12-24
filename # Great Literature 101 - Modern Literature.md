@@ -1,4 +1,4 @@
-# Great Literature 101 – Living Syllabus
+# Great Literature 101 - Modern Literature
 
 *A collaborative, low-stress canon: modern literature (mid-1800s onward), chosen for cultural importance, stylistic range, and readability.*
 
@@ -18,7 +18,7 @@
 This is meant to be rigorous but humane.
 
 ---
-
+ 
 ## 📚 Core Reading List (Great Literature 101 - Finalized)
 
 1. *The Old Man and the Sea* — Ernest Hemingway
@@ -49,20 +49,20 @@ Together, these form a strong backbone for understanding how modern literature e
 
 ---
 
-## 🗓️ Syllabus Structure (TBD)
+## 🗓️ Syllabus Structure
 
-We will expand this into a **longer, realistic syllabus** (likely 20–30 weeks) with:
+This course is structured as a **24-week reading plan** with:
 
-* Reading pace calibrated for real life
-* Buffer weeks
+* Reading pace calibrated for real life (~30–60 pages per week on average)
+* Buffer weeks built into the schedule
 * Optional supplemental essays or short stories
 * Reflection / discussion prompts (lightweight, not academic busywork)
 
-Potential pacing models:
+Pacing approach:
 
 * 1 book every 2–3 weeks
 * Alternating long / short works
-* Seasonal or thematic arcs
+* Thematic arcs organized into units
 
 ---
 
@@ -75,7 +75,7 @@ Use this space to:
 * Note reactions after finishing a book
 * Flag anything that feels like a slog
 
-(We’ll keep this section messy on purpose.)
+(Keep this section messy on purpose.)
 
 ---
 
@@ -85,10 +85,6 @@ Use this space to:
 * Poetry interludes (Dickinson, Eliot, Plath)
 * A parallel genre track (fantasy / sci-fi / weird)
 * Film adaptations as companions
-
----
-
-*Next step: finalize reading order and lock in a realistic week-by-week plan.*
 
 ---
 
@@ -186,3 +182,4 @@ Optional, but recommended. No essays, just thinking.
 ---
 
 *This syllabus is finalized for Great Literature 101. As you read, note any reactions or adjustments in the "Brainstorming & Iteration Notes" section above.*
+

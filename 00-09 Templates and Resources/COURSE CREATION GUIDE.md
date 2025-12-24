@@ -55,7 +55,7 @@ Create two files in your course folder:
 ### 4. Create Syllabus Document
 
 Create a syllabus document at the root level:
-`# [Course Name] – Living Syllabus.md`
+`# [Course Name] - [Context].md` (e.g., `# Russian Literature - Regional.md`)
 
 Include:
 - Course goals and constraints
@@ -173,7 +173,7 @@ The templates are starting points - adapt them to your needs!
 4. **Create files:**
    - `00 Index.md`
    - `README.md`
-   - `# Russian Literature – Living Syllabus.md` (at root)
+   - `# Russian Literature - Regional.md` (at root)
 5. **Add first book:**
    - `31.01 Crime and Punishment - Fyodor Dostoevsky/`
    - Copy templates, fill in details

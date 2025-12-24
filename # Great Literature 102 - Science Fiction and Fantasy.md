@@ -1,4 +1,4 @@
-# Great Literature 102 – Living Syllabus
+# Great Literature 102 - Science Fiction and Fantasy
 
 *Science Fiction & Fantasy: A collaborative, low-stress canon of speculative fiction, chosen for cultural importance, stylistic range, and readability.*
 
@@ -19,7 +19,7 @@ This is meant to be rigorous but humane, exploring the depth and breadth of spec
 
 ---
 
-## 📚 Core Reading List (Great Literature 102 - Draft)
+## 📚 Core Reading List (Great Literature 102 - Finalized)
 
 1. *The Hobbit* — J.R.R. Tolkien
 2. *Fahrenheit 451* — Ray Bradbury
@@ -49,16 +49,16 @@ Together, these form a strong foundation for understanding how speculative ficti
 
 ---
 
-## 🗓️ Syllabus Structure (TBD)
+## 🗓️ Syllabus Structure
 
-We will expand this into a **realistic syllabus** (likely 20–30 weeks) with:
+This course is structured as a **flexible reading plan** (approximately 20–30 weeks) with:
 
 * Reading pace calibrated for real life
-* Buffer weeks
+* Buffer weeks included in the schedule
 * Optional supplemental short stories
 * Reflection / discussion prompts (lightweight, not academic busywork)
 
-Potential pacing models:
+Pacing approach:
 
 * 1 book every 2–3 weeks
 * Alternating long / short works
@@ -75,7 +75,7 @@ Use this space to:
 * Note reactions after finishing a book
 * Flag anything that feels like a slog
 
-(We'll keep this section messy on purpose.)
+(Keep this section messy on purpose.)
 
 **Alternates Considered:**
 - *Dune* (Frank Herbert) - Too long for this course, but foundational
@@ -114,9 +114,9 @@ Optional, but recommended. No essays, just thinking.
 * Any 2–3 week block can stretch to 4 weeks without breaking the flow
 * Units are modular; books can be swapped without derailing the whole plan
 * If momentum dips, insert a buffer week or short story interlude
-* The list can evolve as you discover new works
+* The list remains flexible for adjustments as you discover new works
 
 ---
 
-*This syllabus is a draft. We will finalize it and create study materials as you're ready to begin.*
+*This syllabus is finalized for Great Literature 102. As you read, note any reactions or adjustments in the "Brainstorming & Iteration Notes" section above.*
 

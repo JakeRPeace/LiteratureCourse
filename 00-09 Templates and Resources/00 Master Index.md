@@ -10,8 +10,8 @@ This is the central index for all your literature courses and syllabi. Each cour
 **Focus:** Modern Literature (mid-1800s onward)  
 **Status:** Active  
 **Books:** 10 books  
-**Location:** `10-19 Core Reading List/`  
-**Syllabus:** `# Great Literature 101 – Living Syllabus.md`
+**Location:** `10-19 Literature 101/`  
+**Syllabus:** `# Great Literature 101 - Modern Literature.md`
 
 **Reading List:**
 1. The Old Man and the Sea — Ernest Hemingway
@@ -32,7 +32,7 @@ This is the central index for all your literature courses and syllabi. Each cour
 **Status:** Active  
 **Books:** 10 books  
 **Location:** `20-29 Literature 102/`  
-**Syllabus:** `# Great Literature 102 – Living Syllabus.md`
+**Syllabus:** `# Great Literature 102 - Science Fiction and Fantasy.md`
 
 **Reading List:**
 1. The Hobbit — J.R.R. Tolkien
@@ -48,11 +48,32 @@ This is the central index for all your literature courses and syllabi. Each cour
 
 ---
 
+### Area 30-39: Great Literature 103
+**Focus:** Poetry (Romanticism, Naturalism, and Beyond)  
+**Status:** Active  
+**Poets:** 10 poets/collections  
+**Location:** `30-39 Literature 103/`  
+**Syllabus:** `# Great Literature 103 - Poetry.md`
+
+**Reading List:**
+1. Leaves of Grass (Selected Poems) — Walt Whitman
+2. Selected Poems — William Wordsworth
+3. Selected Poems — John Keats
+4. Selected Poems — Emily Dickinson
+5. Selected Poems — Samuel Taylor Coleridge
+6. Selected Poems — Percy Bysshe Shelley
+7. Selected Poems — T.S. Eliot
+8. Selected Poems — Langston Hughes
+9. Selected Poems — Robert Frost
+10. Selected Poems — Sylvia Plath
+
+---
+
 ## 🗂️ Available Areas for New Courses
 
 Each new course/syllabus should get its own area (10-number range):
 
-- **30-39:** [Available - e.g., Russian Literature, Poetry, etc.]
+- **30-39:** Great Literature 103 (Poetry) ✓
 - **40-49:** [Available]
 - **50-59:** [Available]
 - **60-69:** [Available]
@@ -70,7 +91,7 @@ Each new course/syllabus should get its own area (10-number range):
    - `33 Resources/`
    - `34 Notes and Reflections/`
 4. Create `00 Index.md` in the course folder
-5. Create syllabus document at root level: `# [Course Name] – Living Syllabus.md`
+5. Create syllabus document at root level: `# [Course Name] - [Context].md` (e.g., `# Russian Literature - Regional.md`)
 6. Update this master index
 
 ---
@@ -121,7 +142,7 @@ These templates can be used for any course - just copy them into your book/item 
 
 ### Finding a Course
 - Check this master index to see all courses
-- Navigate to the course's area folder (e.g., `10-19 Core Reading List/`)
+- Navigate to the course's area folder (e.g., `10-19 Literature 101/`)
 - Check the course's `00 Index.md` for detailed contents
 
 ### Adding a New Course
@@ -140,12 +161,12 @@ These templates can be used for any course - just copy them into your book/item 
 ## 🔗 Quick Links
 
 - **Templates:** `00-09 Templates and Resources/01 Study Guide Templates/`
-- **Literature 101:** `10-19 Core Reading List/`
+- **Literature 101:** `10-19 Literature 101/`
 - **Literature 102:** `20-29 Literature 102/`
 - **Johnny.Decimal Info:** https://johnnydecimal.com/
 
 ---
 
 *Last updated: 2025-12-24*  
-*Total Courses: 2*
+*Total Courses: 3*
 

@@ -21,7 +21,7 @@ This folder uses the **Johnny.Decimal** system for organization. See `00 Index.m
 ## Folder Structure
 
 ```
-10-19 Core Reading List/
+10-19 Literature 101/
 ├── 00 Index.md (this catalog)
 ├── README.md (this file)
 ├── 11 Books/

@@ -8,15 +8,21 @@ A comprehensive, organized collection of literature courses and study materials 
 
 ### Great Literature 101
 **Modern Literature (mid-1800s onward)**  
-Location: `10-19 Core Reading List/`  
-Syllabus: `# Great Literature 101 – Living Syllabus.md`  
+Location: `10-19 Literature 101/`  
+Syllabus: `# Great Literature 101 - Modern Literature.md`  
 10 books covering minimalism, modernism, existentialism, and more.
 
 ### Great Literature 102
 **Science Fiction & Fantasy**  
 Location: `20-29 Literature 102/`  
-Syllabus: `# Great Literature 102 – Living Syllabus.md`  
+Syllabus: `# Great Literature 102 - Science Fiction and Fantasy.md`  
 10 books covering cyberpunk, dystopian, high fantasy, and more.
+
+### Great Literature 103
+**Poetry (Romanticism, Naturalism, and Beyond)**  
+Location: `30-39 Literature 103/`  
+Syllabus: `# Great Literature 103 - Poetry.md`  
+10 poets/collections covering Romanticism, Naturalism, Modernism, and more.
 
 ---
 
@@ -33,9 +39,10 @@ This collection uses the **Johnny.Decimal** system for organization:
 ```
 Literature/
 ├── 00-09 Templates and Resources/ (shared templates)
-├── 10-19 Core Reading List/ (Literature 101)
+├── 10-19 Literature 101/ (Literature 101)
 ├── 20-29 Literature 102/ (Science Fiction & Fantasy)
-├── [Future courses in 30-39, 40-49, etc.]
+├── 30-39 Literature 103/ (Poetry)
+├── [Future courses in 40-49, 50-59, etc.]
 └── README.md (this file)
 ```
 
@@ -44,7 +51,7 @@ Literature/
 ## 📋 Quick Start
 
 1. **Choose a course** from the list above
-2. **Navigate to the course folder** (e.g., `10-19 Core Reading List/`)
+2. **Navigate to the course folder** (e.g., `10-19 Literature 101/`)
 3. **Check the course's `00 Index.md`** for the reading list
 4. **Start with a book's `01 Pre-Reading Guide.md`** before reading
 5. **Use `02 Chapter-by-Chapter Notes.md`** while reading
