@@ -1,0 +1,133 @@
+# Johnny.Decimal Index - Great Literature 102
+
+## Area 20-29: Literature 102 (Science Fiction & Fantasy)
+
+This area contains all materials for the Great Literature 102 course focused on science fiction and fantasy. The structure is designed to scale as you add more books and materials.
+
+---
+
+## Category 21: Books
+
+Primary reading list. Each book gets a sequential ID (21.01, 21.02, etc.). You can add up to 99 books in this category (21.01 through 21.99).
+
+### Current Books
+
+- **21.01** The Hobbit — J.R.R. Tolkien
+- **21.02** Fahrenheit 451 — Ray Bradbury
+- **21.03** A Wizard of Earthsea — Ursula K. Le Guin
+- **21.04** Kindred — Octavia E. Butler
+- **21.05** The Handmaid's Tale — Margaret Atwood
+- **21.06** Neuromancer — William Gibson
+- **21.07** Ender's Game — Orson Scott Card
+- **21.08** The Time Machine — H.G. Wells
+- **21.09** The Martian Chronicles — Ray Bradbury
+- **21.10** Never Let Me Go — Kazuo Ishiguro
+
+### Adding New Books
+
+When you add a new book to the syllabus:
+1. Create a folder: `21.XX [Book Title] - [Author Name]`
+2. Use the next available number (currently 21.11)
+3. Create the three study documents (see STUDY GUIDE STRUCTURE.md)
+4. Update this index with the new entry
+
+---
+
+## Category 22: Supplemental Readings
+
+For short stories, essays, and other shorter works that complement the main reading list.
+
+*Currently empty - ready for future additions*
+
+**Examples of what might go here:**
+- Short story collections (Asimov, Bradbury, Le Guin)
+- Critical essays on speculative fiction
+- Companion pieces and related works
+
+**Format:** `22.XX [Title] - [Author]`
+
+---
+
+## Category 23: Resources
+
+Reference materials, guides, and course resources.
+
+*Currently empty - ready for future additions*
+
+**Examples:**
+- Genre guides (cyberpunk, dystopian, high fantasy)
+- Historical context documents
+- Film adaptations (as study materials)
+- Bibliography and reference lists
+
+**Format:** `23.XX [Resource Name]`
+
+---
+
+## Category 24: Notes and Reflections
+
+General course notes, reflection prompts, and meta-materials about the course itself.
+
+*Currently empty - ready for future additions*
+
+**Examples:**
+- Course reflection notes
+- Reading pace adjustments
+- Book swap decisions
+- General observations about the syllabus
+
+**Format:** `24.XX [Topic/Date]`
+
+---
+
+## Categories 25-29: Reserved for Future Expansion
+
+These categories are reserved for future needs. Use them as your course evolves:
+- **25**: [Available]
+- **26**: [Available]
+- **27**: [Available]
+- **28**: [Available]
+- **29**: [Available]
+
+---
+
+## How to Use This System
+
+### For Each Book Folder (21.XX)
+
+Each book should have three study documents:
+- **01 Pre-Reading Guide.md** - Read before starting
+- **02 Chapter-by-Chapter Notes.md** - Use while reading
+- **03 Post-Reading Analysis.md** - Read after finishing
+
+See `STUDY GUIDE STRUCTURE.md` for details.
+
+### Numbering Guidelines
+
+- **Areas** (20-29): Major collections (we're using one area for Literature 102)
+- **Categories** (21-29): Types of materials (books, supplements, etc.)
+- **IDs** (.01-.99): Individual items within a category
+
+### Benefits of This System
+
+- **Stability**: Numbers don't move when you add new items (unlike alphabetical sorting)
+- **Scalability**: Room for 99 items per category, multiple categories per area
+- **Clarity**: Easy to reference ("twenty-one oh one" for The Hobbit)
+- **Flexibility**: Add books in any order, swap them out, expand categories as needed
+
+### When You Add a New Book
+
+1. Determine the next available number in Category 21
+2. Create folder: `21.XX [Title] - [Author]`
+3. Copy the three templates from `11 Books/` folder:
+   - `_TEMPLATE 01 Pre-Reading Guide.md`
+   - `_TEMPLATE 02 Chapter-by-Chapter Notes.md`
+   - `_TEMPLATE 03 Post-Reading Analysis.md`
+4. Fill in each template with book-specific information
+5. Update this index
+
+---
+
+*Last updated: 2025-12-24*
+*System version: 1.0 (Flexible structure for future expansion)*
+

@@ -1,0 +1,146 @@
+# Johnny.Decimal Index - Great Literature 101
+
+## Area 10-19: Core Reading List
+
+This area contains all materials for the Great Literature 101 course. The structure is designed to scale as you add more books and materials.
+
+---
+
+## Category 11: Books
+
+Primary reading list. Each book gets a sequential ID (11.01, 11.02, etc.). You can add up to 99 books in this category (11.01 through 11.99).
+
+### Current Books
+
+- **11.01** The Old Man and the Sea — Ernest Hemingway *(Study guide available)*
+- **11.02** Jane Eyre — Charlotte Brontë
+- **11.03** Notes from Underground — Fyodor Dostoevsky
+- **11.04** The Death of Ivan Ilyich — Leo Tolstoy
+- **11.05** The Great Gatsby — F. Scott Fitzgerald
+- **11.06** Mrs Dalloway — Virginia Woolf
+- **11.07** The Stranger — Albert Camus
+- **11.08** Things Fall Apart — Chinua Achebe
+- **11.09** Beloved — Toni Morrison
+- **11.10** The Left Hand of Darkness — Ursula K. Le Guin
+
+### Adding New Books
+
+When you add a new book to the syllabus:
+1. Create a folder: `11.XX [Book Title] - [Author Name]`
+2. Use the next available number (currently 11.11)
+3. Update this index with the new entry
+4. Add notes, quotes, and reflections in that folder
+
+---
+
+## Category 12: Supplemental Readings
+
+For short stories, essays, and other shorter works that complement the main reading list.
+
+*Currently empty - ready for future additions*
+
+**Examples of what might go here:**
+- Short stories (Chekhov, Kafka, Borges)
+- Literary essays
+- Critical readings
+- Companion pieces
+
+**Format:** `12.XX [Title] - [Author]`
+
+---
+
+## Category 13: Poetry
+
+For poetry collections and individual poems studied as part of the course.
+
+*Currently empty - ready for future additions*
+
+**Examples:**
+- Poetry interludes (Dickinson, Eliot, Plath)
+- Poetry collections
+- Individual poems with analysis
+
+**Format:** `13.XX [Collection/Title] - [Poet]`
+
+---
+
+## Category 14: Resources
+
+Reference materials, guides, and course resources.
+
+*Currently empty - ready for future additions*
+
+**Examples:**
+- Study guides
+- Historical context documents
+- Literary movement overviews
+- Film adaptations (as study materials)
+- Bibliography and reference lists
+
+**Format:** `14.XX [Resource Name]`
+
+---
+
+## Category 15: Notes and Reflections
+
+General course notes, reflection prompts, and meta-materials about the course itself.
+
+*Currently empty - ready for future additions*
+
+**Examples:**
+- Course reflection notes
+- Reading pace adjustments
+- Book swap decisions
+- General observations about the syllabus
+
+**Format:** `15.XX [Topic/Date]`
+
+---
+
+## Categories 16-19: Reserved for Future Expansion
+
+These categories are reserved for future needs. Use them as your course evolves:
+- **16**: [Available]
+- **17**: [Available]
+- **18**: [Available]
+- **19**: [Available]
+
+---
+
+## How to Use This System
+
+### For Each Book Folder (11.XX)
+
+Store:
+- Reading notes (by chapter or section)
+- Quotes and passages
+- Character analysis
+- Theme notes
+- Reflection prompts and responses
+- Discussion notes
+- Any other materials related to that specific book
+
+### Numbering Guidelines
+
+- **Areas** (10-19): Major collections (we're using one area for the whole course)
+- **Categories** (11-19): Types of materials (books, supplements, etc.)
+- **IDs** (.01-.99): Individual items within a category
+
+### Benefits of This System
+
+- **Stability**: Numbers don't move when you add new items (unlike alphabetical sorting)
+- **Scalability**: Room for 99 items per category, multiple categories per area
+- **Clarity**: Easy to reference ("eleven oh one" for The Old Man and the Sea)
+- **Flexibility**: Add books in any order, swap them out, expand categories as needed
+
+### When You Add a New Book
+
+1. Determine the next available number in Category 11
+2. Create folder: `11.XX [Title] - [Author]`
+3. Update this index
+4. Start adding your notes!
+
+---
+
+*Last updated: 2025-12-24*
+*System version: 1.0 (Flexible structure for future expansion)*

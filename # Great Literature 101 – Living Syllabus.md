@@ -1,0 +1,188 @@
+# Great Literature 101 – Living Syllabus
+
+*A collaborative, low-stress canon: modern literature (mid-1800s onward), chosen for cultural importance, stylistic range, and readability.*
+
+---
+
+## 🎯 Goals & Constraints
+
+* Focus on **major works of modern literature** (roughly 1840s–late 20th century)
+* Emphasize **varied styles, voices, and geographies**
+* Avoid books that are:
+
+  * Excessively long
+  * Infamously difficult or punishing
+  * Better admired than actually read
+* Prioritize works that still *feel alive* to a modern reader
+
+This is meant to be rigorous but humane.
+
+---
+
+## 📚 Core Reading List (Great Literature 101 - Finalized)
+
+1. *The Old Man and the Sea* — Ernest Hemingway
+2. *Jane Eyre* — Charlotte Brontë
+3. *Notes from Underground* — Fyodor Dostoevsky
+4. *The Death of Ivan Ilyich* — Leo Tolstoy
+5. *The Great Gatsby* — F. Scott Fitzgerald
+6. *Mrs Dalloway* — Virginia Woolf
+7. *The Stranger* — Albert Camus
+8. *Things Fall Apart* — Chinua Achebe
+9. *Beloved* — Toni Morrison
+10. *The Left Hand of Darkness* — Ursula K. Le Guin
+
+*This is the finalized list for Great Literature 101. Future books will be part of a new syllabus (Great Literature 102, etc.).*
+
+---
+
+## 🧠 Style & Movement Coverage (Why These?)
+
+* Minimalism / Iceberg theory
+* Gothic realism & psychological interiority
+* Existentialism (proto + modern)
+* High modernism & stream of consciousness
+* Postcolonial literature
+* Literary speculative fiction
+
+Together, these form a strong backbone for understanding how modern literature evolved.
+
+---
+
+## 🗓️ Syllabus Structure (TBD)
+
+We will expand this into a **longer, realistic syllabus** (likely 20–30 weeks) with:
+
+* Reading pace calibrated for real life
+* Buffer weeks
+* Optional supplemental essays or short stories
+* Reflection / discussion prompts (lightweight, not academic busywork)
+
+Potential pacing models:
+
+* 1 book every 2–3 weeks
+* Alternating long / short works
+* Seasonal or thematic arcs
+
+---
+
+## 🔄 Brainstorming & Iteration Notes
+
+Use this space to:
+
+* Swap books in or out
+* Add alternates or honorable mentions
+* Note reactions after finishing a book
+* Flag anything that feels like a slog
+
+(We’ll keep this section messy on purpose.)
+
+---
+
+## ➕ Future Expansions (Optional)
+
+* Short story weeks (Chekhov, Kafka, Borges)
+* Poetry interludes (Dickinson, Eliot, Plath)
+* A parallel genre track (fantasy / sci-fi / weird)
+* Film adaptations as companions
+
+---
+
+*Next step: finalize reading order and lock in a realistic week-by-week plan.*
+
+---
+
+## 📆 24-Week Reading Syllabus (Version 1.0)
+
+**Pacing philosophy:** ~30–60 pages per week on average. Some weeks are intentionally light to keep momentum and enjoyment high.
+
+### Unit I — Clear Voices, Big Ideas (Weeks 1–4)
+
+*Ease in with clarity, restraint, and short forms.*
+
+**Weeks 1–2**
+📘 *The Old Man and the Sea* — Hemingway
+Focus: Minimalism, symbolism, dignity, endurance
+
+**Weeks 3–4**
+📘 *The Stranger* — Camus
+Focus: Existentialism, absurdity, emotional detachment
+
+---
+
+### Unit II — Society, Illusion, and the Self (Weeks 5–8)
+
+*Readable classics with increasing psychological depth.*
+
+**Weeks 5–6**
+📘 *The Great Gatsby* — Fitzgerald
+Focus: Style, the American Dream, illusion vs reality
+
+**Weeks 7–8**
+📘 *The Death of Ivan Ilyich* — Tolstoy
+Focus: Mortality, authenticity, moral reckoning
+
+---
+
+### Unit III — Interior Lives & Modern Consciousness (Weeks 9–14)
+
+*More demanding stylistically, but deeply rewarding.*
+
+**Weeks 9–11**
+📘 *Jane Eyre* — Charlotte Brontë
+Focus: Voice, morality, independence, gothic realism
+
+**Weeks 12–14**
+📘 *Mrs Dalloway* — Virginia Woolf
+Focus: Stream of consciousness, time, post-war trauma
+
+---
+
+### Unit IV — The Self at War With Society (Weeks 15–18)
+
+*Psychological pressure and philosophical provocation.*
+
+**Weeks 15–16**
+📘 *Notes from Underground* — Dostoevsky
+Focus: Free will, resentment, modern alienation
+
+**Weeks 17–18**
+📘 *Things Fall Apart* — Chinua Achebe
+Focus: Tradition vs change, colonialism, tragedy
+
+---
+
+### Unit V — Memory, History, and the Mythic (Weeks 19–24)
+
+*Language-rich, emotionally powerful closing arc.*
+
+**Weeks 19–21**
+📘 *The Left Hand of Darkness* — Ursula K. Le Guin
+Focus: Gender, culture, empathy, speculative anthropology
+
+**Weeks 22–24**
+📘 *Beloved* — Toni Morrison
+Focus: Memory, trauma, history, myth
+
+---
+
+## 📝 Weekly Reflection Prompts (Lightweight)
+
+Optional, but recommended. No essays, just thinking.
+
+* What felt *surprisingly modern* in this work?
+* What did the author assume about human nature?
+* What stylistic choice stood out most?
+* Did this book change how you see something?
+
+---
+
+## 🔁 Built-In Flexibility
+
+* Any 2–3 week block can stretch to 4 weeks without breaking the flow
+* Units are modular; books can be swapped without derailing the whole plan
+* If momentum dips, insert a buffer week or short story interlude
+
+---
+
+*This syllabus is finalized for Great Literature 101. As you read, note any reactions or adjustments in the "Brainstorming & Iteration Notes" section above.*

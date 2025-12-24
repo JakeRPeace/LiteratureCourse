@@ -1,0 +1,122 @@
+# Great Literature 102 – Living Syllabus
+
+*Science Fiction & Fantasy: A collaborative, low-stress canon of speculative fiction, chosen for cultural importance, stylistic range, and readability.*
+
+---
+
+## 🎯 Goals & Constraints
+
+* Focus on **major works of science fiction and fantasy** (mid-1800s onward)
+* Emphasize **varied styles, voices, subgenres, and perspectives**
+* Avoid books that are:
+  * Excessively long (over ~400 pages)
+  * Infamously difficult or punishing
+  * Better admired than actually read
+* Prioritize works that still *feel alive* to a modern reader
+* Balance between classic foundations and influential modern works
+
+This is meant to be rigorous but humane, exploring the depth and breadth of speculative fiction.
+
+---
+
+## 📚 Core Reading List (Great Literature 102 - Draft)
+
+1. *The Hobbit* — J.R.R. Tolkien
+2. *Fahrenheit 451* — Ray Bradbury
+3. *A Wizard of Earthsea* — Ursula K. Le Guin
+4. *Kindred* — Octavia E. Butler
+5. *The Handmaid's Tale* — Margaret Atwood
+6. *Neuromancer* — William Gibson
+7. *Ender's Game* — Orson Scott Card
+8. *The Time Machine* — H.G. Wells
+9. *The Martian Chronicles* — Ray Bradbury
+10. *Never Let Me Go* — Kazuo Ishiguro
+
+---
+
+## 🧠 Genre & Subgenre Coverage (Why These?)
+
+* **High Fantasy** - Epic world-building and mythic structures
+* **Dystopian Fiction** - Social critique and warnings
+* **Cyberpunk** - Technology, identity, and corporate power
+* **Time Travel** - History, memory, and causality
+* **Space Opera** - Adventure, ethics, and leadership
+* **Literary Speculative Fiction** - Character-driven, philosophical depth
+* **Afrofuturism** - Diverse voices and perspectives
+* **Classic Science Fiction** - Foundation of the genre
+
+Together, these form a strong foundation for understanding how speculative fiction explores human nature, society, and possibility.
+
+---
+
+## 🗓️ Syllabus Structure (TBD)
+
+We will expand this into a **realistic syllabus** (likely 20–30 weeks) with:
+
+* Reading pace calibrated for real life
+* Buffer weeks
+* Optional supplemental short stories
+* Reflection / discussion prompts (lightweight, not academic busywork)
+
+Potential pacing models:
+
+* 1 book every 2–3 weeks
+* Alternating long / short works
+* Thematic arcs (dystopian, space, fantasy, etc.)
+
+---
+
+## 🔄 Brainstorming & Iteration Notes
+
+Use this space to:
+
+* Swap books in or out
+* Add alternates or honorable mentions
+* Note reactions after finishing a book
+* Flag anything that feels like a slog
+
+(We'll keep this section messy on purpose.)
+
+**Alternates Considered:**
+- *Dune* (Frank Herbert) - Too long for this course, but foundational
+- *Snow Crash* (Neal Stephenson) - Could replace Neuromancer
+- *The Dispossessed* (Ursula K. Le Guin) - Excellent but more challenging
+- *The Left Hand of Darkness* (Ursula K. Le Guin) - Already in Literature 101
+- *Brave New World* (Aldous Huxley) - Classic dystopian alternative
+- *The Giver* (Lois Lowry) - Accessible but perhaps too YA-focused
+
+---
+
+## ➕ Future Expansions (Optional)
+
+* Short story collections (Asimov, Bradbury, Le Guin)
+* Graphic novels (Watchmen, Sandman)
+* Contemporary works (The Three-Body Problem, The Broken Earth trilogy)
+* International speculative fiction
+* Film adaptations as companions
+
+---
+
+## 📝 Weekly Reflection Prompts (Lightweight)
+
+Optional, but recommended. No essays, just thinking.
+
+* What did this work predict or get wrong about the future?
+* How does the speculative element serve the story's themes?
+* What felt *surprisingly relevant* to current issues?
+* How does this compare to other speculative fiction you've read?
+* What does this say about human nature or society?
+
+---
+
+## 🔁 Built-In Flexibility
+
+* Any 2–3 week block can stretch to 4 weeks without breaking the flow
+* Units are modular; books can be swapped without derailing the whole plan
+* If momentum dips, insert a buffer week or short story interlude
+* The list can evolve as you discover new works
+
+---
+
+*This syllabus is a draft. We will finalize it and create study materials as you're ready to begin.*
+
