@@ -14,6 +14,7 @@ This repository contains a set of rigorous but humane literature syllabi, design
 | **[Great Literature 102](20-29%20Great%20Literature%20102%20-%20Science%20Fiction%20and%20Fantasy/)** | Science Fiction & Fantasy | [View Syllabus](20-29%20Great%20Literature%20102%20-%20Science%20Fiction%20and%20Fantasy/20%20Management/20.01%20Syllabus.md) | 🟢 Active |
 | **[Great Literature 103](30-39%20Great%20Literature%20103%20-%20Poetry/)** | Poetry (Romanticism to Modernism) | [View Syllabus](30-39%20Great%20Literature%20103%20-%20Poetry/30%20Management/30.01%20Syllabus.md) | 🟢 Active |
 | **[Great Literature 104](40-49%20Great%20Literature%20104%20-%20Modern%20Future%20Classics/)** | Modern Future Classics (1980s-Present) | [View Syllabus](40-49%20Great%20Literature%20104%20-%20Modern%20Future%20Classics/40%20Management/40.01%20Syllabus.md) | 🟢 Active |
+| **[Great Literature 105](50-59%20Great%20Literature%20105%20-%20Political%20Novels/)** | Political Novels & Dystopias | [View Syllabus](50-59%20Great%20Literature%20105%20-%20Political%20Novels/50%20Management/50.01%20Syllabus.md) | 🟢 Active |
 
 ---
 
