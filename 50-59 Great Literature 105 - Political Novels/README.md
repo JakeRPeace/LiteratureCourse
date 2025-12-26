@@ -1,6 +1,7 @@
 # Great Literature 105 - Political Novels
 
 > **Primary Area:** 50-59  
+> **Course Status:** ⚪ Not Started  
 > **Syllabus:** [View Complete Syllabus](50%20Management/50.01%20Syllabus.md)
 
 ---
@@ -9,16 +10,16 @@
 Power, ideology, and the individual. This course explores the novel's role in political critique, covering essential dystopian works and complex studies of systems and governance.
 
 ### 📚 Reading List
-1. **1984** — George Orwell
-2. **Animal Farm** — George Orwell
-3. **Brave New World** — Aldous Huxley
-4. **Fahrenheit 451** — Ray Bradbury
-5. **Darkness at Noon** — Arthur Koestler
-6. **All the King’s Men** — Robert Penn Warren
-7. **Invisible Man** — Ralph Ellison
-8. **The Quiet American** — Graham Greene
-9. **The Trial** — Franz Kafka
-10. **Catch-22** — Joseph Heller
+1. **1984** — George Orwell ⚪ *Not Started*
+2. **Animal Farm** — George Orwell ⚪ *Not Started*
+3. **Brave New World** — Aldous Huxley ⚪ *Not Started*
+4. **Fahrenheit 451** — Ray Bradbury ⚪ *Not Started*
+5. **Darkness at Noon** — Arthur Koestler ⚪ *Not Started*
+6. **All the King’s Men** — Robert Penn Warren ⚪ *Not Started*
+7. **Invisible Man** — Ralph Ellison ⚪ *Not Started*
+8. **The Quiet American** — Graham Greene ⚪ *Not Started*
+9. **The Trial** — Franz Kafka ⚪ *Not Started*
+10. **Catch-22** — Joseph Heller ⚪ *Not Started*
 
 ---
 

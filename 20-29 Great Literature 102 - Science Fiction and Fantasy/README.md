@@ -1,6 +1,7 @@
 # Great Literature 102 - Science Fiction and Fantasy
 
 > **Primary Area:** 20-29  
+> **Course Status:** ⚪ Not Started  
 > **Syllabus:** [View Complete Syllabus](20%20Management/20.01%20Syllabus.md)
 
 ---
@@ -9,16 +10,16 @@
 Explore the depth and breadth of speculative fiction, from classic foundations to influential modern works across Science Fiction and Fantasy.
 
 ### 📚 Reading List
-1. **The Hobbit** — J.R.R. Tolkien
-2. **Solaris** — Stanisław Lem
-3. **A Wizard of Earthsea** — Ursula K. Le Guin
-4. **Kindred** — Octavia E. Butler
-5. **Do Androids Dream of Electric Sheep?** — Philip K. Dick
-6. **Neuromancer** — William Gibson
-7. **Foundation** — Isaac Asimov
-8. **The Time Machine** — H.G. Wells
-9. **The Martian Chronicles** — Ray Bradbury
-10. **Never Let Me Go** — Kazuo Ishiguro
+1. **The Hobbit** — J.R.R. Tolkien ⚪ *Not Started*
+2. **Solaris** — Stanisław Lem ⚪ *Not Started*
+3. **A Wizard of Earthsea** — Ursula K. Le Guin ⚪ *Not Started*
+4. **Kindred** — Octavia E. Butler ⚪ *Not Started*
+5. **Do Androids Dream of Electric Sheep?** — Philip K. Dick ⚪ *Not Started*
+6. **Neuromancer** — William Gibson ⚪ *Not Started*
+7. **Foundation** — Isaac Asimov ⚪ *Not Started*
+8. **The Time Machine** — H.G. Wells ⚪ *Not Started*
+9. **The Martian Chronicles** — Ray Bradbury ⚪ *Not Started*
+10. **Never Let Me Go** — Kazuo Ishiguro ⚪ *Not Started*
 
 ---
 

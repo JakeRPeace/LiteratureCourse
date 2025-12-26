@@ -10,14 +10,14 @@ This repository contains a set of rigorous but humane literature syllabi, design
 
 | Course | Focus | Syllabus | Status |
 | :--- | :--- | :--- | :--- |
-| **[Great Literature 101](10-19%20Great%20Literature%20101%20-%20Modern%20Literature/)** | Modern Literature (mid-1800s onward) | [View Syllabus](10-19%20Great%20Literature%20101%20-%20Modern%20Literature/10%20Management/10.01%20Syllabus.md) | 🟢 Active |
-| **[Great Literature 102](20-29%20Great%20Literature%20102%20-%20Science%20Fiction%20and%20Fantasy/)** | Science Fiction & Fantasy | [View Syllabus](20-29%20Great%20Literature%20102%20-%20Science%20Fiction%20and%20Fantasy/20%20Management/20.01%20Syllabus.md) | 🟢 Active |
-| **[Great Literature 103](30-39%20Great%20Literature%20103%20-%20Poetry/)** | Poetry (Romanticism to Modernism) | [View Syllabus](30-39%20Great%20Literature%20103%20-%20Poetry/30%20Management/30.01%20Syllabus.md) | 🟢 Active |
-| **[Great Literature 104](40-49%20Great%20Literature%20104%20-%20Modern%20Future%20Classics/)** | Modern Future Classics (1980s-Present) | [View Syllabus](40-49%20Great%20Literature%20104%20-%20Modern%20Future%20Classics/40%20Management/40.01%20Syllabus.md) | 🟢 Active |
-| **[Great Literature 105](50-59%20Great%20Literature%20105%20-%20Political%20Novels/)** | Political Novels & Dystopias | [View Syllabus](50-59%20Great%20Literature%20105%20-%20Political%20Novels/50%20Management/50.01%20Syllabus.md) | 🟢 Active |
-| **[Great Literature 106](60-69%20Great%20Literature%20106%20-%20Southern%20Gothic/)** | Southern Gothic (Mini-Course) | [View Syllabus](60-69%20Great%20Literature%20106%20-%20Southern%20Gothic/60%20Management/60.01%20Syllabus.md) | 🟡 Active |
-| **[Great Literature 107](70-79%20Great%20Literature%20107%20-%20Romantasy/)** | Romantasy | [View Syllabus](70-79%20Great%20Literature%20107%20-%20Romantasy/70%20Management/70.01%20Syllabus.md) | 🟡 Active |
-| **[Great Literature 108](80-89%20Great%20Literature%20108%20-%20Biography%20and%20Autobiography/)** | Biography & Autobiography | [View Syllabus](80-89%20Great%20Literature%20108%20-%20Biography%20and%20Autobiography/80%20Management/80.01%20Syllabus.md) | 🟡 Active |
+| **[Great Literature 101](10-19%20Great%20Literature%20101%20-%20Modern%20Literature/)** | Modern Literature (mid-1800s onward) | [View Syllabus](10-19%20Great%20Literature%20101%20-%20Modern%20Literature/10%20Management/10.01%20Syllabus.md) | 🔵 In Progress |
+| **[Great Literature 102](20-29%20Great%20Literature%20102%20-%20Science%20Fiction%20and%20Fantasy/)** | Science Fiction & Fantasy | [View Syllabus](20-29%20Great%20Literature%20102%20-%20Science%20Fiction%20and%20Fantasy/20%20Management/20.01%20Syllabus.md) | ⚪ Not Started |
+| **[Great Literature 103](30-39%20Great%20Literature%20103%20-%20Poetry/)** | Poetry (Romanticism to Modernism) | [View Syllabus](30-39%20Great%20Literature%20103%20-%20Poetry/30%20Management/30.01%20Syllabus.md) | ⚪ Not Started |
+| **[Great Literature 104](40-49%20Great%20Literature%20104%20-%20Modern%20Future%20Classics/)** | Modern Future Classics (1980s-Present) | [View Syllabus](40-49%20Great%20Literature%20104%20-%20Modern%20Future%20Classics/40%20Management/40.01%20Syllabus.md) | ⚪ Not Started |
+| **[Great Literature 105](50-59%20Great%20Literature%20105%20-%20Political%20Novels/)** | Political Novels & Dystopias | [View Syllabus](50-59%20Great%20Literature%20105%20-%20Political%20Novels/50%20Management/50.01%20Syllabus.md) | ⚪ Not Started |
+| **[Great Literature 106](60-69%20Great%20Literature%20106%20-%20Southern%20Gothic/)** | Southern Gothic (Mini-Course) | [View Syllabus](60-69%20Great%20Literature%20106%20-%20Southern%20Gothic/60%20Management/60.01%20Syllabus.md) | ⚪ Not Started |
+| **[Great Literature 107](70-79%20Great%20Literature%20107%20-%20Romantasy/)** | Romantasy | [View Syllabus](70-79%20Great%20Literature%20107%20-%20Romantasy/70%20Management/70.01%20Syllabus.md) | ⚪ Not Started |
+| **[Great Literature 108](80-89%20Great%20Literature%20108%20-%20Biography%20and%20Autobiography/)** | Biography & Autobiography | [View Syllabus](80-89%20Great%20Literature%20108%20-%20Biography%20and%20Autobiography/80%20Management/80.01%20Syllabus.md) | ⚪ Not Started |
 
 ---
 

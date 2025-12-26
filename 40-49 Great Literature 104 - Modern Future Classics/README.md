@@ -1,6 +1,7 @@
 # Great Literature 104 - Modern Future Classics
 
 > **Primary Area:** 40-49  
+> **Course Status:** ⚪ Not Started  
 > **Syllabus:** [View Complete Syllabus](40%20Management/40.01%20Syllabus.md)
 
 ---
@@ -9,16 +10,16 @@
 Explore the "classics of tomorrow": contemporary works from the last 50 years that speak directly to our world while making a lasting impact on literary history.
 
 ### 📚 Reading List
-1. **Lonesome Dove** — Larry McMurtry
-2. **The Handmaid's Tale** — Margaret Atwood
-3. **Blood Meridian** — Cormac McCarthy
-4. **The Remains of the Day** — Kazuo Ishiguro
-5. **The Things They Carried** — Tim O'Brien
-6. **Atonement** — Ian McEwan
-7. **Gilead** — Marilynne Robinson
-8. **Wolf Hall** — Hilary Mantel
-9. **The Underground Railroad** — Colson Whitehead
-10. **White Teeth** — Zadie Smith
+1. **Lonesome Dove** — Larry McMurtry ⚪ *Not Started*
+2. **The Handmaid's Tale** — Margaret Atwood ⚪ *Not Started*
+3. **Blood Meridian** — Cormac McCarthy ⚪ *Not Started*
+4. **The Remains of the Day** — Kazuo Ishiguro ⚪ *Not Started*
+5. **The Things They Carried** — Tim O'Brien ⚪ *Not Started*
+6. **Atonement** — Ian McEwan ⚪ *Not Started*
+7. **Gilead** — Marilynne Robinson ⚪ *Not Started*
+8. **Wolf Hall** — Hilary Mantel ⚪ *Not Started*
+9. **The Underground Railroad** — Colson Whitehead ⚪ *Not Started*
+10. **White Teeth** — Zadie Smith ⚪ *Not Started*
 
 ---
 
