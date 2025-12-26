@@ -1,29 +1,6 @@
 # Literature Course Agent Rules
 
-This file contains instructions for AI agents (Cursor, Google Antigravity, etc.) to ensure consistency across the LiteratureCourse project.
+This repository uses a central rule file to ensure consistency across different AI agents. 
 
-## 📚 Study Guide Documentation
-When creating or enhancing book documentation, ALWAYS follow the three-part system established in Course 101.
-
-### 📝 Templates
-Use the global templates located in:
-`00-09 Templates and Resources/01 Study Guide Templates/`
-
-1. **01 Pre-Reading Guide.md**: Essential context, literary significance, and historical framework.
-2. **02 Chapter-by-Chapter Notes.md**: Granular, section-by-section breakdown with plot, themes, and questions.
-3. **03 Post-Reading Analysis.md**: Deep-dive thematic, symbolic, and critical analysis.
-
-### 🎓 Quality Standards
-- **Level:** All documentation must be at a **graduate/scholarly level**.
-- **Depth:** Avoid surface-level summaries. Dive deep into literary techniques, historical nuances, and critical interpretations (e.g., Post-Colonial, Feminist, Psychoanalytic).
-- **Consistency:** Use the structure defined in `00-09 Templates and Resources/01 Study Guide Templates/STUDY GUIDE STRUCTURE.md`.
-
-## 📂 Organization
-- Follow the **Johnny.Decimal** system as structured in the project folders.
-- Avoid loose files in book directories.
-- Ensure all courses follow the chronological order of their respective syllabuses.
-- **Always update READMEs:** When modifying a course's reading list, syllabus, or structure, ALWAYS ensure the corresponding course `README.md` and the root `README.md` are updated to reflect the changes.
-
-## 🚫 Anti-Duplication Rule
-- **Check before adding:** Before adding a book to a new course, check `00-09 Templates and Resources/00 System Management/00.00 Master Index.md` or search the repository to ensure the book isn't already included in another course.
-- **Exceptions:** Books should only be duplicated if there is a strong thematic reason to study them in multiple contexts (e.g., *Fahrenheit 451* could be in Sci-Fi and Political). However, the preference is to keep the collection diverse and unique.
+**PLEASE REFER TO AND FOLLOW THE RULES IN:**
+[.agent/CORE_RULES.md](.agent/CORE_RULES.md)
