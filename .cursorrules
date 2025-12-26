@@ -22,6 +22,7 @@ Use the global templates located in:
 - Follow the **Johnny.Decimal** system as structured in the project folders.
 - Avoid loose files in book directories.
 - Ensure all courses follow the chronological order of their respective syllabuses.
+- **Always update READMEs:** When modifying a course's reading list, syllabus, or structure, ALWAYS ensure the corresponding course `README.md` and the root `README.md` are updated to reflect the changes.
 
 ## 🚫 Anti-Duplication Rule
 - **Check before adding:** Before adding a book to a new course, check `00-09 Templates and Resources/00 System Management/00.00 Master Index.md` or search the repository to ensure the book isn't already included in another course.
