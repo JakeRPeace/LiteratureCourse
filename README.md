@@ -18,6 +18,7 @@ This repository contains a set of rigorous but humane literature syllabi, design
 | **[Great Literature 106](60-69%20Great%20Literature%20106%20-%20Southern%20Gothic/)** | Southern Gothic (Mini-Course) | [View Syllabus](60-69%20Great%20Literature%20106%20-%20Southern%20Gothic/60%20Management/60.01%20Syllabus.md) | ⚪ Not Started |
 | **[Great Literature 107](70-79%20Great%20Literature%20107%20-%20Romantasy/)** | Romantasy | [View Syllabus](70-79%20Great%20Literature%20107%20-%20Romantasy/70%20Management/70.01%20Syllabus.md) | ⚪ Not Started |
 | **[Great Literature 108](80-89%20Great%20Literature%20108%20-%20Biography%20and%20Autobiography/)** | Biography & Autobiography | [View Syllabus](80-89%20Great%20Literature%20108%20-%20Biography%20and%20Autobiography/80%20Management/80.01%20Syllabus.md) | ⚪ Not Started |
+| **[Great Literature 109](90-99%20Great%20Literature%20109%20-%20Introduction%20to%20Philosophy/)** | Introduction to Philosophy | [View Syllabus](90-99%20Great%20Literature%20109%20-%20Introduction%20to%20Philosophy/90%20Management/90.01%20Syllabus.md) | ⚪ Not Started |
 
 ---
 
