@@ -73,15 +73,14 @@ Contains:
 
 ## 📝 Templates for Future Books
 
-When adding a new book, use the templates in the `11 Books/` folder:
+When adding a new book to any course, use the templates located in:
+`00-09 Templates and Resources/01 Study Guide Templates/`
 
 - `_TEMPLATE 01 Pre-Reading Guide.md`
 - `_TEMPLATE 02 Chapter-by-Chapter Notes.md`
 - `_TEMPLATE 03 Post-Reading Analysis.md`
 
-Copy each template into your new book's folder and fill in the book-specific information.
-
-See `EXPANSION GUIDE.md` for detailed instructions on adding new books.
+Copy each template into the new book's folder within its respective course and fill in the book-specific information at a graduate level, following the depth established in the Literature 101 course.
 
 ---
 
