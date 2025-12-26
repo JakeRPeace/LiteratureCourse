@@ -22,3 +22,7 @@ Use the global templates located in:
 - Follow the **Johnny.Decimal** system as structured in the project folders.
 - Avoid loose files in book directories.
 - Ensure all courses follow the chronological order of their respective syllabuses.
+
+## 🚫 Anti-Duplication Rule
+- **Check before adding:** Before adding a book to a new course, check `00-09 Templates and Resources/00 System Management/00.00 Master Index.md` or search the repository to ensure the book isn't already included in another course.
+- **Exceptions:** Books should only be duplicated if there is a strong thematic reason to study them in multiple contexts (e.g., *Fahrenheit 451* could be in Sci-Fi and Political). However, the preference is to keep the collection diverse and unique.
