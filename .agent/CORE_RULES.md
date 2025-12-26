@@ -27,3 +27,12 @@ Use the global templates located in:
 ## 🚫 Anti-Duplication Rule
 - **Check before adding:** Before adding a book to a new course, check `00-09 Templates and Resources/00 System Management/00.00 Master Index.md` or search the repository to ensure the book isn't already included in another course.
 - **Exceptions:** Books should only be duplicated if there is a strong thematic reason to study them in multiple contexts (e.g., *Fahrenheit 451* could be in Sci-Fi and Political). However, the preference is to keep the collection diverse and unique.
+
+## 📝 Documentation Guidelines
+- **Consistency:** Maintain a consistent tone and style across all documentation.
+- **Accuracy:** Verify all information (dates, authors, titles, etc.) is accurate and up-to-date.
+- **Clarity:** Ensure documentation is clear and easy to understand, with proper formatting and organization.
+- **Depth:** Avoid surface-level summaries. Dive deep into literary techniques, historical nuances, and critical interpretations (e.g., Post-Colonial, Feminist, Psychoanalytic).
+- **Critical Analysis:** Include critical analysis and interpretation of the text, including themes, symbolism, and literary devices.
+- **Scholarly Tone:** Maintain a scholarly tone and use proper academic language and terminology.
+- **Documentation:** Document all sources used in the documentation, including books, articles, and other resources.
