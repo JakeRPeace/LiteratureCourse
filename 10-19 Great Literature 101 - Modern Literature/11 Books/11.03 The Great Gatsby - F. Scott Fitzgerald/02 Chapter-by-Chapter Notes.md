@@ -35,6 +35,51 @@
 
 ---
 
+## 🧭 Character Motives + Masks (Track Each Chapter)
+
+Use 1-2 lines per chapter:
+- **Nick:** What does he claim to value vs. what he actually seeks?
+- **Gatsby:** What does he want right now, and how does he perform it?
+- **Daisy:** What does she protect (comfort, image, love)?
+- **Tom:** What insecurity is he covering with dominance?
+- **Jordan:** What does she gain by staying detached?
+
+---
+
+## 🗂️ Symbol Tracking Table (Fill As You Go)
+
+| Symbol | First Appearance | Chapter Note | How It Changes |
+| :--- | :--- | :--- | :--- |
+| Green Light | Ch. 1 | Gatsby reaching across the bay at night. | Hope turns into loss once Daisy is in reach. |
+| Valley of Ashes | Ch. 2 | Industrial wasteland between Eggs and NYC. | Becomes the moral/physical cost of wealth. |
+| Eyes of Dr. T.J. Eckleburg | Ch. 2 | Faded billboard watching the ash heaps. | Shifts into a false "moral judge" after Myrtle's death. |
+| Cars / Driving | Ch. 2 | Tom's trip to the city; reckless wealth on display. | Culminates in Myrtle's death and moral collapse. |
+| Weather / Heat | Ch. 1 | Summer setting; the season frames the dream. | Heat peaks in Ch. 7 as conflict explodes. |
+
+---
+
+## 🎭 Narrator Reliability Checklist
+
+After each chapter, jot a quick note:
+- What does Nick say he believes?
+- What does Nick do?
+- What does he leave out or soften?
+- Who gets sympathy and who does not?
+
+---
+
+## ✍️ Key Passages to Copy Out
+
+Pick 1-2 as you go and handwrite them (or type them into your notes) to slow down and notice the language.
+
+- Ch. 1: The final paragraph with the green light.
+- Ch. 3: A description of Gatsby's party at peak energy.
+- Ch. 5: The shirt scene or the moment the dream "deflates."
+- Ch. 7: The Plaza confrontation.
+- Ch. 9: The closing line about the current and the past.
+
+---
+
 ## Chapter 2: The Valley of Ashes (The Secret Life)
 
 ### What Happens

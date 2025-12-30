@@ -73,6 +73,27 @@
 
 ---
 
+## 📜 Historical Snapshot (Read in the Margins)
+
+- **Prohibition money:** Bootlegging funds the parties and blurs "legitimate" wealth.
+- **Post-WWI restlessness:** Veterans (Nick, Gatsby) feel unmoored and chase meaning.
+- **Bond boom:** 1922 finance culture rewards image and confidence over substance.
+- **Organized crime:** Real power hides behind respectable fronts (Wolfsheim as signal).
+
+---
+
+## 🔎 Close Reading Passages (Mark These)
+
+Use these as anchor moments for rereading and notes.
+
+1.  **Chapter 1 (ending):** Gatsby reaching toward the green light.
+2.  **Chapter 5:** The shirt scene and Daisy's reaction.
+3.  **Chapter 6:** "Can't repeat the past? Why of course you can!"
+4.  **Chapter 7:** The Plaza Hotel confrontation.
+5.  **Chapter 9 (final paragraph):** The "boats against the current" closing.
+
+---
+
 ## 📚 A Note on Structure
 
 The novel is tightly structured into nine chapters:
