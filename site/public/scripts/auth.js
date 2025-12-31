@@ -48,12 +48,17 @@ window.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
     setError("");
 
+    if (!emailInput.value || !passwordInput.value) {
+      setError("Email and password are required.");
+      return;
+    }
+
     if (action === "signin") {
       const { error } = await supabase.auth.signInWithPassword({
         email: emailInput.value,
         password: passwordInput.value
       });
-      if (error) setError(error.message);
+      if (error) setError(error.message || "Sign in failed.");
       return;
     }
 
@@ -62,7 +67,7 @@ window.addEventListener("DOMContentLoaded", () => {
         email: emailInput.value,
         password: passwordInput.value
       });
-      if (error) setError(error.message);
+      if (error) setError(error.message || "Sign up failed.");
       return;
     }
 
