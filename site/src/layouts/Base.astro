@@ -298,18 +298,20 @@ const { title = "Literature Courses" } = Astro.props;
         border-radius: var(--radius-md);
         min-width: 220px;
         box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
+        display: grid;
+        gap: 12px;
       }
 
       .auth-title {
         font-weight: 600;
-        margin-bottom: 10px;
+        font-size: 14px;
+        letter-spacing: -0.01em;
       }
 
       .auth-field {
         display: grid;
         gap: 6px;
         font-size: 12px;
-        margin-bottom: 10px;
         color: var(--muted);
       }
 
@@ -331,6 +333,18 @@ const { title = "Literature Courses" } = Astro.props;
       .auth-actions {
         display: flex;
         gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .auth-panel button {
+        flex: 1;
+        min-width: 120px;
+      }
+
+      .auth-divider {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.08);
+        margin: 4px 0;
       }
 
       button {
