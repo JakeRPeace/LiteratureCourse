@@ -28,7 +28,7 @@ const { bookId, initialStatus = "not_started", initialScore = "" } = Astro.props
   <div class="status-note" data-note></div>
 </div>
 
-<script type="module" src={new URL("../scripts/book-status.js", import.meta.url).href}></script>
+<script type="module" src="/scripts/book-status.js"></script>
 
 <style>
   .status-grid {

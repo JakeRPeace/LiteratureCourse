@@ -8,6 +8,12 @@ const { title = "Literature Courses" } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
+    <script>
+      window.__SUPABASE__ = {
+        url: import.meta.env.PUBLIC_SUPABASE_URL,
+        key: import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+      };
+    </script>
     <title>{title}</title>
     <link
       rel="stylesheet"
