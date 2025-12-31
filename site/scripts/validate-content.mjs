@@ -20,7 +20,7 @@ const allowedDocTypes = new Set(["readme", "index", "syllabus"]);
 const allowedGuideTypes = new Set(["pre_reading", "notes", "post_reading"]);
 
 const errors = [];
-const skipCourseDirs = new Set([\"00-09 Templates and Resources\"]);
+const skipCourseDirs = new Set(["00-09 Templates and Resources"]);
 
 function parseFrontmatter(contents, filePath) {
   if (!contents.startsWith("---\n")) {
