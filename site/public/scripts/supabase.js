@@ -5,7 +5,16 @@ const supabaseUrl = config.url;
 const supabaseKey = config.key;
 
 if (!supabaseUrl || !supabaseKey) {
-  console.warn("Supabase config missing.");
+  throw new Error("Supabase config missing. Check PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY.");
 }
 
 export const supabase = createClient(supabaseUrl || "", supabaseKey || "");
+
+async function assertConnection() {
+  const { error } = await supabase.from("book_status").select("id").limit(1);
+  if (error) {
+    throw new Error(`Supabase connection failed: ${error.message}`);
+  }
+}
+
+assertConnection();
