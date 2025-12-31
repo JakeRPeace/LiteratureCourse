@@ -499,10 +499,9 @@ This book is the first in Great Literature 101, and it introduces several import
 
 - **The Human Condition:** This book explores fundamental questions about life, aging, struggle, and meaning that will recur in other works.
 
-**Next book:** *Jane Eyre* by Charlotte Brontë - a very different style and approach, but also exploring themes of perseverance, dignity, and the human spirit.
+**Next book:** *The Stranger* by Albert Camus - a shift from endurance against nature to the stark, human-made absurdity of modern life.
 
 ---
 
 *Post-Reading Analysis created: 2025-12-24*  
 *For Great Literature 101 - Book 1 of 10*
-
