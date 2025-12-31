@@ -53,6 +53,7 @@ export function getCourses() {
 
   const courseDirs = listDirectories(projectRoot)
     .filter((dir) => /^\d{2}-\d{2}\s+/.test(dir.name))
+    .filter((dir) => dir.name !== "00-09 Templates and Resources")
     .map((dir) => dir.name)
     .sort();
 
