@@ -22,4 +22,4 @@
   </div>
 </div>
 
-<script type="module" src={Astro.resolve("../scripts/auth.js")}></script>
+<script type="module" src={new URL("../scripts/auth.js", import.meta.url).href}></script>
