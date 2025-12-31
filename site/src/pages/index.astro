@@ -6,9 +6,14 @@ const courses = getCourses();
 ---
 <Base title="Literature Course Library">
   <section class="stack">
-    <div>
-      <h2 class="section-title">Courses</h2>
-      <p class="section-subtitle">Browse each course, track your reading, and rate completed books.</p>
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Courses</h2>
+        <p class="section-subtitle">Browse each course, track your reading, and rate completed books.</p>
+      </div>
+      <a class="section-cta" href="/">
+        View all <span>-&gt;</span>
+      </a>
     </div>
     <div class="grid">
       {courses.map((course) => (

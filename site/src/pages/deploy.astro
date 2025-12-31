@@ -1,0 +1,22 @@
+---
+import Base from "../layouts/Base.astro";
+---
+<Base title="Deploy | Literature Course Library">
+  <section class="stack">
+    <div>
+      <h2 class="section-title">Deploy</h2>
+      <p class="section-subtitle">Vercel + Supabase configuration checklist.</p>
+    </div>
+    <div class="card guide-content">
+      <h3>Vercel</h3>
+      <p>Set Root Directory to <code>site</code>, build command to <code>npm run build</code>, output to <code>dist</code>.</p>
+      <p>Add env vars:</p>
+      <pre><code>PUBLIC_SUPABASE_URL
+PUBLIC_SUPABASE_ANON_KEY</code></pre>
+    </div>
+    <div class="card guide-content">
+      <h3>Supabase</h3>
+      <p>Enable Email/Password auth and run <code>site/supabase/schema.sql</code>.</p>
+    </div>
+  </section>
+</Base>

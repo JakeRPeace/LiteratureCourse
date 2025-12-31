@@ -1,0 +1,29 @@
+---
+import Base from "../layouts/Base.astro";
+---
+<Base title="Docs | Literature Course Library">
+  <section class="stack">
+    <div>
+      <h2 class="section-title">Docs</h2>
+      <p class="section-subtitle">Local setup, formatting rules, and deployment notes.</p>
+    </div>
+    <div class="card guide-content">
+      <h3>Quickstart</h3>
+      <p>Run the site locally from the <code>site</code> directory.</p>
+      <pre><code>cd site
+npm install
+cp .env.example .env
+npm run dev
+</code></pre>
+    </div>
+    <div class="card guide-content">
+      <h3>Content rules</h3>
+      <p>All content follows the frontmatter standard in <code>FORMAT.md</code>.</p>
+      <pre><code>npm run validate</code></pre>
+    </div>
+    <div class="card guide-content">
+      <h3>Deployment</h3>
+      <p>See <code>DEPLOYMENT.md</code> for Supabase + Vercel setup.</p>
+    </div>
+  </section>
+</Base>
