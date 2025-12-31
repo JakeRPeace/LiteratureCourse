@@ -1,0 +1,59 @@
+---
+import Base from "../../layouts/Base.astro";
+import CourseStatus from "../../components/CourseStatus.astro";
+import { getCourses, getCourseBySlug } from "../../lib/content.js";
+
+export function getStaticPaths() {
+  return getCourses().map((course) => ({
+    params: { slug: course.slug }
+  }));
+}
+
+const { slug } = Astro.params;
+const course = getCourseBySlug(slug);
+if (!course) {
+  throw new Error(`Course not found: ${slug}`);
+}
+
+const syllabus = course.syllabus?.module;
+const readme = course.readme?.module;
+const bookIds = course.books.map((book) => book.id);
+---
+<Base title={`${course.title} | Literature Course Library`}>
+  <section class="stack">
+    <div>
+      <a class="pill" href="/">Back to courses</a>
+      <h2 class="section-title">{course.title}</h2>
+      <p class="section-subtitle">{course.id}</p>
+    </div>
+
+    <CourseStatus bookIds={bookIds} />
+
+    {readme ? (
+      <div class="card guide-content">
+        <h3>Overview</h3>
+        <readme.Content />
+      </div>
+    ) : null}
+
+    {syllabus ? (
+      <div class="card guide-content">
+        <h3>Syllabus</h3>
+        <syllabus.Content />
+      </div>
+    ) : null}
+
+    <div class="card">
+      <h3>Books</h3>
+      <div class="grid">
+        {course.books.map((book) => (
+          <a class="link-card" href={`/book/${book.slug}`}>
+            <span class="pill">{book.category}</span>
+            <h3>{book.title}</h3>
+            <p>{book.id}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>

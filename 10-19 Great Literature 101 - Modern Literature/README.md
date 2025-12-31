@@ -1,3 +1,10 @@
+---
+type: course_doc
+course_id: 10-19
+course_title: Great Literature 101 - Modern Literature
+doc_type: readme
+---
+
 # Great Literature 101 - Modern Literature
 
 > **Primary Area:** 10-19  

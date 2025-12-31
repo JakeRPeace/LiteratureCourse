@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 90-99
+book_id: 91.04
+guide_type: pre_reading
+---
+
 # [Book Title] — Pre-Reading Guide
 
 **Read this before you start the book**

@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 10-19
+book_id: 11.04
+guide_type: pre_reading
+---
+
 # The Death of Ivan Ilyich — Pre-Reading Guide
 
 **Read this before you start the book**

@@ -1,3 +1,10 @@
+---
+type: course_doc
+course_id: 30-39
+course_title: Great Literature 103 - Poetry
+doc_type: readme
+---
+
 # Great Literature 103 - Poetry
 
 > **Primary Area:** 30-39  

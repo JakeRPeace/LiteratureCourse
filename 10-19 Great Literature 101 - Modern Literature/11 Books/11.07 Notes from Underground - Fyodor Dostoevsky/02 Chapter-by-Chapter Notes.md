@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 10-19
+book_id: 11.07
+guide_type: notes
+---
+
 # Notes from Underground — Chapter-by-Chapter Notes
 
 **Use this as you read - important points and questions for each section**

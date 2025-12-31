@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 90-99
+book_id: 91.08
+guide_type: pre_reading
+---
+
 # Beyond Good and Evil — Pre-Reading Guide
 
 **Read this before you start the book**

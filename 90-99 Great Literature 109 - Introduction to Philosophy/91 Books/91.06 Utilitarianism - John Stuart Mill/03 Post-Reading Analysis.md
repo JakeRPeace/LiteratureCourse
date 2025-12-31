@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 90-99
+book_id: 91.06
+guide_type: post_reading
+---
+
 # [Book Title] — Post-Reading Analysis
 
 **Read this after you've finished the book - in-depth exploration of themes, symbols, and meanings**

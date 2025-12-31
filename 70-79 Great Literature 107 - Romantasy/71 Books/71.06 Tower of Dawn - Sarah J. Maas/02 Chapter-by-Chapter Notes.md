@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 70-79
+book_id: 71.06
+guide_type: notes
+---
+
 # [Book Title] — Chapter-by-Chapter Notes
 
 **Use this as you read - important points and questions for each section**

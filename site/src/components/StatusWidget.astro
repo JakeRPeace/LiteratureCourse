@@ -1,0 +1,151 @@
+---
+const { bookId, initialStatus = "not_started", initialScore = "" } = Astro.props;
+---
+<div class="card" data-book-status data-book-id={bookId}>
+  <div class="section-title">Your status</div>
+  <p class="section-subtitle">Track reading progress and add a score once finished.</p>
+  <div class="status-grid">
+    <label>
+      <span>Status</span>
+      <select data-status>
+        <option value="not_started">Not started</option>
+        <option value="in_progress">In progress</option>
+        <option value="read">Read</option>
+      </select>
+    </label>
+    <label>
+      <span>Score</span>
+      <input
+        type="number"
+        min="1"
+        max="5"
+        step="0.25"
+        placeholder="1-5"
+        data-score
+      />
+    </label>
+  </div>
+  <div class="status-note" data-note></div>
+</div>
+
+<script type="module">
+  import { supabase } from "../lib/supabaseClient.js";
+
+  const root = document.querySelector("[data-book-status]");
+  if (root) {
+    const statusSelect = root.querySelector("[data-status]");
+    const scoreInput = root.querySelector("[data-score]");
+    const note = root.querySelector("[data-note]");
+    const bookId = root.dataset.bookId;
+
+    const setNote = (message) => {
+      note.textContent = message || "";
+    };
+
+    const setEnabled = (enabled) => {
+      statusSelect.disabled = !enabled;
+      scoreInput.disabled = !enabled;
+    };
+
+    const loadStatus = async () => {
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session) {
+        setEnabled(false);
+        setNote("Sign in to save your status.");
+        return;
+      }
+
+      setEnabled(true);
+      const { data, error } = await supabase
+        .from("book_status")
+        .select("status, score")
+        .eq("book_id", bookId)
+        .maybeSingle();
+
+      if (error) {
+        setNote(error.message);
+        return;
+      }
+
+      if (data) {
+        statusSelect.value = data.status || "not_started";
+        if (data.score !== null && data.score !== undefined) {
+          scoreInput.value = data.score;
+        }
+      }
+    };
+
+    const saveStatus = async () => {
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session) return;
+      const userId = sessionData.session.user.id;
+
+      const status = statusSelect.value;
+      const scoreValue = scoreInput.value === "" ? null : Number(scoreInput.value);
+
+      const { error } = await supabase
+        .from("book_status")
+        .upsert(
+          {
+            user_id: userId,
+            book_id: bookId,
+            status,
+            score: scoreValue
+          },
+          { onConflict: "user_id,book_id" }
+        );
+
+      if (error) {
+        setNote(error.message);
+        return;
+      }
+
+      setNote("Saved.");
+    };
+
+    root.addEventListener("change", (event) => {
+      if (
+        event.target === statusSelect ||
+        event.target === scoreInput
+      ) {
+        saveStatus();
+      }
+    });
+
+    supabase.auth.onAuthStateChange(() => {
+      loadStatus();
+    });
+
+    loadStatus();
+  }
+</script>
+
+<style>
+  .status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+  }
+
+  label {
+    display: grid;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  select,
+  input {
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    font-family: inherit;
+  }
+
+  .status-note {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--muted);
+    min-height: 16px;
+  }
+</style>

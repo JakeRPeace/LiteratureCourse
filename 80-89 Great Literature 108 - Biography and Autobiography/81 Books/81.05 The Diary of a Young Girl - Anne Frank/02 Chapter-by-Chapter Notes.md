@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 80-89
+book_id: 81.05
+guide_type: notes
+---
+
 # [Book Title] — Chapter-by-Chapter Notes
 
 **Use this as you read - important points and questions for each section**

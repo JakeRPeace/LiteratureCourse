@@ -1,3 +1,10 @@
+---
+type: course_doc
+course_id: 40-49
+course_title: Great Literature 104 - Modern Future Classics
+doc_type: readme
+---
+
 # Great Literature 104 - Modern Future Classics
 
 > **Primary Area:** 40-49  

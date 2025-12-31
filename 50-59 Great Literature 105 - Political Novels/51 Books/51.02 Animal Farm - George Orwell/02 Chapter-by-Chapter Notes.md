@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 50-59
+book_id: 51.02
+guide_type: notes
+---
+
 # Animal Farm — Chapter-by-Chapter Notes
 
 **Use this as you read - important points and questions for each section**

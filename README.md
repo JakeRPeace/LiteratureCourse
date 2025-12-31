@@ -1,45 +1,49 @@
 # Literature Study Collection
 
-> A comprehensive, organized collection of literature courses and study materials, structured for self-directed learning.
+A curated set of literature courses organized with the Johnny.Decimal system, now paired with a web app for browsing and progress tracking.
 
-This repository contains a set of rigorous but humane literature syllabi, designed to help you read more deeply and consistently.
+## What This Repo Contains
 
----
+- Course materials in the root (Johnny.Decimal structure)
+- A web app in `site/` (Astro + Supabase + Vercel)
+- Templates and formatting rules for consistent content parsing
 
-## 🎓 Available Courses
+## Web App Quickstart
 
-| Course | Focus | Syllabus | Status |
-| :--- | :--- | :--- | :--- |
-| **[Great Literature 101](10-19%20Great%20Literature%20101%20-%20Modern%20Literature/)** | Modern Literature (mid-1800s onward) | [View Syllabus](10-19%20Great%20Literature%20101%20-%20Modern%20Literature/10%20Management/10.01%20Syllabus.md) | 🔵 In Progress |
-| **[Great Literature 102](20-29%20Great%20Literature%20102%20-%20Science%20Fiction%20and%20Fantasy/)** | Science Fiction & Fantasy | [View Syllabus](20-29%20Great%20Literature%20102%20-%20Science%20Fiction%20and%20Fantasy/20%20Management/20.01%20Syllabus.md) | ⚪ Not Started |
-| **[Great Literature 103](30-39%20Great%20Literature%20103%20-%20Poetry/)** | Poetry (Romanticism to Modernism) | [View Syllabus](30-39%20Great%20Literature%20103%20-%20Poetry/30%20Management/30.01%20Syllabus.md) | ⚪ Not Started |
-| **[Great Literature 104](40-49%20Great%20Literature%20104%20-%20Modern%20Future%20Classics/)** | Modern Future Classics (1980s-Present) | [View Syllabus](40-49%20Great%20Literature%20104%20-%20Modern%20Future%20Classics/40%20Management/40.01%20Syllabus.md) | ⚪ Not Started |
-| **[Great Literature 105](50-59%20Great%20Literature%20105%20-%20Political%20Novels/)** | Political Novels & Dystopias | [View Syllabus](50-59%20Great%20Literature%20105%20-%20Political%20Novels/50%20Management/50.01%20Syllabus.md) | ⚪ Not Started |
-| **[Great Literature 106](60-69%20Great%20Literature%20106%20-%20Southern%20Gothic/)** | Southern Gothic (Mini-Course) | [View Syllabus](60-69%20Great%20Literature%20106%20-%20Southern%20Gothic/60%20Management/60.01%20Syllabus.md) | ⚪ Not Started |
-| **[Great Literature 107](70-79%20Great%20Literature%20107%20-%20Romantasy/)** | Romantasy | [View Syllabus](70-79%20Great%20Literature%20107%20-%20Romantasy/70%20Management/70.01%20Syllabus.md) | ⚪ Not Started |
-| **[Great Literature 108](80-89%20Great%20Literature%20108%20-%20Biography%20and%20Autobiography/)** | Biography & Autobiography | [View Syllabus](80-89%20Great%20Literature%20108%20-%20Biography%20and%20Autobiography/80%20Management/80.01%20Syllabus.md) | ⚪ Not Started |
-| **[Great Literature 109](90-99%20Great%20Literature%20109%20-%20Introduction%20to%20Philosophy/)** | Introduction to Philosophy | [View Syllabus](90-99%20Great%20Literature%20109%20-%20Introduction%20to%20Philosophy/90%20Management/90.01%20Syllabus.md) | ⚪ Not Started |
+```bash
+cd site
+npm install
+cp .env.example .env
+npm run dev
+```
 
----
+Set these variables in `.env`:
 
-## 🚀 Getting Started
+- `PUBLIC_SUPABASE_URL`
+- `PUBLIC_SUPABASE_ANON_KEY`
 
-1.  **Choose a Course**: Pick one of the courses above that interests you.
-2.  **Read the Syllabus**: Click "View Syllabus" to see the reading list, pacing guide, and goals.
-3.  **Start Reading**:
-    *   Navigate to the course folder (e.g., `10-19 Great Literature 101 - Modern Literature`).
-    *   Go to `11 Books` (or `31 Poetry Collections`).
-    *   Open the folder for your first book.
-    *   Use the **Study Guides** (`01 Pre-Reading`, `02 Notes`, `03 Analysis`) to guide your reading.
+Run the database schema once in Supabase using `site/supabase/schema.sql`.
 
----
+## Content Rules (Required)
 
-## 🗂️ The System
+All course and book documents must include frontmatter per `FORMAT.md`.
 
-This project is organized using the **[Johnny.Decimal](https://johnnydecimal.com/)** system to keep everything scalable and easy to find.
+Validation runs on build:
 
-*   **Areas (10-99)**: Each course gets its own numbered area.
-*   **Management Categories (X0)**: Indices and syllabi live here (e.g., `10 Management`).
-*   **Content Categories (X1-X9)**: Books, resources, and notes live here.
+```bash
+cd site
+npm run validate
+```
 
-For a deep dive into how to expand this collection or create your own course, see the **[Master Index](00-09%20Templates%20and%20Resources/00%20System%20Management/00.00%20Master%20Index.md)**.
+## Where Things Live
+
+- Courses: top-level folders like `10-19 Great Literature 101 - Modern Literature`
+- Book metadata: `Book Metadata.md` inside each book folder
+- Guide templates: `00-09 Templates and Resources/01 Study Guide Templates`
+- Course templates: `00-09 Templates and Resources/02 Course Templates`
+- Book templates: `00-09 Templates and Resources/03 Book Templates`
+- Web app: `site/`
+
+## Deployment (Vercel + Supabase)
+
+See `DEPLOYMENT.md` for step-by-step setup and CI/CD notes.

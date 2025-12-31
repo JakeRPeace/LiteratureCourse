@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 10-19
+book_id: 11.01
+guide_type: post_reading
+---
+
 # The Old Man and the Sea — Post-Reading Analysis
 
 **Read this after you've finished the book - in-depth exploration of themes, symbols, and meanings**

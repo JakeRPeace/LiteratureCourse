@@ -1,3 +1,10 @@
+---
+type: course_doc
+course_id: 80-89
+course_title: Great Literature 108 - Biography and Autobiography
+doc_type: readme
+---
+
 # Great Literature 108 - Biography and Autobiography
 
 > **Primary Area:** 80-89  

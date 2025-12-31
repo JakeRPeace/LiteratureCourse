@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 10-19
+book_id: 11.01
+guide_type: post_reading
+---
+
 # [Book Title] — Post-Reading Analysis
 
 **Read this after you've finished the book - in-depth exploration of themes, symbols, and meanings**
@@ -246,4 +253,3 @@ This book is [X] in Great Literature 101, and it [introduces/continues/explores]
 
 *Post-Reading Analysis created: [Date]*  
 *For Great Literature 101 - Book [X] of 10*
-

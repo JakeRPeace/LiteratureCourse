@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 50-59
+book_id: 51.07
+guide_type: post_reading
+---
+
 # Invisible Man — Post-Reading Analysis
 
 **Read this after you've finished the book - in-depth exploration of themes, symbols, and meanings**

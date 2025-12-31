@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 10-19
+book_id: 11.07
+guide_type: pre_reading
+---
+
 # Notes from Underground — Pre-Reading Guide
 
 **Read this before you start the book**

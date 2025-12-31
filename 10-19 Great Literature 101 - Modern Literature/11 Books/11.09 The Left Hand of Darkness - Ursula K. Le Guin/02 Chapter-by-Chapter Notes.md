@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 10-19
+book_id: 11.09
+guide_type: notes
+---
+
 # The Left Hand of Darkness — Chapter-by-Chapter Notes
 
 **Use this as you read - important points and questions for each section**

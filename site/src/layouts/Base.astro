@@ -1,0 +1,242 @@
+---
+import AuthPanel from "../components/AuthPanel.astro";
+const { title = "Literature Courses" } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        background-color: #f4f0ea;
+        color: #1f1b16;
+        --ink: #1f1b16;
+        --muted: #6d5f54;
+        --accent: #d76b3c;
+        --accent-2: #2f6b5e;
+        --surface: #ffffff;
+        --line: #e3d6c8;
+        --shadow: rgba(21, 17, 12, 0.12);
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at top left, rgba(215, 107, 60, 0.18), transparent 55%),
+          radial-gradient(circle at 70% 20%, rgba(47, 107, 94, 0.15), transparent 55%),
+          #f4f0ea;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 32px 20px 80px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 40px;
+      }
+
+      .brand {
+        background: var(--surface);
+        padding: 16px 20px;
+        border-radius: 16px;
+        box-shadow: 0 12px 24px var(--shadow);
+      }
+
+      .brand h1 {
+        margin: 0 0 6px;
+        font-size: 24px;
+      }
+
+      .brand p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .card {
+        background: var(--surface);
+        border-radius: 18px;
+        padding: 20px 24px;
+        box-shadow: 0 12px 30px var(--shadow);
+        border: 1px solid var(--line);
+      }
+
+      .stack {
+        display: grid;
+        gap: 20px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(47, 107, 94, 0.12);
+        color: var(--accent-2);
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .auth-panel {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        padding: 16px;
+        border-radius: 16px;
+        min-width: 220px;
+        box-shadow: 0 12px 24px var(--shadow);
+      }
+
+      .auth-title {
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .auth-field {
+        display: grid;
+        gap: 6px;
+        font-size: 12px;
+        margin-bottom: 10px;
+        color: var(--muted);
+      }
+
+      .auth-field input {
+        padding: 8px 10px;
+        border-radius: 10px;
+        border: 1px solid var(--line);
+        font-family: inherit;
+      }
+
+      .auth-actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      button {
+        font-family: inherit;
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 8px 12px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      button[data-auth-action="signup"] {
+        background: var(--accent-2);
+      }
+
+      button[data-auth-action="signout"] {
+        background: #c24630;
+      }
+
+      .auth-error {
+        color: #b1281f;
+        font-size: 12px;
+        min-height: 16px;
+      }
+
+      .auth-user {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 10px;
+        word-break: break-all;
+      }
+
+      .section-title {
+        font-size: 20px;
+        margin-bottom: 6px;
+      }
+
+      .section-subtitle {
+        color: var(--muted);
+        margin: 0 0 16px;
+      }
+
+      .link-card {
+        display: grid;
+        gap: 8px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 16px;
+        background: #fffaf4;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .link-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px var(--shadow);
+      }
+
+      .link-card h3 {
+        margin: 0;
+        font-size: 18px;
+      }
+
+      .link-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .guide-content :global(h2) {
+        margin-top: 24px;
+      }
+
+      .guide-content :global(h3) {
+        margin-top: 18px;
+      }
+
+      @media (max-width: 720px) {
+        .topbar {
+          flex-direction: column;
+        }
+
+        .auth-panel {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="topbar">
+        <div class="brand">
+          <h1>Literature Course Library</h1>
+          <p>Browse the courses, track progress, and rate your readings.</p>
+        </div>
+        <AuthPanel />
+      </div>
+      <slot />
+    </div>
+  </body>
+</html>

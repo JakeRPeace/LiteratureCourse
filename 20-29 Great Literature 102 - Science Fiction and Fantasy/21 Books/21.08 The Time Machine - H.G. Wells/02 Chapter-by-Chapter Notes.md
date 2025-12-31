@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 20-29
+book_id: 21.08
+guide_type: notes
+---
+
 # [Book Title] — Chapter-by-Chapter Notes
 
 **Use this as you read - important points and questions for each section**

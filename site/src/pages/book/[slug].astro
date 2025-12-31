@@ -1,0 +1,41 @@
+---
+import Base from "../../layouts/Base.astro";
+import StatusWidget from "../../components/StatusWidget.astro";
+import { getCourses, getBookBySlug } from "../../lib/content.js";
+
+export function getStaticPaths() {
+  const books = getCourses().flatMap((course) => course.books);
+  return books.map((book) => ({
+    params: { slug: book.slug }
+  }));
+}
+
+const { slug } = Astro.params;
+const book = getBookBySlug(slug);
+if (!book) {
+  throw new Error(`Book not found: ${slug}`);
+}
+
+const guideModules = book.guides
+  .map((guide) => guide.module)
+  .filter(Boolean);
+---
+<Base title={`${book.title} | Literature Course Library`}>
+  <section class="stack">
+    <div>
+      <a class="pill" href={`/course/${book.courseSlug}`}>Back to course</a>
+      <h2 class="section-title">{book.title}</h2>
+      <p class="section-subtitle">
+        {book.author ? `${book.author} · ` : ""}{book.id}
+      </p>
+    </div>
+
+    <StatusWidget bookId={book.id} />
+
+    {guideModules.map((guide, index) => (
+      <div class="card guide-content" key={index}>
+        <guide.Content />
+      </div>
+    ))}
+  </section>
+</Base>

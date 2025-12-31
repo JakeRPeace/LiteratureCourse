@@ -1,3 +1,10 @@
+---
+type: course_doc
+course_id: 60-69
+course_title: Great Literature 106 - Southern Gothic
+doc_type: readme
+---
+
 # Great Literature 106 - Southern Gothic (Mini-Course)
 
 > **Primary Area:** 60-69  

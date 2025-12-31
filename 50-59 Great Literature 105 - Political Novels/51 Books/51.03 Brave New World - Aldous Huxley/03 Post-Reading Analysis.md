@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 50-59
+book_id: 51.03
+guide_type: post_reading
+---
+
 # Brave New World — Post-Reading Analysis
 
 **Read this after you've finished the book - in-depth exploration of themes, symbols, and meanings**

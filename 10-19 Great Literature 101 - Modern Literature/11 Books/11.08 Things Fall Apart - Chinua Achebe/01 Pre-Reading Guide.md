@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 10-19
+book_id: 11.08
+guide_type: pre_reading
+---
+
 # Things Fall Apart — Pre-Reading Guide
 
 **Read this before you start the book**

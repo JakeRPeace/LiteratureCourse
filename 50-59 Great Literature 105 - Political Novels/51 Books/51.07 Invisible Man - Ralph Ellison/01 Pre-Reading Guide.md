@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 50-59
+book_id: 51.07
+guide_type: pre_reading
+---
+
 # Invisible Man — Pre-Reading Guide
 
 **Read this before you start the book**

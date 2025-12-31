@@ -1,0 +1,23 @@
+---
+import Base from "../layouts/Base.astro";
+import { getCourses } from "../lib/content.js";
+
+const courses = getCourses();
+---
+<Base title="Literature Course Library">
+  <section class="stack">
+    <div>
+      <h2 class="section-title">Courses</h2>
+      <p class="section-subtitle">Browse each course, track your reading, and rate completed books.</p>
+    </div>
+    <div class="grid">
+      {courses.map((course) => (
+        <a class="link-card" href={`/course/${course.slug}`}>
+          <span class="pill">{course.books.length} books</span>
+          <h3>{course.title}</h3>
+          <p>{course.id}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>

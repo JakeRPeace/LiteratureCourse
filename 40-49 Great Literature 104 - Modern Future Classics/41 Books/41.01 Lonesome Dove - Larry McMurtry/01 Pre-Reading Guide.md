@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 40-49
+book_id: 41.01
+guide_type: pre_reading
+---
+
 # Lonesome Dove — Pre-Reading Guide
 
 **Read this before you start the book**

@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 50-59
+book_id: 51.04
+guide_type: pre_reading
+---
+
 # Fahrenheit 451 — Pre-Reading Guide
 
 **Read this before you start the book**

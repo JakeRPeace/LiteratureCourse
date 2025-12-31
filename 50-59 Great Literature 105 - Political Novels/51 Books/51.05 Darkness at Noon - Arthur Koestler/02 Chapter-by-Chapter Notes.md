@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 50-59
+book_id: 51.05
+guide_type: notes
+---
+
 # Darkness at Noon — Chapter-by-Chapter Notes
 
 **Use this as you read - important points and questions for each section**

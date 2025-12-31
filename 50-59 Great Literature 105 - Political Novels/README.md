@@ -1,3 +1,10 @@
+---
+type: course_doc
+course_id: 50-59
+course_title: Great Literature 105 - Political Novels
+doc_type: readme
+---
+
 # Great Literature 105 - Political Novels
 
 > **Primary Area:** 50-59  

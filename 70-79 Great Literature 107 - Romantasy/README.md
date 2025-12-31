@@ -1,3 +1,10 @@
+---
+type: course_doc
+course_id: 70-79
+course_title: Great Literature 107 - Romantasy
+doc_type: readme
+---
+
 # Great Literature 107 - Romantasy
 
 > **Primary Area:** 70-79  

@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 20-29
+book_id: 21.02
+guide_type: pre_reading
+---
+
 # Solaris — Pre-Reading Guide
 
 **Read this before you start the book**

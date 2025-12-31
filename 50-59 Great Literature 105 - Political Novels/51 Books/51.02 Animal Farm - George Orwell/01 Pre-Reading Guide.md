@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 50-59
+book_id: 51.02
+guide_type: pre_reading
+---
+
 # Animal Farm — Pre-Reading Guide
 
 **Read this before you start the book**

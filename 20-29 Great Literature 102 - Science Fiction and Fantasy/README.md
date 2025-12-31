@@ -1,3 +1,10 @@
+---
+type: course_doc
+course_id: 20-29
+course_title: Great Literature 102 - Science Fiction and Fantasy
+doc_type: readme
+---
+
 # Great Literature 102 - Science Fiction and Fantasy
 
 > **Primary Area:** 20-29  

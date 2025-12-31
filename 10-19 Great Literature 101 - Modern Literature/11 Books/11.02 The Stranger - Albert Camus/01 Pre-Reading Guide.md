@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 10-19
+book_id: 11.02
+guide_type: pre_reading
+---
+
 # The Stranger — Pre-Reading Guide
 
 **A Graduate-Level Companion to Camus's Masterwork**

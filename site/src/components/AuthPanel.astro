@@ -1,0 +1,99 @@
+<div class="auth-panel" data-auth>
+  <div class="auth-state" data-auth-state="signed-out">
+    <div class="auth-title">Account</div>
+    <div class="auth-error" data-auth-error></div>
+    <label class="auth-field">
+      <span>Email</span>
+      <input type="email" name="email" autocomplete="email" required />
+    </label>
+    <label class="auth-field">
+      <span>Password</span>
+      <input type="password" name="password" autocomplete="current-password" required />
+    </label>
+    <div class="auth-actions">
+      <button type="button" data-auth-action="signin">Sign in</button>
+      <button type="button" data-auth-action="signup">Sign up</button>
+    </div>
+  </div>
+  <div class="auth-state" data-auth-state="signed-in" hidden>
+    <div class="auth-title">Signed in</div>
+    <div class="auth-user" data-auth-user></div>
+    <button type="button" data-auth-action="signout">Sign out</button>
+  </div>
+</div>
+
+<script type="module">
+  import { supabase } from "../lib/supabaseClient.js";
+
+  const root = document.querySelector("[data-auth]");
+  const signedOut = root.querySelector('[data-auth-state="signed-out"]');
+  const signedIn = root.querySelector('[data-auth-state="signed-in"]');
+  const emailInput = root.querySelector('input[name="email"]');
+  const passwordInput = root.querySelector('input[name="password"]');
+  const errorBox = root.querySelector("[data-auth-error]");
+  const userBox = root.querySelector("[data-auth-user]");
+
+  function setError(message) {
+    errorBox.textContent = message || "";
+  }
+
+  function setState(session) {
+    if (session?.user) {
+      signedOut.hidden = true;
+      signedIn.hidden = false;
+      userBox.textContent = session.user.email || session.user.id;
+    } else {
+      signedOut.hidden = false;
+      signedIn.hidden = true;
+      userBox.textContent = "";
+    }
+  }
+
+  async function refreshSession() {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      setError(error.message);
+      return;
+    }
+    setState(data.session);
+  }
+
+  root.addEventListener("click", async (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    const action = target.dataset.authAction;
+    if (!action) return;
+
+    event.preventDefault();
+    setError("");
+
+    if (action === "signin") {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: emailInput.value,
+        password: passwordInput.value
+      });
+      if (error) setError(error.message);
+      return;
+    }
+
+    if (action === "signup") {
+      const { error } = await supabase.auth.signUp({
+        email: emailInput.value,
+        password: passwordInput.value
+      });
+      if (error) setError(error.message);
+      return;
+    }
+
+    if (action === "signout") {
+      const { error } = await supabase.auth.signOut();
+      if (error) setError(error.message);
+    }
+  });
+
+  supabase.auth.onAuthStateChange(() => {
+    refreshSession();
+  });
+
+  refreshSession();
+</script>

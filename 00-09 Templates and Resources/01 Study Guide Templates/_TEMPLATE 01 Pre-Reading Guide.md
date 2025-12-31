@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 10-19
+book_id: 11.01
+guide_type: pre_reading
+---
+
 # [Book Title] — Pre-Reading Guide
 
 **Read this before you start the book**
@@ -180,4 +187,3 @@ Open the book and begin. Use the "Chapter-by-Chapter Notes" document as you read
 
 *Pre-Reading Guide created: [Date]*  
 *For Great Literature 101 - Book [X] of 10*
-

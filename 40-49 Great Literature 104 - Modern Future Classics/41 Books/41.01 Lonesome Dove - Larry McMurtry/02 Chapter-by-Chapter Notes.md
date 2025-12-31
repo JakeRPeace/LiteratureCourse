@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 40-49
+book_id: 41.01
+guide_type: notes
+---
+
 # Lonesome Dove — Chapter-by-Chapter Notes
 
 **Use this as you read - important points and questions for each section**

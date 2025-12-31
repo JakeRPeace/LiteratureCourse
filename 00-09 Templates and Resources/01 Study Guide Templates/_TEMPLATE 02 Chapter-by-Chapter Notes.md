@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 10-19
+book_id: 11.01
+guide_type: notes
+---
+
 # [Book Title] — Chapter-by-Chapter Notes
 
 **Use this as you read - important points and questions for each section**
@@ -132,4 +139,3 @@
 
 *Chapter-by-Chapter Notes created: [Date]*  
 *For Great Literature 101 - Book [X] of 10*
-

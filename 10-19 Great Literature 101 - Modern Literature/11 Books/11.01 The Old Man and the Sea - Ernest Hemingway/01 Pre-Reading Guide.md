@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 10-19
+book_id: 11.01
+guide_type: pre_reading
+---
+
 # The Old Man and the Sea — Pre-Reading Guide
 
 **Read this before you start the book**

@@ -1,3 +1,10 @@
+---
+type: book_guide
+course_id: 90-99
+book_id: 91.08
+guide_type: notes
+---
+
 # Beyond Good and Evil — Chapter-by-Chapter Notes
 
 **Use this as you read - important points and questions for each section**
