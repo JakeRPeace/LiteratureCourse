@@ -5,19 +5,17 @@ import { slugify } from "./slug.js";
 
 const projectRoot = fileURLToPath(new URL("../../../", import.meta.url));
 
-const markdownModules = import.meta.glob("../../**/*.md", {
-  eager: true,
-  ignore: [
-    "**/node_modules/**",
-    "**/dist/**",
-    "**/.git/**",
-    "**/src/**",
-    "**/site/**"
-  ]
-});
+const markdownModules = import.meta.glob("../../**/*.md", { eager: true });
+
+const ignoredRoots = ["/node_modules/", "/dist/", "/.git/", "/src/", "/site/"];
+const filteredMarkdownModules = Object.fromEntries(
+  Object.entries(markdownModules).filter(([filePath]) => {
+    return !ignoredRoots.some((segment) => filePath.includes(segment));
+  })
+);
 
 const markdownByFile = new Map(
-  Object.values(markdownModules)
+  Object.values(filteredMarkdownModules)
     .filter((module) => module && module.file)
     .map((module) => [path.normalize(module.file), module])
 );
