@@ -18,10 +18,19 @@ const courses = getCourses();
     <div class="section-divider"></div>
     <div class="grid">
       {courses.map((course) => (
-        <a class="link-card" href={`/course/${course.slug}`}>
-          <span class="pill">{course.books.length} books</span>
-          <h3>{course.title}</h3>
-          <p>{course.id}</p>
+        <a class="link-card course-card" href={`/course/${course.slug}`}>
+          <div class="course-head">
+            <span class="pill">{course.books.length} books</span>
+            <span class="course-tag">{course.id}</span>
+          </div>
+          <div class="course-meta">
+            <h3>{course.title}</h3>
+            <p>Structured reading plan with study guides and notes.</p>
+          </div>
+          <div class="course-foot">
+            <span>Explore course</span>
+            <span class="course-link">Open <span>-&gt;</span></span>
+          </div>
         </a>
       ))}
     </div>

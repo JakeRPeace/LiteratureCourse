@@ -403,6 +403,57 @@ const { title = "Literature Courses" } = Astro.props;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
       }
 
+      .course-card {
+        padding: 18px;
+        gap: 12px;
+        background: linear-gradient(135deg, rgba(18, 18, 18, 0.95), rgba(8, 8, 8, 0.95));
+      }
+
+      .course-card .course-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .course-card .course-tag {
+        font-size: 11px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .course-card .course-meta {
+        display: grid;
+        gap: 6px;
+      }
+
+      .course-card .course-foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 12px;
+        color: var(--muted);
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding-top: 12px;
+        margin-top: 6px;
+      }
+
+      .course-card .course-link {
+        color: #f7f7f7;
+        font-weight: 600;
+      }
+
+      .course-card .course-link span {
+        transition: transform 0.2s ease;
+        display: inline-block;
+      }
+
+      .course-card:hover .course-link span {
+        transform: translateX(4px);
+      }
+
       .link-card:hover {
         transform: translateY(-2px);
         box-shadow: 0 18px 36px rgba(0, 0, 0, 0.45);
