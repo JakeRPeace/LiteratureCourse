@@ -27,6 +27,8 @@ const bookIds = course.books.map((book) => book.id);
       <p class="section-subtitle">{course.id}</p>
     </div>
 
+    <div class="section-divider"></div>
+
     <CourseStatus bookIds={bookIds} />
 
     {readme ? (

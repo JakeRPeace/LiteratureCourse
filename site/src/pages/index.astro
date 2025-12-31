@@ -15,6 +15,7 @@ const courses = getCourses();
         View all <span>-&gt;</span>
       </a>
     </div>
+    <div class="section-divider"></div>
     <div class="grid">
       {courses.map((course) => (
         <a class="link-card" href={`/course/${course.slug}`}>
