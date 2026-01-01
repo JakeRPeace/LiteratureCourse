@@ -16,9 +16,23 @@ if (!book) {
   throw new Error(`Book not found: ${slug}`);
 }
 
+const courses = getCourses();
+const course = courses.find((c) => c.id === book.courseId);
+
 const guideCards = book.guides.filter((guide) => guide.module);
 ---
-<Base title={`${book.title} | Literature Course Library`} authRequired={true}>
+<Base
+  title={`${book.title} | Literature Course Library`}
+  authRequired={true}
+  courseSwitcher={{
+    current: course,
+    courses
+  }}
+  bookSwitcher={{
+    current: book,
+    books: course.books
+  }}
+>
   <section class="stack">
     <div class="book-hero">
       <div class={`book-cover ${book.coverUrl ? "" : "is-empty"}`}>
@@ -32,7 +46,6 @@ const guideCards = book.guides.filter((guide) => guide.module);
         ) : null}
       </div>
       <div class="book-intro">
-        <a class="pill" href={`/course/${book.courseSlug}`}>Back to course</a>
         <h2 class="section-title">{book.title}</h2>
         <p class="section-subtitle">
           {book.author ? `${book.author} · ` : ""}{book.id}

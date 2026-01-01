@@ -8,7 +8,8 @@ const {
   showHero = true,
   authRequired = false,
   loginPage = false,
-  courseSwitcher = null
+  courseSwitcher = null,
+  bookSwitcher = null
 } = Astro.props;
 
 const heroCourses = getCourses().map((course) => ({
@@ -1008,6 +1009,27 @@ const heroSlots = Array.from({ length: 3 });
                         </a>
                       );
                     })}
+                  </div>
+                </details>
+              ) : null}
+
+              {bookSwitcher ? (
+                <details class="course-switcher">
+                  <summary>
+                    <span class="course-switcher-label">Book</span>
+                    <span class="course-switcher-title">{bookSwitcher.current.title}</span>
+                    <span class="course-switcher-caret">▾</span>
+                  </summary>
+                  <div class="course-switcher-menu">
+                    {bookSwitcher.books.map((book) => (
+                      <a
+                        class={`course-switcher-item${book.slug === bookSwitcher.current.slug ? " is-active" : ""}`}
+                        href={`/book/${book.slug}`}
+                      >
+                        <div class="course-switcher-item-title">{book.title}</div>
+                        <div class="course-switcher-item-sub">{book.id}</div>
+                      </a>
+                    ))}
                   </div>
                 </details>
               ) : null}
