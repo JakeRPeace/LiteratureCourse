@@ -15,6 +15,9 @@ const courses = getCourses();
     <div class="section-divider"></div>
     <div class="data-list">
       {courses.map((course) => {
+        const [mainTitle, ...restTitle] = course.title.split(" - ");
+        const subtitle = restTitle.join(" - ");
+
         // Logic to pick 3 random books with covers for the fan
         const booksWithCovers = course.books.filter(b => b.coverUrl);
         // Shuffle and pick up to 3
