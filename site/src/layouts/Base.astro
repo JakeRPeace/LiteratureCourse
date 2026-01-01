@@ -199,6 +199,19 @@ const heroSlots = Array.from({ length: 3 });
         transition: background 0.15s ease, color 0.15s ease;
       }
 
+      .course-switcher-item-title {
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .course-switcher-item-sub {
+        color: var(--muted);
+        font-size: 11px;
+        text-transform: lowercase;
+      }
+
       .course-switcher-item:hover {
         background: rgba(255, 255, 255, 0.08);
       }
@@ -208,12 +221,6 @@ const heroSlots = Array.from({ length: 3 });
         border: 1px solid rgba(74, 124, 255, 0.35);
       }
 
-      .course-switcher-item span {
-        color: var(--muted);
-        font-size: 11px;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-      }
 
       .hero {
         position: relative;
@@ -817,15 +824,21 @@ const heroSlots = Array.from({ length: 3 });
                     <span class="course-switcher-caret">▾</span>
                   </summary>
                   <div class="course-switcher-menu">
-                    {courseSwitcher.courses.map((course) => (
-                      <a
-                        class={`course-switcher-item${course.slug === courseSwitcher.current.slug ? " is-active" : ""}`}
-                        href={`/course/${course.slug}`}
-                      >
-                        {course.title}
-                        <span>{course.id}</span>
-                      </a>
-                    ))}
+                    {courseSwitcher.courses.map((course) => {
+                      const [mainTitle, ...restTitle] = course.title.split(" - ");
+                      const subtitle = restTitle.join(" - ");
+                      return (
+                        <a
+                          class={`course-switcher-item${course.slug === courseSwitcher.current.slug ? " is-active" : ""}`}
+                          href={`/course/${course.slug}`}
+                        >
+                          <div class="course-switcher-item-title">{mainTitle}</div>
+                          {subtitle ? (
+                            <div class="course-switcher-item-sub">{subtitle.toLowerCase()}</div>
+                          ) : null}
+                        </a>
+                      );
+                    })}
                   </div>
                 </details>
               ) : null}
