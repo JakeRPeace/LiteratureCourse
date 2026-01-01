@@ -19,7 +19,7 @@ const syllabus = course.syllabus?.module;
 const readme = course.readme?.module;
 const bookIds = course.books.map((book) => book.id);
 ---
-<Base title={`${course.title} | Literature Course Library`}>
+<Base title={`${course.title} | Literature Course Library`} authRequired={true}>
   <section class="stack">
     <div>
       <a class="pill" href="/">Back to courses</a>

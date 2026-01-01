@@ -1,0 +1,67 @@
+---
+import Base from "../layouts/Base.astro";
+import AuthPanel from "../components/AuthPanel.astro";
+---
+<Base title="Sign in | Literature Course Library" showNav={false} showHero={false} showAuth={false} loginPage={true}>
+  <section class="login-shell">
+    <div class="login-glow"></div>
+    <div class="login-card">
+      <div class="login-brand">
+        <span class="pill">Literature Course Library</span>
+        <h1>Sign in to your canon.</h1>
+        <p>Track progress, save scores, and pick up where you left off.</p>
+      </div>
+      <div class="login-panel">
+        <AuthPanel />
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .login-shell {
+      min-height: 70vh;
+      display: grid;
+      place-items: center;
+      position: relative;
+    }
+
+    .login-glow {
+      position: absolute;
+      inset: -20% 0 auto;
+      height: 320px;
+      background: radial-gradient(circle at center, rgba(74, 124, 255, 0.35), transparent 65%);
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    .login-card {
+      position: relative;
+      width: min(960px, 92vw);
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(135deg, rgba(18, 18, 18, 0.95), rgba(6, 6, 6, 0.95));
+      padding: 32px;
+      display: grid;
+      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.65);
+    }
+
+    .login-brand h1 {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      margin: 12px 0 8px;
+      letter-spacing: -0.03em;
+    }
+
+    .login-brand p {
+      color: var(--muted);
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    .login-panel .auth-panel {
+      width: 100%;
+      min-width: unset;
+    }
+  </style>
+</Base>

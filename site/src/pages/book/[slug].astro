@@ -20,7 +20,7 @@ const guideModules = book.guides
   .map((guide) => guide.module)
   .filter(Boolean);
 ---
-<Base title={`${book.title} | Literature Course Library`}>
+<Base title={`${book.title} | Literature Course Library`} authRequired={true}>
   <section class="stack">
     <div>
       <a class="pill" href={`/course/${book.courseSlug}`}>Back to course</a>

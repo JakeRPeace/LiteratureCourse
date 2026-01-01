@@ -1,6 +1,13 @@
 ---
 import AuthPanel from "../components/AuthPanel.astro";
-const { title = "Literature Courses" } = Astro.props;
+const {
+  title = "Literature Courses",
+  showAuth = true,
+  showNav = true,
+  showHero = true,
+  authRequired = false,
+  loginPage = false
+} = Astro.props;
 ---
 <!doctype html>
 <html lang="en">
@@ -552,54 +559,62 @@ const { title = "Literature Courses" } = Astro.props;
       }
     </style>
   </head>
-  <body>
+  <body data-auth-required={authRequired ? "true" : "false"} data-login-page={loginPage ? "true" : "false"}>
     <div class="page">
-      <header class="nav">
-        <div class="nav-links">
-          <a href="/">Courses</a>
-          <a href="/docs" class="pill pill-link">Docs</a>
-          <a href="/deploy" class="pill pill-link">Deploy</a>
-        </div>
-        <AuthPanel />
-      </header>
+      {showNav ? (
+        <header class="nav">
+          <div class="nav-links">
+            <a href="/">Courses</a>
+            <a href="/docs" class="pill pill-link">Docs</a>
+            <a href="/deploy" class="pill pill-link">Deploy</a>
+          </div>
+          {showAuth ? <AuthPanel /> : null}
+        </header>
+      ) : null}
 
-      <section class="hero">
-        <div class="hero-stack" aria-hidden="true"></div>
-        <div class="brand">
-          <h1>Literature Course Library</h1>
-          <p>Read, track, and reflect across a structured canon.</p>
-        </div>
-        <div class="hero-visual" aria-hidden="true">
-          <div class="mini-card">
-            <div class="mini-row">
-              <span>Great Literature 101</span>
-              <span>8/10</span>
-            </div>
-            <div class="mini-bar"><span></span></div>
+      {showHero ? (
+        <section class="hero">
+          <div class="hero-stack" aria-hidden="true"></div>
+          <div class="brand">
+            <h1>Literature Course Library</h1>
+            <p>Read, track, and reflect across a structured canon.</p>
           </div>
-          <div class="mini-card">
-            <div class="mini-row">
-              <span>Great Literature 105</span>
-              <span>3/10</span>
+          <div class="hero-visual" aria-hidden="true">
+            <div class="mini-card">
+              <div class="mini-row">
+                <span>Great Literature 101</span>
+                <span>8/10</span>
+              </div>
+              <div class="mini-bar"><span></span></div>
             </div>
-            <div class="mini-bar"><span></span></div>
-          </div>
-          <div class="mini-card">
-            <div class="mini-row">
-              <span>Southern Gothic</span>
-              <span>2/5</span>
+            <div class="mini-card">
+              <div class="mini-row">
+                <span>Great Literature 105</span>
+                <span>3/10</span>
+              </div>
+              <div class="mini-bar"><span></span></div>
             </div>
-            <div class="mini-bar"><span></span></div>
+            <div class="mini-card">
+              <div class="mini-row">
+                <span>Southern Gothic</span>
+                <span>2/5</span>
+              </div>
+              <div class="mini-bar"><span></span></div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       <slot />
 
-      <footer>
-        <span>Literature Course Library</span>
-        <span>Built with Astro + Supabase</span>
-      </footer>
+      {loginPage ? null : (
+        <footer>
+          <span>Literature Course Library</span>
+          <span>Built with Astro + Supabase</span>
+        </footer>
+      )}
     </div>
+    {authRequired ? <script type="module" src="/scripts/auth-guard.js"></script> : null}
+    {loginPage ? <script type="module" src="/scripts/login-redirect.js"></script> : null}
   </body>
 </html>
