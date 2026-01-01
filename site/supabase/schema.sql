@@ -37,22 +37,26 @@ execute procedure public.set_updated_at();
 
 alter table public.book_status enable row level security;
 
+drop policy if exists "book_status_select_own" on public.book_status;
 create policy "book_status_select_own"
   on public.book_status
   for select
   using (auth.uid() = user_id);
 
+drop policy if exists "book_status_insert_own" on public.book_status;
 create policy "book_status_insert_own"
   on public.book_status
   for insert
   with check (auth.uid() = user_id);
 
+drop policy if exists "book_status_update_own" on public.book_status;
 create policy "book_status_update_own"
   on public.book_status
   for update
   using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
 
+drop policy if exists "book_status_delete_own" on public.book_status;
 create policy "book_status_delete_own"
   on public.book_status
   for delete
