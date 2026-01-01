@@ -352,7 +352,7 @@ const heroSlots = Array.from({ length: 3 });
 
       .brand h1 {
         margin: 0 0 8px;
-        font-size: clamp(2rem, 5vw, var(--heading-72)); /* Smaller clamp min */
+        font-size: clamp(2.25rem, 5vw, var(--heading-72)); /* Increased min size for readability */
         letter-spacing: -0.03em;
         line-height: 1.1;
       }
@@ -996,6 +996,16 @@ const heroSlots = Array.from({ length: 3 });
           transform: none;
           min-width: 0;
           max-height: 50vh;
+        }
+        
+        /* Full width hero on mobile */
+        .hero {
+          margin-left: -16px;
+          margin-right: -16px;
+          border-radius: 0;
+          border-left: 0;
+          border-right: 0;
+          padding: 24px 16px; /* Adjust internal padding */
         }
       }
 

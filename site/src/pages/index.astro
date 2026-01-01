@@ -26,10 +26,15 @@ const courses = getCourses();
             data-total-books={course.books.length}
             data-status="not_started"
           >
-            <div class="data-main">
-              <div class="data-title">{mainTitle}</div>
-              {subtitle ? <div class="data-sub">{subtitle}</div> : null}
-              <div class="data-sub">Structured reading plan with study guides and notes.</div>
+            <div class="data-body">
+              <div class="data-cover is-empty">
+                 <!-- Placeholder for course cover if we had one, keeps alignment consistent -->
+              </div>
+              <div class="data-main">
+                <div class="data-title">{mainTitle}</div>
+                {subtitle ? <div class="data-sub">{subtitle}</div> : null}
+                <div class="data-sub">Structured reading plan with study guides and notes.</div>
+              </div>
             </div>
             <div class="data-meta">
               <span class="data-chip">{course.id}</span>
