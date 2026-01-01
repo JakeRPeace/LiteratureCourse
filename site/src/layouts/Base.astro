@@ -482,6 +482,12 @@ const heroSlots = Array.from({ length: 3 });
         display: block;
       }
 
+
+      .data-cover.is-empty::after {
+        content: "";
+        position: absolute;
+        inset: 10px;
+        border-radius: 8px;
         border: 1px dashed rgba(255, 255, 255, 0.16);
       }
       
