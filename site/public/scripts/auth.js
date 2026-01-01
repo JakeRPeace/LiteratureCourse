@@ -82,11 +82,16 @@ window.addEventListener("DOMContentLoaded", () => {
       });
       if (error) {
         // Fallback: try signup if signin fails (account might not exist yet)
-        const { error: signUpError } = await supabase.auth.signUp({
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
           email: GUEST_EMAIL,
           password: GUEST_PASS
         });
-        if (signUpError) setError("Guest mode unavailable. Please try again later.");
+
+        if (signUpError) {
+          setError("Guest mode unavailable. Please try again later.");
+        } else if (signUpData.user && !signUpData.session) {
+          setError("Guest account created. Please verify email before logging in.");
+        }
       }
       return;
     }
