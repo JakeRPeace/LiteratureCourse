@@ -89,6 +89,12 @@ const heroSlots = Array.from({ length: 3 });
         padding: 32px 24px 88px;
       }
 
+      @media (max-width: 720px) {
+        .page {
+          padding: 20px 16px 80px;
+        }
+      }
+
       .nav {
         position: sticky;
         top: 18px;
@@ -346,8 +352,9 @@ const heroSlots = Array.from({ length: 3 });
 
       .brand h1 {
         margin: 0 0 8px;
-        font-size: clamp(2.5rem, 4vw, var(--heading-72));
+        font-size: clamp(2rem, 5vw, var(--heading-72)); /* Smaller clamp min */
         letter-spacing: -0.03em;
+        line-height: 1.1;
       }
 
       .brand p {
@@ -937,28 +944,58 @@ const heroSlots = Array.from({ length: 3 });
       @media (max-width: 720px) {
         .nav {
           top: 12px;
+          margin-bottom: 24px;
         }
 
         .nav-inner {
-          flex-direction: column;
-          align-items: stretch;
-          border-radius: var(--radius-lg);
-          padding: 12px;
+          padding: 8px 12px;
+          gap: 12px;
+          /* Keep it row on mobile, just tighter */
+          flex-wrap: nowrap;
+          overflow-x: auto; /* Allow scrolling if really needed, though we try to fit */
+          -webkit-overflow-scrolling: touch;
+          /* Hide scrollbar */
+          scrollbar-width: none;
+        }
+        
+        .nav-inner::-webkit-scrollbar {
+          display: none;
         }
 
         .nav-links {
-          justify-content: center;
-          flex-wrap: wrap;
+          /* Hide less important links on very small screens if needed, 
+             or just squeeze them. Let's keep them but reduce gap. */
+           gap: 12px;
+        }
+        
+        .nav a {
+           font-size: 11px;
         }
 
         .nav-actions {
-          justify-content: center;
+          gap: 8px;
+        }
+        
+        .course-switcher summary {
+           padding: 6px 10px;
+           max-width: 140px; /* Constrain width to prevent overflow */
+        }
+        
+        .course-switcher-title {
+           overflow: hidden;
+           text-overflow: ellipsis;
         }
 
         .course-switcher-menu {
-          left: 50%;
-          transform: translateX(-50%);
-          min-width: 200px;
+          /* Center effectively on mobile */
+          position: fixed;
+          top: auto;
+          left: 16px;
+          right: 16px; 
+          margin-top: 8px;
+          transform: none;
+          min-width: 0;
+          max-height: 50vh;
         }
       }
 

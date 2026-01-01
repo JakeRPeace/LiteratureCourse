@@ -42,6 +42,13 @@ const { bookIds } = Astro.props;
     margin-bottom: 8px;
   }
 
+  @media (max-width: 720px) {
+    .course-status-header {
+      padding: 16px;
+      gap: 16px;
+    }
+  }
+
   .course-status-header::after {
     content: "";
     position: absolute;
