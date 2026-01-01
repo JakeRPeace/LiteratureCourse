@@ -43,6 +43,28 @@ Run the validation script to enforce frontmatter and folder conventions:
 npm run validate
 ```
 
+## Book covers
+
+The site can display local book cover images generated from Open Library.
+
+1. Fetch and cache covers into `site/public/covers`:
+
+```bash
+npm run covers
+```
+
+2. Re-fetch everything if you want to refresh or repair a bad match:
+
+```bash
+npm run covers -- --refresh
+```
+
+Optional controls:
+
+- `COVER_CONCURRENCY=4` to tune parallel requests.
+- `--limit=10` to fetch only the first 10 books.
+- Add `isbn`, `open_library_id`, or `cover_url` to `Book Metadata.md` for better matches or manual overrides.
+
 ## Supabase auth
 
 - Enable Email/Password auth in Supabase Auth settings.

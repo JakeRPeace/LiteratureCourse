@@ -131,6 +131,12 @@ const heroSlots = Array.from({ length: 3 });
         gap: 12px;
       }
 
+      .auth-nav {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
       .course-switcher {
         position: relative;
       }
@@ -401,9 +407,44 @@ const heroSlots = Array.from({ length: 3 });
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55);
       }
 
+      .data-body {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        min-width: 0;
+      }
+
+      .data-cover {
+        position: relative;
+        width: 56px;
+        height: 78px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        overflow: hidden;
+        flex-shrink: 0;
+        background: linear-gradient(155deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.45);
+      }
+
+      .data-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .data-cover.is-empty::after {
+        content: "";
+        position: absolute;
+        inset: 10px;
+        border-radius: 8px;
+        border: 1px dashed rgba(255, 255, 255, 0.16);
+      }
+
       .data-main {
         display: grid;
         gap: 6px;
+        min-width: 0;
       }
 
       .data-title {
@@ -842,7 +883,12 @@ const heroSlots = Array.from({ length: 3 });
                   </div>
                 </details>
               ) : null}
-              {showAuth ? <a href="/login" class="pill pill-link">Login</a> : null}
+              {showAuth ? (
+                <div class="auth-nav">
+                  <a href="/login" class="pill pill-link" data-auth-login>Login</a>
+                  <a href="/login" class="pill pill-link" data-auth-logout hidden>Sign out</a>
+                </div>
+              ) : null}
             </div>
           </div>
         </header>
@@ -880,6 +926,7 @@ const heroSlots = Array.from({ length: 3 });
     </div>
     {showHero ? <script type="module" src="/scripts/course-progress.js"></script> : null}
     {authRequired ? <script type="module" src="/scripts/auth-guard.js"></script> : null}
+    {showAuth ? <script type="module" src="/scripts/nav-auth.js"></script> : null}
     {loginPage ? <script type="module" src="/scripts/login-redirect.js"></script> : null}
   </body>
 </html>

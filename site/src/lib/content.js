@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { slugify } from "./slug.js";
+import coverMap from "../data/cover-map.json";
 
 const projectRoot = fileURLToPath(new URL("../../../", import.meta.url));
 
@@ -19,6 +20,8 @@ const markdownByFile = new Map(
     .filter((module) => module && module.file)
     .map((module) => [path.normalize(module.file), module])
 );
+
+const coverLookup = coverMap?.covers || {};
 
 function getMarkdownModule(filePath) {
   return markdownByFile.get(path.normalize(filePath));
@@ -90,39 +93,44 @@ export function getCourses() {
         .sort();
 
       return bookDirs.map((bookDirName) => {
-      const bookPath = path.join(categoryPath, bookDirName);
-      const metadataPath = path.join(bookPath, "Book Metadata.md");
-      const metadataModule = fs.existsSync(metadataPath)
-        ? getMarkdownModule(metadataPath)
-        : null;
-      const metadata = metadataModule?.frontmatter || {};
-      const guides = listMarkdownFiles(bookPath)
-        .map((entry) => entry.name)
-        .filter((fileName) => fileName !== "Book Metadata.md")
-        .sort()
-        .map((fileName) => {
-          const filePath = path.join(bookPath, fileName);
-          const module = getMarkdownModule(filePath);
-          return {
-            title: fileName.replace(/\.md$/, ""),
-            filePath,
-            module
-          };
-        });
+        const bookPath = path.join(categoryPath, bookDirName);
+        const metadataPath = path.join(bookPath, "Book Metadata.md");
+        const metadataModule = fs.existsSync(metadataPath)
+          ? getMarkdownModule(metadataPath)
+          : null;
+        const metadata = metadataModule?.frontmatter || {};
+        const slug = slugify(`${courseId}-${bookDirName}`);
+        const coverEntry = coverLookup[slug];
+        const guides = listMarkdownFiles(bookPath)
+          .map((entry) => entry.name)
+          .filter((fileName) => fileName !== "Book Metadata.md")
+          .sort()
+          .map((fileName) => {
+            const filePath = path.join(bookPath, fileName);
+            const module = getMarkdownModule(filePath);
+            return {
+              title: fileName.replace(/\.md$/, ""),
+              filePath,
+              module
+            };
+          });
 
-      return {
-        id: path.join(courseId, bookDirName),
-        courseId,
-        courseSlug: slugify(courseId),
-        category: category.name,
-        title: metadata.book_title || bookTitleFromDir(bookDirName),
-        author: metadata.author || "",
-        slug: slugify(`${courseId}-${bookDirName}`),
-        path: bookPath,
-        metadata: metadataModule ? { filePath: metadataPath, module: metadataModule } : null,
-        guides
-      };
-    });
+        return {
+          id: path.join(courseId, bookDirName),
+          courseId,
+          courseSlug: slugify(courseId),
+          category: category.name,
+          title: metadata.book_title || bookTitleFromDir(bookDirName),
+          author: metadata.author || "",
+          slug,
+          path: bookPath,
+          coverUrl: coverEntry?.url || null,
+          coverSource: coverEntry?.source || null,
+          coverSourceId: coverEntry?.sourceId || null,
+          metadata: metadataModule ? { filePath: metadataPath, module: metadataModule } : null,
+          guides
+        };
+      });
     });
 
     const readmePath = path.join(coursePath, "README.md");
