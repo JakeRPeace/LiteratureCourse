@@ -7,8 +7,32 @@ window.addEventListener("DOMContentLoaded", () => {
   widgets.forEach((root) => {
     const statusSelect = root.querySelector("[data-status]");
     const scoreInput = root.querySelector("[data-score]");
+    const scoreValue = root.querySelector("[data-score-value]");
+    const scoreClear = root.querySelector("[data-score-clear]");
     const note = root.querySelector("[data-note]");
     const bookId = root.dataset.bookId;
+    let scoreIsEmpty = true;
+
+    const formatScore = (value) => {
+      if (value === null || value === undefined || Number.isNaN(value)) {
+        return "--";
+      }
+      return Number(value).toFixed(2).replace(/\.?0+$/, "");
+    };
+
+    const updateScoreDisplay = () => {
+      const numericValue = Number(scoreInput.value || 0);
+      const percent = Math.max(0, Math.min(100, (numericValue / 5) * 100));
+
+      if (scoreValue) {
+        scoreValue.textContent = scoreIsEmpty ? "--" : formatScore(numericValue);
+      }
+
+      scoreInput.style.setProperty("--percent", `${percent}%`);
+      if (scoreClear) {
+        scoreClear.disabled = scoreIsEmpty || scoreInput.disabled;
+      }
+    };
 
     const setNote = (message) => {
       note.textContent = message || "";
@@ -17,6 +41,21 @@ window.addEventListener("DOMContentLoaded", () => {
     const setEnabled = (enabled) => {
       statusSelect.disabled = !enabled;
       scoreInput.disabled = !enabled;
+      if (scoreClear) {
+        scoreClear.disabled = !enabled || scoreIsEmpty;
+      }
+    };
+
+    const setScoreState = (value) => {
+      if (value === null || value === undefined || value === "") {
+        scoreIsEmpty = true;
+        scoreInput.value = 0;
+      } else {
+        scoreIsEmpty = false;
+        scoreInput.value = value;
+      }
+
+      updateScoreDisplay();
     };
 
     const loadStatus = async () => {
@@ -41,9 +80,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
       if (data) {
         statusSelect.value = data.status || "not_started";
-        if (data.score !== null && data.score !== undefined) {
-          scoreInput.value = data.score;
-        }
+        setScoreState(data.score);
+      } else {
+        setScoreState(null);
       }
     };
 
@@ -53,7 +92,7 @@ window.addEventListener("DOMContentLoaded", () => {
       const userId = sessionData.session.user.id;
 
       const status = statusSelect.value;
-      const scoreValue = scoreInput.value === "" ? null : Number(scoreInput.value);
+      const scoreValue = scoreIsEmpty ? null : Number(scoreInput.value);
 
       const { error } = await supabase
         .from("book_status")
@@ -80,6 +119,22 @@ window.addEventListener("DOMContentLoaded", () => {
         saveStatus();
       }
     });
+
+    scoreInput.addEventListener("input", () => {
+      if (scoreIsEmpty) {
+        scoreIsEmpty = false;
+      }
+      updateScoreDisplay();
+    });
+
+    if (scoreClear) {
+      scoreClear.addEventListener("click", () => {
+        scoreIsEmpty = true;
+        scoreInput.value = 0;
+        updateScoreDisplay();
+        saveStatus();
+      });
+    }
 
     supabase.auth.onAuthStateChange(() => {
       loadStatus();

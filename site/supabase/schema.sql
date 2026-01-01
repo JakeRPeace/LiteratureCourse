@@ -7,9 +7,9 @@ create table if not exists public.book_status (
   updated_at timestamptz not null default now(),
   constraint book_status_status_check check (status in ('not_started', 'in_progress', 'read')),
   constraint book_status_score_check check (
-    score is null
+      score is null
     or (
-      score >= 1
+      score >= 0
       and score <= 5
       and score * 4 = floor(score * 4)
     )

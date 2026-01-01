@@ -5,24 +5,39 @@ const { bookId, initialStatus = "not_started", initialScore = "" } = Astro.props
   <div class="section-title">Your status</div>
   <p class="section-subtitle">Track reading progress and add a score once finished.</p>
   <div class="status-grid">
-    <label>
-      <span>Status</span>
-      <select data-status>
-        <option value="not_started">Not started</option>
-        <option value="in_progress">In progress</option>
-        <option value="read">Read</option>
-      </select>
+    <label class="status-field">
+      <span class="field-label">Status</span>
+      <div class="select-wrap">
+        <select data-status>
+          <option value="not_started">Not started</option>
+          <option value="in_progress">In progress</option>
+          <option value="read">Read</option>
+        </select>
+        <span class="select-caret" aria-hidden="true"></span>
+      </div>
     </label>
-    <label>
-      <span>Score</span>
-      <input
-        type="number"
-        min="1"
-        max="5"
-        step="0.25"
-        placeholder="1-5"
-        data-score
-      />
+    <label class="status-field score-field">
+      <span class="field-label">
+        <span>Score</span>
+        <output class="score-value" data-score-value>--</output>
+      </span>
+      <div class="score-control">
+        <input
+          type="range"
+          min="0"
+          max="5"
+          step="0.25"
+          value="0"
+          data-score
+          aria-label="Score"
+        />
+        <button type="button" class="score-clear" data-score-clear>Clear</button>
+      </div>
+      <div class="score-scale" aria-hidden="true">
+        <span>0</span>
+        <span>2.5</span>
+        <span>5</span>
+      </div>
     </label>
   </div>
   <div class="status-note" data-note></div>
@@ -34,22 +49,149 @@ const { bookId, initialStatus = "not_started", initialScore = "" } = Astro.props
   .status-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 14px;
+    gap: 18px;
   }
 
-  label {
+  .status-field {
     display: grid;
-    gap: 6px;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+
+  .field-label {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .score-value {
     font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+  }
+
+  .select-wrap {
+    position: relative;
+  }
+
+  select {
+    width: 100%;
+    appearance: none;
+    padding: 10px 36px 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: rgba(8, 8, 8, 0.7);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+  }
+
+  .select-caret {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--muted);
+    border-bottom: 2px solid var(--muted);
+    transform: translateY(-55%) rotate(45deg);
+    pointer-events: none;
+  }
+
+  .score-control {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 12px;
+  }
+
+  input[type="range"] {
+    --percent: 0%;
+    width: 100%;
+    appearance: none;
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      #f0f0f0 0%,
+      #f0f0f0 var(--percent),
+      #222 var(--percent),
+      #222 100%
+    );
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #f3f3f3;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow:
+      0 0 0 4px rgba(255, 255, 255, 0.08),
+      0 6px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  input[type="range"]::-moz-range-track {
+    height: 6px;
+    border-radius: 999px;
+    background: #222;
+  }
+
+  input[type="range"]::-moz-range-progress {
+    height: 6px;
+    border-radius: 999px;
+    background: #f0f0f0;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #f3f3f3;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow:
+      0 0 0 4px rgba(255, 255, 255, 0.08),
+      0 6px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  .score-clear {
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(12, 12, 12, 0.8);
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .score-clear:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .score-scale {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    letter-spacing: 0.08em;
     color: var(--muted);
   }
 
-  select,
-  input {
-    padding: 8px 10px;
-    border-radius: 10px;
-    border: 1px solid var(--line);
-    font-family: inherit;
+  select:disabled,
+  input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 
   .status-note {
