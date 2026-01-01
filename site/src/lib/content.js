@@ -6,7 +6,7 @@ import coverMap from "../data/cover-map.json";
 
 const projectRoot = fileURLToPath(new URL("../../../", import.meta.url));
 
-const markdownModules = import.meta.glob("../../**/*.md", { eager: true });
+const markdownModules = import.meta.glob("../../../**/*.md", { eager: true });
 
 const ignoredRoots = ["/node_modules/", "/dist/", "/.git/", "/src/", "/site/"];
 const filteredMarkdownModules = Object.fromEntries(
