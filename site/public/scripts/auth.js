@@ -10,19 +10,36 @@ window.addEventListener("DOMContentLoaded", () => {
   const errorBox = root.querySelector("[data-auth-error]");
   const userBox = root.querySelector("[data-auth-user]");
 
+  const GUEST_EMAIL = "guest@literaturecourse.com";
+  const GUEST_PASS = "LiteratureGuest2024!";
+
   const setError = (message) => {
     errorBox.textContent = message || "";
+  };
+
+  const wipeGuestData = async (user) => {
+    if (user?.email === GUEST_EMAIL) {
+      console.log("Wiping guest data...");
+      const { error } = await supabase
+        .from("book_status")
+        .delete()
+        .eq("user_id", user.id);
+      if (error) console.error("Failed to wipe guest data:", error);
+    }
   };
 
   const setState = (session) => {
     if (session?.user) {
       signedOut.hidden = true;
       signedIn.hidden = false;
-      userBox.textContent = session.user.email || session.user.id;
+      const isGuest = session.user.email === GUEST_EMAIL;
+      userBox.textContent = isGuest ? "Guest Mode" : (session.user.email || session.user.id);
+      if (isGuest) userBox.classList.add("guest-indicator");
     } else {
       signedOut.hidden = false;
       signedIn.hidden = true;
       userBox.textContent = "";
+      userBox.classList.remove("guest-indicator");
     }
   };
 
@@ -33,6 +50,16 @@ window.addEventListener("DOMContentLoaded", () => {
       return;
     }
     setState(data.session);
+
+    // Auto-wipe guest data on a fresh session start to simulate 24h reset
+    if (data.session?.user?.email === GUEST_EMAIL) {
+      const lastWipe = localStorage.getItem("last_guest_wipe");
+      const now = Date.now();
+      if (!lastWipe || (now - parseInt(lastWipe)) > 1000 * 60 * 60) { // Wipe if > 1 hour since last local record of wipe
+        await wipeGuestData(data.session.user);
+        localStorage.setItem("last_guest_wipe", now.toString());
+      }
+    }
   };
 
   if (!supabase) {
@@ -47,6 +74,30 @@ window.addEventListener("DOMContentLoaded", () => {
 
     event.preventDefault();
     setError("");
+
+    if (action === "guest") {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: GUEST_EMAIL,
+        password: GUEST_PASS
+      });
+      if (error) {
+        // Fallback: try signup if signin fails (account might not exist yet)
+        const { error: signUpError } = await supabase.auth.signUp({
+          email: GUEST_EMAIL,
+          password: GUEST_PASS
+        });
+        if (signUpError) setError("Guest mode unavailable. Please try again later.");
+      }
+      return;
+    }
+
+    if (action === "signout") {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) await wipeGuestData(user);
+      const { error } = await supabase.auth.signOut();
+      if (error) setError(error.message);
+      return;
+    }
 
     if (!emailInput.value || !passwordInput.value) {
       setError("Email and password are required.");
@@ -69,11 +120,6 @@ window.addEventListener("DOMContentLoaded", () => {
       });
       if (error) setError(error.message || "Sign up failed.");
       return;
-    }
-
-    if (action === "signout") {
-      const { error } = await supabase.auth.signOut();
-      if (error) setError(error.message);
     }
   });
 

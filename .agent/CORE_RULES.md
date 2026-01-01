@@ -36,3 +36,7 @@ Use the global templates located in:
 - **Critical Analysis:** Include critical analysis and interpretation of the text, including themes, symbolism, and literary devices.
 - **Scholarly Tone:** Maintain a scholarly tone and use proper academic language and terminology.
 - **Documentation:** Document all sources used in the documentation, including books, articles, and other resources.
+
+## 🌐 Web App Access
+- **Permanent URL:** [https://lit.peaces.lol/](https://lit.peaces.lol/)
+- **Usage:** Use this URL to open the web app for verification, testing, or to view the live site.

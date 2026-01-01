@@ -34,6 +34,9 @@ const guideCards = book.guides.filter((guide) => guide.module);
   }}
 >
   <section class="stack">
+    <div>
+      <a class="pill" href={`/course/${course.slug}`}>Back to course</a>
+    </div>
     <div class="book-hero">
       <div class={`book-cover ${book.coverUrl ? "" : "is-empty"}`}>
         {book.coverUrl ? (
