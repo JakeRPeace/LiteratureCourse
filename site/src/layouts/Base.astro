@@ -1,5 +1,6 @@
 ---
 import AuthPanel from "../components/AuthPanel.astro";
+import { getCourses } from "../lib/content.js";
 const {
   title = "Literature Courses",
   showAuth = true,
@@ -8,6 +9,13 @@ const {
   authRequired = false,
   loginPage = false
 } = Astro.props;
+
+const heroCourses = getCourses().map((course) => ({
+  id: course.id,
+  title: course.title,
+  totalBooks: course.books.length
+}));
+const heroSlots = Array.from({ length: 3 });
 ---
 <!doctype html>
 <html lang="en">
@@ -26,7 +34,7 @@ const {
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/geist-font@1.2.0/style.css"
     />
-    <style>
+    <style is:global>
       * {
         box-sizing: border-box;
       }
@@ -660,28 +668,16 @@ const {
             <h1>Literature Course Library</h1>
             <p>Read, track, and reflect across a structured canon.</p>
           </div>
-          <div class="hero-visual" aria-hidden="true">
-            <div class="mini-card">
-              <div class="mini-row">
-                <span>Great Literature 101</span>
-                <span>8/10</span>
+          <div class="hero-visual" data-course-progress data-courses={JSON.stringify(heroCourses)}>
+            {heroSlots.map(() => (
+              <div class="mini-card" data-progress-card>
+                <div class="mini-row">
+                  <span data-course-title>Loading progress...</span>
+                  <span data-course-count></span>
+                </div>
+                <div class="mini-bar"><span data-course-bar style="width: 0%"></span></div>
               </div>
-              <div class="mini-bar"><span></span></div>
-            </div>
-            <div class="mini-card">
-              <div class="mini-row">
-                <span>Great Literature 105</span>
-                <span>3/10</span>
-              </div>
-              <div class="mini-bar"><span></span></div>
-            </div>
-            <div class="mini-card">
-              <div class="mini-row">
-                <span>Southern Gothic</span>
-                <span>2/5</span>
-              </div>
-              <div class="mini-bar"><span></span></div>
-            </div>
+            ))}
           </div>
         </section>
       ) : null}
@@ -695,6 +691,7 @@ const {
         </footer>
       )}
     </div>
+    {showHero ? <script type="module" src="/scripts/course-progress.js"></script> : null}
     {authRequired ? <script type="module" src="/scripts/auth-guard.js"></script> : null}
     {loginPage ? <script type="module" src="/scripts/login-redirect.js"></script> : null}
   </body>
