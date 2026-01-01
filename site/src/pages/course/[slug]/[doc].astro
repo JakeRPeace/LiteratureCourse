@@ -1,0 +1,47 @@
+---
+import Base from "../../../layouts/Base.astro";
+import { getCourses, getCourseBySlug } from "../../../lib/content.js";
+
+export function getStaticPaths() {
+  const courses = getCourses();
+  return courses.flatMap((course) =>
+    (course.docs || []).map((doc) => ({
+      params: { slug: course.slug, doc: doc.slug }
+    }))
+  );
+}
+
+const { slug, doc: docSlug } = Astro.params;
+const course = getCourseBySlug(slug);
+if (!course) {
+  throw new Error(`Course not found: ${slug}`);
+}
+
+const docEntry = (course.docs || []).find((doc) => doc.slug === docSlug);
+if (!docEntry) {
+  throw new Error(`Course doc not found: ${docSlug}`);
+}
+
+const docModule = docEntry.module;
+---
+<Base title={`${docEntry.label} | ${course.title} | Literature Course Library`} authRequired={true}>
+  <section class="stack">
+    <div>
+      <a class="pill" href={`/course/${course.slug}`}>Back to course</a>
+      <h2 class="section-title">{docEntry.label}</h2>
+      <p class="section-subtitle">{course.title} · {docEntry.stage}</p>
+    </div>
+
+    <div class="section-divider"></div>
+
+    {docModule ? (
+      <div class="card guide-content">
+        <docModule.Content />
+      </div>
+    ) : (
+      <div class="card">
+        <p>Course document is unavailable.</p>
+      </div>
+    )}
+  </section>
+</Base>

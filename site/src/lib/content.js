@@ -38,6 +38,21 @@ const guideTypeMeta = {
   }
 };
 
+const courseDocMeta = {
+  readme: {
+    label: "Overview",
+    stage: "Course snapshot"
+  },
+  syllabus: {
+    label: "Syllabus",
+    stage: "Schedule and goals"
+  },
+  index: {
+    label: "Index",
+    stage: "Quick links"
+  }
+};
+
 function stripFrontmatter(contents) {
   if (!contents.startsWith("---\n")) return contents;
   const end = contents.indexOf("\n---\n", 4);
@@ -73,6 +88,31 @@ function extractExcerpt(contents, maxLength = 220) {
     return `${text.slice(0, maxLength).trim()}...`;
   }
   return "";
+}
+
+function buildCourseDoc(filePath) {
+  if (!filePath) return null;
+  const module = getMarkdownModule(filePath);
+  if (!module) return null;
+  const docType = module?.frontmatter?.doc_type || "";
+  const baseTitle = path.basename(filePath, ".md");
+  const displayTitle = baseTitle.replace(/^\d+\.\d+\s+/, "");
+  const meta = courseDocMeta[docType] || {};
+  const rawContent =
+    typeof module?.rawContent === "string"
+      ? module.rawContent
+      : fs.readFileSync(filePath, "utf8");
+  return {
+    title: baseTitle,
+    displayTitle,
+    slug: slugify(docType || displayTitle),
+    docType,
+    label: meta.label || displayTitle,
+    stage: meta.stage || "Course material",
+    excerpt: extractExcerpt(rawContent),
+    filePath,
+    module
+  };
 }
 
 function getMarkdownModule(filePath) {
@@ -206,6 +246,11 @@ export function getCourses() {
     const readmeModule = fs.existsSync(readmePath)
       ? getMarkdownModule(readmePath)
       : null;
+    const courseDocs = [
+      buildCourseDoc(readmePath),
+      buildCourseDoc(syllabus),
+      buildCourseDoc(index)
+    ].filter(Boolean);
 
     return {
       id: courseId,
@@ -215,6 +260,7 @@ export function getCourses() {
       syllabus: syllabus ? { filePath: syllabus, module: getMarkdownModule(syllabus) } : null,
       index: index ? { filePath: index, module: getMarkdownModule(index) } : null,
       readme: readmeModule ? { filePath: readmePath, module: readmeModule } : null,
+      docs: courseDocs,
       books
     };
   });

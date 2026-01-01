@@ -16,8 +16,7 @@ if (!course) {
   throw new Error(`Course not found: ${slug}`);
 }
 
-const syllabus = course.syllabus?.module;
-const readme = course.readme?.module;
+const courseDocs = (course.docs || []).filter((doc) => doc.docType !== "index");
 const bookIds = course.books.map((book) => book.id);
 ---
 <Base
@@ -39,19 +38,42 @@ const bookIds = course.books.map((book) => book.id);
 
     <CourseStatus bookIds={bookIds} />
 
-    {readme ? (
-      <div class="card guide-content">
-        <h3>Overview</h3>
-        <readme.Content />
+    <div class="section-header">
+      <div>
+        <h3 class="section-title">Course Materials</h3>
+        <p class="section-subtitle">Scan the overview and syllabus before diving in.</p>
       </div>
-    ) : null}
+    </div>
 
-    {syllabus ? (
-      <div class="card guide-content">
-        <h3>Syllabus</h3>
-        <syllabus.Content />
+    <div class="section-divider"></div>
+
+    {courseDocs.length ? (
+      <div class="course-doc-grid">
+        {courseDocs.map((doc) => (
+          <a
+            class="card course-doc-card"
+            href={`/course/${course.slug}/${doc.slug}`}
+            data-doc-type={doc.docType || "other"}
+          >
+            <div class="course-doc-top">
+              <span class="course-doc-kicker">{doc.stage}</span>
+              <span class="course-doc-action">Open -&gt;</span>
+            </div>
+            <div class="course-doc-title">{doc.label}</div>
+            <p class="course-doc-excerpt">
+              {doc.excerpt || "Open for the full course document."}
+            </p>
+            <div class="course-doc-meta">
+              <span class="course-doc-chip">{course.id}</span>
+            </div>
+          </a>
+        ))}
       </div>
-    ) : null}
+    ) : (
+      <div class="card">
+        <p>No course documents are available yet.</p>
+      </div>
+    )}
 
     <div class="card">
       <h3>Books</h3>
@@ -93,3 +115,113 @@ const bookIds = course.books.map((book) => book.id);
   </section>
   <script type="module" src="/scripts/course-book-status.js"></script>
 </Base>
+
+<style>
+  .course-doc-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .course-doc-card {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 220px;
+    border-color: rgba(255, 255, 255, 0.12);
+    background: linear-gradient(135deg, rgba(16, 16, 16, 0.92), rgba(6, 6, 6, 0.94));
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    --doc-accent: rgba(120, 120, 120, 0.25);
+  }
+
+  .course-doc-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle at top right, var(--doc-accent), transparent 60%);
+    opacity: 0.85;
+    pointer-events: none;
+  }
+
+  .course-doc-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.55);
+  }
+
+  .course-doc-card[data-doc-type="readme"] {
+    --doc-accent: rgba(120, 200, 255, 0.35);
+  }
+
+  .course-doc-card[data-doc-type="syllabus"] {
+    --doc-accent: rgba(255, 190, 120, 0.35);
+  }
+
+  .course-doc-card[data-doc-type="index"] {
+    --doc-accent: rgba(120, 240, 180, 0.35);
+  }
+
+  .course-doc-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+  }
+
+  .course-doc-kicker {
+    position: relative;
+    z-index: 1;
+  }
+
+  .course-doc-action {
+    position: relative;
+    z-index: 1;
+    font-weight: 600;
+  }
+
+  .course-doc-title {
+    position: relative;
+    z-index: 1;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .course-doc-excerpt {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .course-doc-meta {
+    position: relative;
+    z-index: 1;
+    margin-top: auto;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .course-doc-chip {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #f0f0f0;
+    background: rgba(10, 10, 10, 0.6);
+  }
+</style>
