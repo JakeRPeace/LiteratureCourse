@@ -23,6 +23,58 @@ const markdownByFile = new Map(
 
 const coverLookup = coverMap?.covers || {};
 
+const guideTypeMeta = {
+  pre_reading: {
+    label: "Pre-Reading Guide",
+    stage: "Before you read"
+  },
+  notes: {
+    label: "Chapter-by-Chapter Notes",
+    stage: "During reading"
+  },
+  post_reading: {
+    label: "Post-Reading Analysis",
+    stage: "After you read"
+  }
+};
+
+function stripFrontmatter(contents) {
+  if (!contents.startsWith("---\n")) return contents;
+  const end = contents.indexOf("\n---\n", 4);
+  if (end === -1) return contents;
+  return contents.slice(end + 5);
+}
+
+function stripMarkdown(text) {
+  return text
+    .replace(/`{1,3}[^`]*`{1,3}/g, "")
+    .replace(/!\[[^\]]*]\([^)]*\)/g, "")
+    .replace(/\[([^\]]+)]\([^)]*\)/g, "$1")
+    .replace(/[*_]{1,3}([^*_]+)[*_]{1,3}/g, "$1")
+    .replace(/^>\s+/gm, "")
+    .replace(/^[-*+]\s+/gm, "")
+    .replace(/^\d+\.\s+/gm, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function extractExcerpt(contents, maxLength = 220) {
+  const body = stripFrontmatter(contents).trim();
+  if (!body) return "";
+  const blocks = body.split(/\n\s*\n/);
+  for (const block of blocks) {
+    const trimmed = block.trim();
+    if (!trimmed) continue;
+    if (/^#{1,6}\s/.test(trimmed)) continue;
+    if (/^[-*_]{3,}\s*$/.test(trimmed)) continue;
+    const text = stripMarkdown(trimmed);
+    if (!text) continue;
+    if (text.length <= maxLength) return text;
+    return `${text.slice(0, maxLength).trim()}...`;
+  }
+  return "";
+}
+
 function getMarkdownModule(filePath) {
   return markdownByFile.get(path.normalize(filePath));
 }
@@ -108,8 +160,25 @@ export function getCourses() {
           .map((fileName) => {
             const filePath = path.join(bookPath, fileName);
             const module = getMarkdownModule(filePath);
+            const baseTitle = fileName.replace(/\.md$/, "");
+            const displayTitle = baseTitle.replace(/^\d+\s+/, "");
+            const guideType = module?.frontmatter?.guide_type || "";
+            const typeMeta = guideTypeMeta[guideType] || {};
+            const rawContent =
+              typeof module?.rawContent === "string"
+                ? module.rawContent
+                : fs.readFileSync(filePath, "utf8");
+            const excerpt = extractExcerpt(rawContent);
+            const orderMatch = baseTitle.match(/^(\d+)\s+/);
             return {
-              title: fileName.replace(/\.md$/, ""),
+              title: baseTitle,
+              displayTitle,
+              slug: slugify(baseTitle),
+              order: orderMatch ? orderMatch[1] : null,
+              guideType,
+              label: typeMeta.label || displayTitle,
+              stage: typeMeta.stage || "Reading guide",
+              excerpt,
               filePath,
               module
             };

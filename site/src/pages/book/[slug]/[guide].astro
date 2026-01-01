@@ -1,0 +1,47 @@
+---
+import Base from "../../../layouts/Base.astro";
+import { getCourses, getBookBySlug } from "../../../lib/content.js";
+
+export function getStaticPaths() {
+  const books = getCourses().flatMap((course) => course.books);
+  return books.flatMap((book) =>
+    book.guides.map((guide) => ({
+      params: { slug: book.slug, guide: guide.slug }
+    }))
+  );
+}
+
+const { slug, guide: guideSlug } = Astro.params;
+const book = getBookBySlug(slug);
+if (!book) {
+  throw new Error(`Book not found: ${slug}`);
+}
+
+const guideEntry = book.guides.find((guide) => guide.slug === guideSlug);
+if (!guideEntry) {
+  throw new Error(`Guide not found: ${guideSlug}`);
+}
+
+const guideModule = guideEntry.module;
+---
+<Base title={`${guideEntry.label} | ${book.title} | Literature Course Library`} authRequired={true}>
+  <section class="stack">
+    <div>
+      <a class="pill" href={`/book/${book.slug}`}>Back to book</a>
+      <h2 class="section-title">{guideEntry.label}</h2>
+      <p class="section-subtitle">{book.title} · {guideEntry.stage}</p>
+    </div>
+
+    <div class="section-divider"></div>
+
+    {guideModule ? (
+      <div class="card guide-content">
+        <guideModule.Content />
+      </div>
+    ) : (
+      <div class="card">
+        <p>Guide content is unavailable.</p>
+      </div>
+    )}
+  </section>
+</Base>
