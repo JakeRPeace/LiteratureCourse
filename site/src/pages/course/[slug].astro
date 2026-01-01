@@ -49,10 +49,12 @@ const bookIds = course.books.map((book) => book.id);
       <h3>Books</h3>
       <div class="grid">
         {course.books.map((book) => (
-          <a class="link-card" href={`/book/${book.slug}`}>
-            <span class="pill">{book.category}</span>
+          <a class="link-card book-card" href={`/book/${book.slug}`}>
+            <div class="book-head">
+              <span class="pill">{book.category}</span>
+              <span class="book-id">{book.id}</span>
+            </div>
             <h3>{book.title}</h3>
-            <p>{book.id}</p>
           </a>
         ))}
       </div>
