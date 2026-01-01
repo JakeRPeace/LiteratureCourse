@@ -65,6 +65,9 @@ Optional controls:
 - `--limit=10` to fetch only the first 10 books.
 - Add `isbn`, `open_library_id`, or `cover_url` to `Book Metadata.md` for better matches or manual overrides.
 
+On Vercel, `npm run build` now runs the cover fetcher automatically in auto mode.
+Set `COVER_FETCH=1` if you want that auto step to run locally as well.
+
 ## Supabase auth
 
 - Enable Email/Password auth in Supabase Auth settings.

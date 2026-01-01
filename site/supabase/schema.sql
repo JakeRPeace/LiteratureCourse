@@ -29,6 +29,7 @@ begin
 end;
 $$;
 
+drop trigger if exists book_status_updated_at on public.book_status;
 create trigger book_status_updated_at
 before update on public.book_status
 for each row

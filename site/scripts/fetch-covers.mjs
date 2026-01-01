@@ -11,6 +11,7 @@ const bookDirRe = /^(\d{2}\.\d{2})\s+/;
 const skipCourseDirs = new Set(["00-09 Templates and Resources"]);
 
 const args = process.argv.slice(2);
+const auto = args.includes("--auto");
 const refresh = args.includes("--refresh");
 const limitArg = args.find((arg) => arg.startsWith("--limit="));
 const limit = limitArg ? Number(limitArg.split("=")[1]) : null;
@@ -18,6 +19,16 @@ const concurrency = Number(process.env.COVER_CONCURRENCY || "4");
 
 const outputDir = path.join(siteRoot, "public/covers");
 const mapPath = path.join(siteRoot, "src/data/cover-map.json");
+
+if (auto) {
+  const shouldRun = process.env.VERCEL === "1" || process.env.COVER_FETCH === "1";
+  if (!shouldRun) {
+    console.log(
+      "Skipping cover fetch (auto mode). Set COVER_FETCH=1 to run locally."
+    );
+    process.exit(0);
+  }
+}
 
 function parseFrontmatter(contents, filePath) {
   if (!contents.startsWith("---\n")) {
