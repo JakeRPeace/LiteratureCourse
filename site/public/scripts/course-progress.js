@@ -35,10 +35,12 @@ window.addEventListener("DOMContentLoaded", () => {
 
         const total = course.totalBooks || 0;
         const read = course.readCount || 0;
-        const progress = total > 0 ? Math.round((read / total) * 100) : 0;
+        const inProgress = course.inProgressCount || 0;
+        const activeCount = read + inProgress;
+        const progress = total > 0 ? Math.round((activeCount / total) * 100) : 0;
 
         if (title) title.textContent = course.title;
-        if (count) count.textContent = `${read}/${total}`;
+        if (count) count.textContent = `${activeCount}/${total}`;
         if (bar) bar.style.width = `${progress}%`;
       });
     };

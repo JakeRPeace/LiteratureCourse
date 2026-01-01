@@ -10,6 +10,7 @@ export function getStaticPaths() {
 }
 
 const { slug } = Astro.params;
+const courses = getCourses();
 const course = getCourseBySlug(slug);
 if (!course) {
   throw new Error(`Course not found: ${slug}`);
@@ -19,7 +20,14 @@ const syllabus = course.syllabus?.module;
 const readme = course.readme?.module;
 const bookIds = course.books.map((book) => book.id);
 ---
-<Base title={`${course.title} | Literature Course Library`} authRequired={true}>
+<Base
+  title={`${course.title} | Literature Course Library`}
+  authRequired={true}
+  courseSwitcher={{
+    current: course,
+    courses
+  }}
+>
   <section class="stack">
     <div>
       <a class="pill" href="/">Back to courses</a>
@@ -47,14 +55,17 @@ const bookIds = course.books.map((book) => book.id);
 
     <div class="card">
       <h3>Books</h3>
-      <div class="grid">
+      <div class="data-list">
         {course.books.map((book) => (
-          <a class="link-card book-card" href={`/book/${book.slug}`}>
-            <div class="book-head">
-              <span class="pill">{book.category}</span>
-              <span class="book-id">{book.id}</span>
+          <a class="data-row" href={`/book/${book.slug}`}>
+            <div class="data-main">
+              <div class="data-title">{book.title}</div>
+              <div class="data-sub">{book.id}</div>
             </div>
-            <h3>{book.title}</h3>
+            <div class="data-meta">
+              <span class="data-chip">{book.category}</span>
+              <span class="data-link">Open</span>
+            </div>
           </a>
         ))}
       </div>

@@ -16,16 +16,17 @@ const courses = getCourses();
       </a>
     </div>
     <div class="section-divider"></div>
-    <div class="grid">
+    <div class="data-list">
       {courses.map((course) => (
-        <a class="link-card course-card" href={`/course/${course.slug}`}>
-          <div class="course-head">
-            <span class="course-tag">{course.id}</span>
-            <span class="pill">{course.books.length} books</span>
+        <a class="data-row" href={`/course/${course.slug}`}>
+          <div class="data-main">
+            <div class="data-title">{course.title}</div>
+            <div class="data-sub">{course.id}</div>
+            <div class="data-sub">Structured reading plan with study guides and notes.</div>
           </div>
-          <div class="course-meta">
-            <h3>{course.title}</h3>
-            <p>Structured reading plan with study guides and notes.</p>
+          <div class="data-meta">
+            <span class="data-chip">{course.books.length} books</span>
+            <span class="data-link">Open</span>
           </div>
         </a>
       ))}

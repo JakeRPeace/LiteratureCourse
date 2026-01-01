@@ -7,7 +7,8 @@ const {
   showNav = true,
   showHero = true,
   authRequired = false,
-  loginPage = false
+  loginPage = false,
+  courseSwitcher = null
 } = Astro.props;
 
 const heroCourses = getCourses().map((course) => ({
@@ -128,6 +129,90 @@ const heroSlots = Array.from({ length: 3 });
         display: flex;
         align-items: center;
         gap: 12px;
+      }
+
+      .course-switcher {
+        position: relative;
+      }
+
+      .course-switcher summary {
+        list-style: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(10, 10, 10, 0.65);
+        font-size: 12px;
+        font-weight: 600;
+        color: #f0f0f0;
+        cursor: pointer;
+      }
+
+      .course-switcher summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .course-switcher-label {
+        color: var(--muted);
+        font-weight: 500;
+      }
+
+      .course-switcher-title {
+        white-space: nowrap;
+      }
+
+      .course-switcher-caret {
+        font-size: 10px;
+        color: var(--muted);
+      }
+
+      .course-switcher[open] summary {
+        border-color: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+      }
+
+      .course-switcher-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        min-width: 240px;
+        max-height: 320px;
+        overflow-y: auto;
+        padding: 6px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(8, 8, 8, 0.96);
+        box-shadow: 0 24px 50px rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(14px);
+        z-index: 50;
+      }
+
+      .course-switcher-item {
+        display: grid;
+        gap: 4px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        color: #f0f0f0;
+        font-size: 13px;
+        transition: background 0.15s ease, color 0.15s ease;
+      }
+
+      .course-switcher-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .course-switcher-item.is-active {
+        background: rgba(74, 124, 255, 0.18);
+        border: 1px solid rgba(74, 124, 255, 0.35);
+      }
+
+      .course-switcher-item span {
+        color: var(--muted);
+        font-size: 11px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
       }
 
       .hero {
@@ -283,6 +368,69 @@ const heroSlots = Array.from({ length: 3 });
         display: grid;
         gap: 16px;
         grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+
+      .data-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .data-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 16px 18px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: linear-gradient(135deg, rgba(16, 16, 16, 0.95), rgba(6, 6, 6, 0.9));
+        box-shadow: 0 16px 34px rgba(0, 0, 0, 0.5);
+        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .data-row:hover {
+        transform: translateY(-2px);
+        border-color: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55);
+      }
+
+      .data-main {
+        display: grid;
+        gap: 6px;
+      }
+
+      .data-title {
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+
+      .data-sub {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .data-meta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 12px;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+
+      .data-chip {
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        font-size: 11px;
+        color: #f0f0f0;
+      }
+
+      .data-link {
+        color: #f0f0f0;
+        font-weight: 600;
+        letter-spacing: 0.02em;
       }
 
       .pill {
@@ -629,6 +777,12 @@ const heroSlots = Array.from({ length: 3 });
         .nav-actions {
           justify-content: center;
         }
+
+        .course-switcher-menu {
+          left: 50%;
+          transform: translateX(-50%);
+          min-width: 200px;
+        }
       }
 
       footer {
@@ -655,6 +809,26 @@ const heroSlots = Array.from({ length: 3 });
               <a href="/deploy">Deploy</a>
             </div>
             <div class="nav-actions">
+              {courseSwitcher ? (
+                <details class="course-switcher">
+                  <summary>
+                    <span class="course-switcher-label">Course</span>
+                    <span class="course-switcher-title">{courseSwitcher.current.title}</span>
+                    <span class="course-switcher-caret">▾</span>
+                  </summary>
+                  <div class="course-switcher-menu">
+                    {courseSwitcher.courses.map((course) => (
+                      <a
+                        class={`course-switcher-item${course.slug === courseSwitcher.current.slug ? " is-active" : ""}`}
+                        href={`/course/${course.slug}`}
+                      >
+                        {course.title}
+                        <span>{course.id}</span>
+                      </a>
+                    ))}
+                  </div>
+                </details>
+              ) : null}
               {showAuth ? <a href="/login" class="pill pill-link">Login</a> : null}
             </div>
           </div>
