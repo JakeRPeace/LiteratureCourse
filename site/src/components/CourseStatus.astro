@@ -1,9 +1,122 @@
 ---
 const { bookIds } = Astro.props;
 ---
-<div class="card" data-course-status data-book-ids={JSON.stringify(bookIds)}>
-  <div class="section-title">Course status</div>
-  <p class="section-subtitle" data-course-status-label>Sign in to see status.</p>
+<div class="course-status-header" data-course-status data-book-ids={JSON.stringify(bookIds)} data-status="signed_out">
+  <div class="status-top">
+    <div class="status-info">
+      <span class="status-kicker">Course Progress</span>
+      <h3 class="status-title" data-course-status-label>Sign in to see status</h3>
+    </div>
+    <div class="status-badge">
+       <span class="status-pill" data-status-pill data-status="signed_out">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span class="status-label" data-status-label>Locked</span>
+      </span>
+    </div>
+  </div>
+  
+  <div class="status-progress-container">
+    <div class="status-progress-bar">
+      <div class="status-progress-fill" data-progress-fill style="width: 0%"></div>
+    </div>
+    <div class="status-stats" data-status-stats>
+      No data available
+    </div>
+  </div>
 </div>
 
 <script type="module" src="/scripts/course-status.js"></script>
+
+<style>
+  .course-status-header {
+    background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(5, 5, 5, 0.92));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .course-status-header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.03), transparent 70%);
+    pointer-events: none;
+  }
+
+  .status-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    z-index: 1;
+  }
+
+  .status-kicker {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .status-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .status-progress-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1;
+  }
+
+  .status-progress-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 999px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .status-progress-fill {
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Color states based on status */
+  .course-status-header[data-status="in_progress"] {
+    border-color: rgba(255, 198, 120, 0.4);
+    background: linear-gradient(135deg, rgba(30, 20, 10, 0.92), rgba(10, 8, 5, 0.94));
+  }
+  .course-status-header[data-status="in_progress"] .status-progress-fill {
+    background: linear-gradient(90deg, #ff9a9a, #ffbf70);
+    box-shadow: 0 0 12px rgba(255, 170, 80, 0.3);
+  }
+
+  .course-status-header[data-status="read"] {
+    border-color: rgba(120, 240, 170, 0.4);
+    background: linear-gradient(135deg, rgba(12, 28, 18, 0.92), rgba(6, 10, 8, 0.94));
+  }
+  .course-status-header[data-status="read"] .status-progress-fill {
+    background: linear-gradient(90deg, #6bffb8, #bfffe0);
+    box-shadow: 0 0 12px rgba(100, 240, 170, 0.3);
+  }
+
+  .status-stats {
+    font-size: 13px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+</style>
