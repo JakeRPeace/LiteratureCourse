@@ -62,6 +62,10 @@ const { bookId, initialStatus = "not_started", initialScore = "" } = Astro.props
     font-weight: 600;
   }
 
+  .score-field {
+    --score-color: rgba(255, 255, 255, 0.2);
+  }
+
   .field-label {
     display: flex;
     align-items: baseline;
@@ -73,7 +77,7 @@ const { bookId, initialStatus = "not_started", initialScore = "" } = Astro.props
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.06em;
-    color: var(--ink);
+    color: var(--score-color);
   }
 
   .select-wrap {
@@ -121,8 +125,8 @@ const { bookId, initialStatus = "not_started", initialScore = "" } = Astro.props
     border-radius: 999px;
     background: linear-gradient(
       90deg,
-      #f0f0f0 0%,
-      #f0f0f0 var(--percent),
+      var(--score-color) 0%,
+      var(--score-color) var(--percent),
       #222 var(--percent),
       #222 100%
     );
@@ -133,7 +137,7 @@ const { bookId, initialStatus = "not_started", initialScore = "" } = Astro.props
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: #f3f3f3;
+    background: var(--score-color);
     border: 1px solid rgba(255, 255, 255, 0.45);
     box-shadow:
       0 0 0 4px rgba(255, 255, 255, 0.08),
@@ -149,14 +153,14 @@ const { bookId, initialStatus = "not_started", initialScore = "" } = Astro.props
   input[type="range"]::-moz-range-progress {
     height: 6px;
     border-radius: 999px;
-    background: #f0f0f0;
+    background: var(--score-color);
   }
 
   input[type="range"]::-moz-range-thumb {
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: #f3f3f3;
+    background: var(--score-color);
     border: 1px solid rgba(255, 255, 255, 0.45);
     box-shadow:
       0 0 0 4px rgba(255, 255, 255, 0.08),

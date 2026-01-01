@@ -10,6 +10,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const scoreValue = root.querySelector("[data-score-value]");
     const scoreClear = root.querySelector("[data-score-clear]");
     const note = root.querySelector("[data-note]");
+    const scoreField = root.querySelector(".score-field");
     const bookId = root.dataset.bookId;
     let scoreIsEmpty = true;
 
@@ -20,12 +21,37 @@ window.addEventListener("DOMContentLoaded", () => {
       return Number(value).toFixed(2).replace(/\.?0+$/, "");
     };
 
+    const getScoreColor = (value) => {
+      if (scoreIsEmpty) {
+        return "rgba(255, 255, 255, 0.2)";
+      }
+
+      const clamped = Math.max(0, Math.min(5, value));
+      let hue = 8;
+      if (clamped <= 2) {
+        hue = 8;
+      } else if (clamped <= 3) {
+        hue = 8 + (clamped - 2) * 47;
+      } else if (clamped <= 4) {
+        hue = 55 + (clamped - 3) * 65;
+      } else {
+        hue = 120;
+      }
+
+      return `hsl(${Math.round(hue)} 78% 55%)`;
+    };
+
     const updateScoreDisplay = () => {
       const numericValue = Number(scoreInput.value || 0);
       const percent = Math.max(0, Math.min(100, (numericValue / 5) * 100));
+      const scoreColor = getScoreColor(numericValue);
 
       if (scoreValue) {
         scoreValue.textContent = scoreIsEmpty ? "--" : formatScore(numericValue);
+      }
+
+      if (scoreField) {
+        scoreField.style.setProperty("--score-color", scoreColor);
       }
 
       scoreInput.style.setProperty("--percent", `${percent}%`);
