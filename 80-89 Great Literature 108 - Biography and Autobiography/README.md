@@ -2,6 +2,7 @@
 type: course_doc
 course_id: 80-89
 course_title: Great Literature 108 - Biography and Autobiography
+course_summary: Life writing from historical biographies to modern memoir.
 doc_type: readme
 ---
 

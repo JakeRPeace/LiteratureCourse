@@ -2,6 +2,7 @@
 type: course_doc
 course_id: 90-99
 course_title: Great Literature 109 - Introduction to Philosophy
+course_summary: Foundational Western philosophy on ethics, reality, and knowledge.
 doc_type: readme
 ---
 

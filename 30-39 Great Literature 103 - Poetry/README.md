@@ -2,6 +2,7 @@
 type: course_doc
 course_id: 30-39
 course_title: Great Literature 103 - Poetry
+course_summary: Essential poetry from Romanticism to Modernism and beyond.
 doc_type: readme
 ---
 

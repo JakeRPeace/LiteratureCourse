@@ -2,6 +2,7 @@
 type: course_doc
 course_id: 10-19
 course_title: Great Literature 101 - Modern Literature
+course_summary: Major modern works from the mid-1800s to today.
 doc_type: readme
 ---
 

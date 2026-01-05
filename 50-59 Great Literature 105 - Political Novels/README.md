@@ -2,6 +2,7 @@
 type: course_doc
 course_id: 50-59
 course_title: Great Literature 105 - Political Novels
+course_summary: Novels of power, ideology, and political critique from dystopia to realism.
 doc_type: readme
 ---
 

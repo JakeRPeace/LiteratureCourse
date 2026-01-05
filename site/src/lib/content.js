@@ -246,6 +246,15 @@ export function getCourses() {
     const readmeModule = fs.existsSync(readmePath)
       ? getMarkdownModule(readmePath)
       : null;
+    const readmeFrontmatter = readmeModule?.frontmatter || {};
+    let summary = readmeFrontmatter.course_summary || readmeFrontmatter.summary || "";
+    if (!summary && readmePath && fs.existsSync(readmePath)) {
+      const readmeRaw =
+        typeof readmeModule?.rawContent === "string"
+          ? readmeModule.rawContent
+          : fs.readFileSync(readmePath, "utf8");
+      summary = extractExcerpt(readmeRaw, 140);
+    }
     const courseDocs = [
       buildCourseDoc(readmePath),
       buildCourseDoc(syllabus),
@@ -260,6 +269,7 @@ export function getCourses() {
       syllabus: syllabus ? { filePath: syllabus, module: getMarkdownModule(syllabus) } : null,
       index: index ? { filePath: index, module: getMarkdownModule(index) } : null,
       readme: readmeModule ? { filePath: readmePath, module: readmeModule } : null,
+      summary,
       docs: courseDocs,
       books
     };

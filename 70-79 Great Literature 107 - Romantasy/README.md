@@ -2,6 +2,7 @@
 type: course_doc
 course_id: 70-79
 course_title: Great Literature 107 - Romantasy
+course_summary: Epic fantasy and high stakes romance in modern genre pillars.
 doc_type: readme
 ---
 

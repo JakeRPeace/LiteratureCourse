@@ -15,8 +15,10 @@ const courses = getCourses();
     <div class="section-divider"></div>
     <div class="data-list">
       {courses.map((course) => {
-        const [mainTitle, ...restTitle] = course.title.split(" - ");
-        const subtitle = restTitle.join(" - ");
+        const titleParts = course.title.split(" - ");
+        const courseType = titleParts.slice(1).join(" - ");
+        const displayTitle = courseType || course.title;
+        const summary = course.summary || "Short course overview available in the syllabus.";
 
         // Logic to pick 3 random books with covers for the fan
         const booksWithCovers = course.books.filter(b => b.coverUrl);
@@ -48,13 +50,12 @@ const courses = getCourses();
                  ) : null}
               </div>
               <div class="data-main">
-                <div class="data-title">{mainTitle}</div>
-                {subtitle ? <div class="data-sub">{subtitle}</div> : null}
-                <div class="data-sub">Structured reading plan with study guides and notes.</div>
+                <div class="data-title">{displayTitle}</div>
+                <div class="data-sub">{summary}</div>
               </div>
             </div>
             <div class="data-meta">
-              <span class="data-chip">{course.id}</span>
+              <span class="data-chip">{course.title}</span>
               <span class="status-pill" data-status-pill data-status="not_started">
                 <span class="status-dot" aria-hidden="true"></span>
                 <span class="status-label" data-status-label>Not started</span>

@@ -2,6 +2,7 @@
 type: course_doc
 course_id: 60-69
 course_title: Great Literature 106 - Southern Gothic
+course_summary: Five key Southern Gothic novels exploring the grotesque and the mythic South.
 doc_type: readme
 ---
 

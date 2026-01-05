@@ -2,6 +2,7 @@
 type: course_doc
 course_id: 40-49
 course_title: Great Literature 104 - Modern Future Classics
+course_summary: Recent classics from the last 50 years shaping literary history.
 doc_type: readme
 ---
 

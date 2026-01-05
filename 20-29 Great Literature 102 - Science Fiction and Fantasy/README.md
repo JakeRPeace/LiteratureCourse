@@ -2,6 +2,7 @@
 type: course_doc
 course_id: 20-29
 course_title: Great Literature 102 - Science Fiction and Fantasy
+course_summary: Classic and modern science fiction and fantasy across the speculative canon.
 doc_type: readme
 ---
 
