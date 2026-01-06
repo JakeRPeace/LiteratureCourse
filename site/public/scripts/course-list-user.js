@@ -1,6 +1,7 @@
 import { supabase } from "./supabase.js";
 
 const summaryFallback = "Short course overview available in the syllabus.";
+let loadSequence = 0;
 
 function slugify(value) {
   return value
@@ -106,8 +107,11 @@ function buildCourseRow(course, stats) {
 }
 
 async function loadUserCourses(list) {
+  const sequence = ++loadSequence;
   const { data: sessionData } = await supabase.auth.getSession();
+  if (sequence !== loadSequence) return;
   if (!sessionData.session) {
+    if (sequence !== loadSequence) return;
     clearUserRows(list);
     window.dispatchEvent(new CustomEvent("course-rows-updated"));
     return;
@@ -119,18 +123,25 @@ async function loadUserCourses(list) {
     .eq("source", "user")
     .order("created_at", { ascending: true });
 
-  clearUserRows(list);
+  if (sequence !== loadSequence) return;
 
   if (error || !courses || courses.length === 0) {
+    if (sequence !== loadSequence) return;
+    clearUserRows(list);
     window.dispatchEvent(new CustomEvent("course-rows-updated"));
     return;
   }
+
+  if (sequence !== loadSequence) return;
+  clearUserRows(list);
 
   const courseIds = courses.map((course) => course.course_id);
   const { data: bookRows } = await supabase
     .from("books")
     .select("course_id, cover_url")
     .in("course_id", courseIds);
+
+  if (sequence !== loadSequence) return;
 
   const statsMap = new Map();
   (bookRows || []).forEach((book) => {
@@ -146,6 +157,8 @@ async function loadUserCourses(list) {
     const stats = statsMap.get(course.course_id) || { total: 0, covers: [] };
     fragment.appendChild(buildCourseRow(course, stats));
   });
+
+  if (sequence !== loadSequence) return;
 
   list.appendChild(fragment);
   window.dispatchEvent(new CustomEvent("course-rows-updated"));

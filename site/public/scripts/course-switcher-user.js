@@ -1,5 +1,7 @@
 import { supabase } from "./supabase.js";
 
+let loadSequence = 0;
+
 function buildCourseItem(course, isActive) {
   const [mainTitle, ...restTitle] = (course.title || "").split(" - ");
   const subtitle = restTitle.join(" - ");
@@ -26,6 +28,7 @@ function buildCourseItem(course, isActive) {
 }
 
 async function loadUserCourses() {
+  const sequence = ++loadSequence;
   const switcher = document.querySelector("[data-course-switcher]");
   if (!switcher) return;
   const menu = switcher.querySelector("[data-course-switcher-menu]");
@@ -34,9 +37,11 @@ async function loadUserCourses() {
   const currentCourseId = switcher.dataset.currentCourseId || "";
   const currentCourseSource = switcher.dataset.currentCourseSource || "system";
 
+  if (sequence !== loadSequence) return;
   menu.querySelectorAll('[data-course-source="user"]').forEach((item) => item.remove());
 
   const { data: sessionData } = await supabase.auth.getSession();
+  if (sequence !== loadSequence) return;
   if (!sessionData.session) return;
 
   const { data: courses, error } = await supabase
@@ -44,6 +49,8 @@ async function loadUserCourses() {
     .select("course_id, title")
     .eq("source", "user")
     .order("created_at", { ascending: true });
+
+  if (sequence !== loadSequence) return;
 
   if (error || !courses || !courses.length) return;
 
@@ -53,6 +60,8 @@ async function loadUserCourses() {
       currentCourseSource === "user" && course.course_id === currentCourseId;
     fragment.appendChild(buildCourseItem(course, isActive));
   });
+
+  if (sequence !== loadSequence) return;
 
   menu.appendChild(fragment);
 }
