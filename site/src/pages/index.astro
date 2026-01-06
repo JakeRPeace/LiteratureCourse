@@ -51,6 +51,7 @@ async function loadSystemCourses() {
 const systemCourses = await loadSystemCourses();
 const courses = systemCourses ?? getCourses();
 const systemCourseSource = systemCourses ? "supabase" : "markdown";
+const sourceLabel = systemCourseSource === "supabase" ? "Supabase" : "Markdown";
 ---
 <Base title="Literature Course Library" authRequired={true}>
   <section class="stack">
@@ -101,6 +102,7 @@ const systemCourseSource = systemCourses ? "supabase" : "markdown";
               <div class="data-main">
                 <div class="data-title">{displayTitle}</div>
                 <div class="data-sub">{summary}</div>
+                <span class="data-source-pill">{sourceLabel}</span>
               </div>
             </div>
             <div class="data-meta">

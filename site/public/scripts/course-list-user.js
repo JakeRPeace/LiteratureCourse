@@ -61,8 +61,13 @@ function buildCourseRow(course, stats) {
   summary.className = "data-sub";
   summary.textContent = course.summary || summaryFallback;
 
+  const sourcePill = document.createElement("span");
+  sourcePill.className = "data-source-pill";
+  sourcePill.textContent = "User";
+
   dataMain.appendChild(title);
   dataMain.appendChild(summary);
+  dataMain.appendChild(sourcePill);
 
   dataBody.appendChild(coverWrap);
   dataBody.appendChild(dataMain);
