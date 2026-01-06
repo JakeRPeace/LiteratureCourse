@@ -19,7 +19,7 @@ function clearUserRows(list) {
 function buildCourseRow(course, stats) {
   const row = document.createElement("a");
   row.className = "data-row";
-  row.href = `/course/${course.slug || slugify(course.course_id)}`;
+  row.href = `/course/user?course_id=${encodeURIComponent(course.course_id)}`;
   row.setAttribute("data-course-row", "");
   row.dataset.courseId = course.course_id;
   row.dataset.totalBooks = String(stats.total || 0);

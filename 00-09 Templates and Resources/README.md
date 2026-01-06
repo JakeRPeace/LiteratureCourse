@@ -84,6 +84,7 @@ If you need course-specific templates or resources:
 - `00.00 Master Index.md`
 - `00.01 Course Creation Guide.md`
 - `00.02 Course Data Pipeline Plan.md`
+- `00.03 Course Creator Chatbot Plan.md`
 
 ## 🔄 Keeping Templates Updated
 

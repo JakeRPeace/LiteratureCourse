@@ -1,6 +1,8 @@
 ---
 import Base from "../../../layouts/Base.astro";
 import { getCourses, getBookBySlug } from "../../../lib/content.js";
+import { createClient } from "@supabase/supabase-js";
+import { marked } from "marked";
 
 export function getStaticPaths() {
   const books = getCourses().flatMap((course) => course.books);
@@ -22,19 +24,57 @@ if (!guideEntry) {
   throw new Error(`Guide not found: ${guideSlug}`);
 }
 
-const guideModule = guideEntry.module;
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+const supabase =
+  supabaseUrl && supabaseKey
+    ? createClient(supabaseUrl, supabaseKey, {
+        auth: { persistSession: false }
+      })
+    : null;
+
+async function loadSystemGuide(bookId, slugParam) {
+  if (!supabase) return null;
+
+  const { data, error } = await supabase
+    .from("book_guides")
+    .select("guide_type, label, stage, content_md, excerpt, slug")
+    .eq("book_id", bookId)
+    .eq("slug", slugParam)
+    .maybeSingle();
+
+  if (error || !data || !data.content_md) return null;
+
+  return {
+    guideType: data.guide_type,
+    label: data.label || guideEntry.label,
+    stage: data.stage || guideEntry.stage,
+    content: data.content_md
+  };
+}
+
+const systemGuide = await loadSystemGuide(book.id, guideSlug);
+const guideModule = systemGuide ? null : guideEntry.module;
+const guideSource = systemGuide ? "supabase" : "markdown";
+const guideSourceLabel = guideSource === "supabase" ? "Supabase" : "Markdown";
+const guideLabel = systemGuide?.label || guideEntry.label;
+const guideStage = systemGuide?.stage || guideEntry.stage;
+const guideHtml = systemGuide ? marked.parse(systemGuide.content) : null;
 ---
-<Base title={`${guideEntry.label} | ${book.title} | Literature Course Library`} authRequired={true}>
+<Base title={`${guideLabel} | ${book.title} | Literature Course Library`} authRequired={true}>
   <section class="stack">
     <div>
       <a class="pill" href={`/book/${book.slug}`}>Back to book</a>
-      <h2 class="section-title">{guideEntry.label}</h2>
-      <p class="section-subtitle">{book.title} · {guideEntry.stage}</p>
+      <h2 class="section-title">{guideLabel}</h2>
+      <p class="section-subtitle">{book.title} · {guideStage}</p>
+      <span class="data-source-pill">{guideSourceLabel}</span>
     </div>
 
     <div class="section-divider"></div>
 
-    {guideModule ? (
+    {guideHtml ? (
+      <div class="card guide-content" set:html={guideHtml} />
+    ) : guideModule ? (
       <div class="card guide-content">
         <guideModule.Content />
       </div>

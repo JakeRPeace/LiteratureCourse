@@ -19,12 +19,15 @@ if (!course) {
 
 const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
 const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+const supabase =
+  supabaseUrl && supabaseKey
+    ? createClient(supabaseUrl, supabaseKey, {
+        auth: { persistSession: false }
+      })
+    : null;
 
 async function loadSystemBooks(courseId) {
-  if (!supabaseUrl || !supabaseKey) return null;
-  const supabase = createClient(supabaseUrl, supabaseKey, {
-    auth: { persistSession: false }
-  });
+  if (!supabase) return null;
 
   const { data: bookRows, error } = await supabase
     .from("books")
@@ -43,12 +46,37 @@ async function loadSystemBooks(courseId) {
   }));
 }
 
+async function loadSystemDocs(courseId) {
+  if (!supabase) return null;
+
+  const { data: docRows, error } = await supabase
+    .from("course_docs")
+    .select("doc_type, label, stage, excerpt, slug, sort_order")
+    .eq("course_id", courseId)
+    .order("sort_order", { ascending: true });
+
+  if (error || !docRows || !docRows.length) return null;
+
+  return docRows.map((doc) => ({
+    docType: doc.doc_type,
+    label: doc.label || "Course document",
+    stage: doc.stage || "Course material",
+    excerpt: doc.excerpt || "",
+    slug: doc.slug
+  }));
+}
+
 const systemBooks = await loadSystemBooks(course.id);
 const courseBooks = systemBooks ?? course.books;
 const booksSource = systemBooks ? "supabase" : "markdown";
 const booksSourceLabel = booksSource === "supabase" ? "Supabase" : "Markdown";
 
-const courseDocs = (course.docs || []).filter((doc) => doc.docType !== "index");
+const systemDocs = await loadSystemDocs(course.id);
+const docsSource = systemDocs ? "supabase" : "markdown";
+const docsSourceLabel = docsSource === "supabase" ? "Supabase" : "Markdown";
+const courseDocs = (systemDocs ?? course.docs ?? []).filter(
+  (doc) => doc.docType !== "index"
+);
 const bookIds = courseBooks.map((book) => book.id);
 ---
 <Base
@@ -86,6 +114,7 @@ const bookIds = courseBooks.map((book) => book.id);
             class="card course-doc-card"
             href={`/course/${course.slug}/${doc.slug}`}
             data-doc-type={doc.docType || "other"}
+            data-doc-source={docsSource}
           >
             <div class="course-doc-top">
               <span class="course-doc-kicker">{doc.stage}</span>
@@ -97,6 +126,7 @@ const bookIds = courseBooks.map((book) => book.id);
             </p>
             <div class="course-doc-meta">
               <span class="course-doc-chip">{course.id}</span>
+              <span class="data-source-pill">{docsSourceLabel}</span>
             </div>
           </a>
         ))}

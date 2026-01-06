@@ -1111,13 +1111,21 @@ const heroSlots = Array.from({ length: 3 });
             </div>
             <div class="nav-actions">
               {courseSwitcher ? (
-                <details class="course-switcher">
+                <details
+                  class="course-switcher"
+                  data-course-switcher
+                  data-current-course-id={courseSwitcher.current.id ?? ""}
+                  data-current-course-slug={courseSwitcher.current.slug ?? ""}
+                  data-current-course-source={courseSwitcher.current.source ?? "system"}
+                >
                   <summary>
                     <span class="course-switcher-label">Course</span>
-                    <span class="course-switcher-title">{courseSwitcher.current.title}</span>
+                    <span class="course-switcher-title" data-course-switcher-title>
+                      {courseSwitcher.current.title}
+                    </span>
                     <span class="course-switcher-caret">▾</span>
                   </summary>
-                  <div class="course-switcher-menu">
+                  <div class="course-switcher-menu" data-course-switcher-menu>
                     {courseSwitcher.courses.map((course) => {
                       const [mainTitle, ...restTitle] = course.title.split(" - ");
                       const subtitle = restTitle.join(" - ");
@@ -1138,13 +1146,21 @@ const heroSlots = Array.from({ length: 3 });
               ) : null}
 
               {bookSwitcher ? (
-                <details class="course-switcher">
+                <details
+                  class="course-switcher"
+                  data-book-switcher
+                  data-current-book-id={bookSwitcher.current.id ?? ""}
+                  data-current-course-id={bookSwitcher.current.courseId ?? ""}
+                  data-current-course-source={courseSwitcher?.current.source ?? "system"}
+                >
                   <summary>
                     <span class="course-switcher-label">Book</span>
-                    <span class="course-switcher-title">{bookSwitcher.current.title}</span>
+                    <span class="course-switcher-title" data-book-switcher-title>
+                      {bookSwitcher.current.title}
+                    </span>
                     <span class="course-switcher-caret">▾</span>
                   </summary>
-                  <div class="course-switcher-menu">
+                  <div class="course-switcher-menu" data-book-switcher-menu>
                     {bookSwitcher.books.map((book) => (
                       <a
                         class={`course-switcher-item${book.slug === bookSwitcher.current.slug ? " is-active" : ""}`}
@@ -1202,5 +1218,6 @@ const heroSlots = Array.from({ length: 3 });
     {authRequired ? <script type="module" src="/scripts/auth-guard.js"></script> : null}
     {showAuth ? <script type="module" src="/scripts/nav-auth.js"></script> : null}
     {loginPage ? <script type="module" src="/scripts/login-redirect.js"></script> : null}
+    <script type="module" src="/scripts/course-switcher-user.js"></script>
   </body>
 </html>

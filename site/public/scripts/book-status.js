@@ -1,17 +1,17 @@
 import { supabase } from "./supabase.js";
 
-window.addEventListener("DOMContentLoaded", () => {
-  const widgets = document.querySelectorAll("[data-book-status]");
+function initWidgets() {
+  const widgets = document.querySelectorAll("[data-book-status]:not([data-status-init])");
   if (!widgets.length) return;
 
   widgets.forEach((root) => {
+    root.dataset.statusInit = "true";
     const statusSelect = root.querySelector("[data-status]");
     const scoreInput = root.querySelector("[data-score]");
     const scoreValue = root.querySelector("[data-score-value]");
     const scoreClear = root.querySelector("[data-score-clear]");
     const note = root.querySelector("[data-note]");
     const scoreField = root.querySelector(".score-field");
-    const bookId = root.dataset.bookId;
     let scoreIsEmpty = true;
 
     const formatScore = (value) => {
@@ -84,11 +84,20 @@ window.addEventListener("DOMContentLoaded", () => {
       updateScoreDisplay();
     };
 
+    const getBookId = () => root.dataset.bookId || "";
+
     const loadStatus = async () => {
       const { data: sessionData } = await supabase.auth.getSession();
       if (!sessionData.session) {
         setEnabled(false);
         setNote("Sign in to save your status.");
+        return;
+      }
+
+      const bookId = getBookId();
+      if (!bookId) {
+        setEnabled(false);
+        setNote("Book not ready yet.");
         return;
       }
 
@@ -115,6 +124,8 @@ window.addEventListener("DOMContentLoaded", () => {
     const saveStatus = async () => {
       const { data: sessionData } = await supabase.auth.getSession();
       if (!sessionData.session) return;
+      const bookId = getBookId();
+      if (!bookId) return;
       const userId = sessionData.session.user.id;
 
       const status = statusSelect.value;
@@ -167,5 +178,12 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 
     loadStatus();
+  });
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  initWidgets();
+  window.addEventListener("book-status-updated", () => {
+    initWidgets();
   });
 });

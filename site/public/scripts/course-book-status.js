@@ -17,53 +17,59 @@ function applyStatus(row, status, labelOverride) {
   }
 }
 
-window.addEventListener("DOMContentLoaded", () => {
+function collectRows() {
   const rows = Array.from(document.querySelectorAll("[data-book-row]"));
+  const bookIds = [...new Set(rows.map((row) => row.dataset.bookId).filter(Boolean))];
+  return { rows, bookIds };
+}
+
+function setLoggedOut(rows) {
+  rows.forEach((row) => applyStatus(row, "signed_out", "Sign in to track"));
+}
+
+function setError(rows) {
+  rows.forEach((row) => applyStatus(row, "error", "Status unavailable"));
+}
+
+async function loadStatuses() {
+  const { rows, bookIds } = collectRows();
   if (!rows.length) return;
 
-  const bookIds = [...new Set(rows.map((row) => row.dataset.bookId).filter(Boolean))];
+  const { data: sessionData } = await supabase.auth.getSession();
+  if (!sessionData.session) {
+    setLoggedOut(rows);
+    return;
+  }
 
-  const setLoggedOut = () => {
-    rows.forEach((row) => applyStatus(row, "signed_out", "Sign in to track"));
-  };
+  if (!bookIds.length) return;
 
-  const setError = () => {
-    rows.forEach((row) => applyStatus(row, "error", "Status unavailable"));
-  };
+  const { data, error } = await supabase
+    .from("book_status")
+    .select("status, book_id")
+    .in("book_id", bookIds);
 
-  const loadStatuses = async () => {
-    const { data: sessionData } = await supabase.auth.getSession();
-    if (!sessionData.session) {
-      setLoggedOut();
-      return;
-    }
+  if (error) {
+    setError(rows);
+    return;
+  }
 
-    if (!bookIds.length) return;
+  const statusMap = new Map();
+  (data || []).forEach((entry) => {
+    statusMap.set(entry.book_id, entry.status || "not_started");
+  });
 
-    const { data, error } = await supabase
-      .from("book_status")
-      .select("status, book_id")
-      .in("book_id", bookIds);
+  rows.forEach((row) => {
+    const status = statusMap.get(row.dataset.bookId) || "not_started";
+    applyStatus(row, status);
+  });
+}
 
-    if (error) {
-      setError();
-      return;
-    }
-
-    const statusMap = new Map();
-    (data || []).forEach((entry) => {
-      statusMap.set(entry.book_id, entry.status || "not_started");
-    });
-
-    rows.forEach((row) => {
-      const status = statusMap.get(row.dataset.bookId) || "not_started";
-      applyStatus(row, status);
-    });
-  };
-
+window.addEventListener("DOMContentLoaded", () => {
+  loadStatuses();
   supabase.auth.onAuthStateChange(() => {
     loadStatuses();
   });
-
-  loadStatuses();
+  window.addEventListener("book-rows-updated", () => {
+    loadStatuses();
+  });
 });

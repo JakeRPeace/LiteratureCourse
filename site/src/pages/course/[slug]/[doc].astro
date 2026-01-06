@@ -1,6 +1,8 @@
 ---
 import Base from "../../../layouts/Base.astro";
 import { getCourses, getCourseBySlug } from "../../../lib/content.js";
+import { createClient } from "@supabase/supabase-js";
+import { marked } from "marked";
 
 export function getStaticPaths() {
   const courses = getCourses();
@@ -22,19 +24,57 @@ if (!docEntry) {
   throw new Error(`Course doc not found: ${docSlug}`);
 }
 
-const docModule = docEntry.module;
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+const supabase =
+  supabaseUrl && supabaseKey
+    ? createClient(supabaseUrl, supabaseKey, {
+        auth: { persistSession: false }
+      })
+    : null;
+
+async function loadSystemDoc(courseId, docSlugParam) {
+  if (!supabase) return null;
+
+  const { data, error } = await supabase
+    .from("course_docs")
+    .select("doc_type, label, stage, content_md, excerpt, slug")
+    .eq("course_id", courseId)
+    .eq("slug", docSlugParam)
+    .maybeSingle();
+
+  if (error || !data || !data.content_md) return null;
+
+  return {
+    docType: data.doc_type,
+    label: data.label || docEntry.label,
+    stage: data.stage || docEntry.stage,
+    content: data.content_md
+  };
+}
+
+const systemDoc = await loadSystemDoc(course.id, docSlug);
+const docModule = systemDoc ? null : docEntry.module;
+const docSource = systemDoc ? "supabase" : "markdown";
+const docSourceLabel = docSource === "supabase" ? "Supabase" : "Markdown";
+const docLabel = systemDoc?.label || docEntry.label;
+const docStage = systemDoc?.stage || docEntry.stage;
+const docHtml = systemDoc ? marked.parse(systemDoc.content) : null;
 ---
-<Base title={`${docEntry.label} | ${course.title} | Literature Course Library`} authRequired={true}>
+<Base title={`${docLabel} | ${course.title} | Literature Course Library`} authRequired={true}>
   <section class="stack">
     <div>
       <a class="pill" href={`/course/${course.slug}`}>Back to course</a>
-      <h2 class="section-title">{docEntry.label}</h2>
-      <p class="section-subtitle">{course.title} · {docEntry.stage}</p>
+      <h2 class="section-title">{docLabel}</h2>
+      <p class="section-subtitle">{course.title} · {docStage}</p>
+      <span class="data-source-pill">{docSourceLabel}</span>
     </div>
 
     <div class="section-divider"></div>
 
-    {docModule ? (
+    {docHtml ? (
+      <div class="card guide-content" set:html={docHtml} />
+    ) : docModule ? (
       <div class="card guide-content">
         <docModule.Content />
       </div>
