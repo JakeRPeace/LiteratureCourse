@@ -77,6 +77,14 @@ If you need course-specific templates or resources:
 
 ---
 
+## 🧭 System Management
+
+**Location:** `00 System Management/`
+
+- `00.00 Master Index.md`
+- `00.01 Course Creation Guide.md`
+- `00.02 Course Data Pipeline Plan.md`
+
 ## 🔄 Keeping Templates Updated
 
 - Templates are designed to be flexible
@@ -88,4 +96,3 @@ If you need course-specific templates or resources:
 
 *Templates created: 2025-12-24*  
 *Last updated: 2025-12-24*
-
