@@ -27,10 +27,8 @@ function deriveStatus(statuses, total) {
   return "not_started";
 }
 
-window.addEventListener("DOMContentLoaded", () => {
+function collectRows() {
   const rows = Array.from(document.querySelectorAll("[data-course-row]"));
-  if (!rows.length) return;
-
   const courseMap = new Map();
 
   rows.forEach((row) => {
@@ -43,46 +41,55 @@ window.addEventListener("DOMContentLoaded", () => {
     courseMap.get(courseId).rows.push(row);
   });
 
-  const setLoggedOut = () => {
-    rows.forEach((row) => applyStatus(row, "signed_out", "Sign in to track"));
-  };
+  return { rows, courseMap };
+}
 
-  const setError = () => {
-    rows.forEach((row) => applyStatus(row, "error", "Status unavailable"));
-  };
+function setLoggedOut(rows) {
+  rows.forEach((row) => applyStatus(row, "signed_out", "Sign in to track"));
+}
 
-  const loadStatuses = async () => {
-    const { data: sessionData } = await supabase.auth.getSession();
-    if (!sessionData.session) {
-      setLoggedOut();
-      return;
-    }
+function setError(rows) {
+  rows.forEach((row) => applyStatus(row, "error", "Status unavailable"));
+}
 
-    const { data, error } = await supabase
-      .from("book_status")
-      .select("book_id, status");
+async function loadStatuses() {
+  const { rows, courseMap } = collectRows();
+  if (!rows.length) return;
 
-    if (error) {
-      setError();
-      return;
-    }
+  const { data: sessionData } = await supabase.auth.getSession();
+  if (!sessionData.session) {
+    setLoggedOut(rows);
+    return;
+  }
 
-    (data || []).forEach((entry) => {
-      const courseId = (entry.book_id || "").split(/[\\/]/)[0];
-      const course = courseMap.get(courseId);
-      if (!course) return;
-      course.statuses.push(entry.status || "not_started");
-    });
+  const { data, error } = await supabase
+    .from("book_status")
+    .select("book_id, status");
 
-    courseMap.forEach((course) => {
-      const status = deriveStatus(course.statuses, course.totalBooks);
-      course.rows.forEach((row) => applyStatus(row, status));
-    });
-  };
+  if (error) {
+    setError(rows);
+    return;
+  }
 
+  (data || []).forEach((entry) => {
+    const courseId = (entry.book_id || "").split(/[\\/]/)[0];
+    const course = courseMap.get(courseId);
+    if (!course) return;
+    course.statuses.push(entry.status || "not_started");
+  });
+
+  courseMap.forEach((course) => {
+    const status = deriveStatus(course.statuses, course.totalBooks);
+    course.rows.forEach((row) => applyStatus(row, status));
+  });
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  loadStatuses();
   supabase.auth.onAuthStateChange(() => {
     loadStatuses();
   });
-
-  loadStatuses();
+  window.addEventListener("course-rows-updated", () => {
+    loadStatuses();
+  });
 });
