@@ -48,7 +48,9 @@ async function loadSystemCourses() {
   }));
 }
 
-const courses = (await loadSystemCourses()) ?? getCourses();
+const systemCourses = await loadSystemCourses();
+const courses = systemCourses ?? getCourses();
+const systemCourseSource = systemCourses ? "supabase" : "markdown";
 ---
 <Base title="Literature Course Library" authRequired={true}>
   <section class="stack">
@@ -84,6 +86,7 @@ const courses = (await loadSystemCourses()) ?? getCourses();
             data-course-id={course.id}
             data-total-books={course.books.length}
             data-status="not_started"
+            data-course-source={systemCourseSource}
           >
             <div class="data-body">
               <div class={`data-cover ${recentBooks.length > 0 ? "is-stack" : "is-empty"}`}>
