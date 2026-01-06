@@ -8,6 +8,7 @@
     "validate": "node scripts/validate-content.mjs",
     "covers": "node scripts/fetch-covers.mjs",
     "sync:content": "node scripts/sync-content-to-supabase.mjs",
+    "verify:content": "node scripts/verify-supabase-content.mjs",
     "preview": "astro preview"
   },
   "dependencies": {
