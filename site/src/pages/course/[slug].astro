@@ -2,6 +2,7 @@
 import Base from "../../layouts/Base.astro";
 import CourseStatus from "../../components/CourseStatus.astro";
 import { getCourses, getCourseBySlug } from "../../lib/content.js";
+import { createClient } from "@supabase/supabase-js";
 
 export function getStaticPaths() {
   return getCourses().map((course) => ({
@@ -16,8 +17,39 @@ if (!course) {
   throw new Error(`Course not found: ${slug}`);
 }
 
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+
+async function loadSystemBooks(courseId) {
+  if (!supabaseUrl || !supabaseKey) return null;
+  const supabase = createClient(supabaseUrl, supabaseKey, {
+    auth: { persistSession: false }
+  });
+
+  const { data: bookRows, error } = await supabase
+    .from("books")
+    .select("book_id, title, author, slug, cover_url, sort_order")
+    .eq("course_id", courseId)
+    .order("sort_order", { ascending: true });
+
+  if (error || !bookRows || !bookRows.length) return null;
+
+  return bookRows.map((book) => ({
+    id: book.book_id,
+    title: book.title,
+    author: book.author || "",
+    slug: book.slug,
+    coverUrl: book.cover_url || null
+  }));
+}
+
+const systemBooks = await loadSystemBooks(course.id);
+const courseBooks = systemBooks ?? course.books;
+const booksSource = systemBooks ? "supabase" : "markdown";
+const booksSourceLabel = booksSource === "supabase" ? "Supabase" : "Markdown";
+
 const courseDocs = (course.docs || []).filter((doc) => doc.docType !== "index");
-const bookIds = course.books.map((book) => book.id);
+const bookIds = courseBooks.map((book) => book.id);
 ---
 <Base
   title={`${course.title} | Literature Course Library`}
@@ -78,13 +110,14 @@ const bookIds = course.books.map((book) => book.id);
     <div class="card">
       <h3>Books</h3>
       <div class="data-list">
-        {course.books.map((book) => (
+        {courseBooks.map((book) => (
           <a
             class="data-row"
             href={`/book/${book.slug}`}
             data-book-row
             data-book-id={book.id}
             data-status="not_started"
+            data-book-source={booksSource}
           >
             <div class="data-body">
               <div class={`data-cover ${book.coverUrl ? "" : "is-empty"}`}>
@@ -100,6 +133,7 @@ const bookIds = course.books.map((book) => book.id);
               <div class="data-main">
                 <div class="data-title">{book.title}</div>
                 <div class="data-sub">{book.id}</div>
+                <span class="data-source-pill">{booksSourceLabel}</span>
               </div>
             </div>
             <div class="data-meta">
