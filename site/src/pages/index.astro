@@ -61,6 +61,12 @@ const sourceLabel = systemCourseSource === "supabase" ? "Supabase" : "Markdown";
         <p class="section-subtitle">Browse each course, track your reading, and rate completed books.</p>
       </div>
     </div>
+    <div class="card" data-course-test-panel hidden>
+      <div class="section-title">Add test course</div>
+      <p class="section-subtitle">Creates a private course with one book for your account.</p>
+      <button type="button" data-course-test-button>Add test course</button>
+      <p class="section-subtitle" data-course-test-note></p>
+    </div>
     <div class="section-divider"></div>
     <div class="data-list">
       {courses.map((course) => {
@@ -119,4 +125,5 @@ const sourceLabel = systemCourseSource === "supabase" ? "Supabase" : "Markdown";
   </section>
   <script type="module" src="/scripts/course-list-status.js"></script>
   <script type="module" src="/scripts/course-list-user.js"></script>
+  <script type="module" src="/scripts/course-add-test.js"></script>
 </Base>

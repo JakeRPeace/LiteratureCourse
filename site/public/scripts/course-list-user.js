@@ -159,4 +159,7 @@ window.addEventListener("DOMContentLoaded", () => {
   supabase.auth.onAuthStateChange(() => {
     loadUserCourses(list);
   });
+  window.addEventListener("course-list-refresh", () => {
+    loadUserCourses(list);
+  });
 });
