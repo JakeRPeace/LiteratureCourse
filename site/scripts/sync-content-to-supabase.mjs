@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import crypto from "node:crypto";
 import { createClient } from "@supabase/supabase-js";
 import { slugify } from "../src/lib/slug.js";
 
@@ -7,6 +8,7 @@ const args = new Set(process.argv.slice(2));
 const isAuto = args.has("--auto");
 const isDryRun = args.has("--dry-run");
 const skipDelete = args.has("--no-delete");
+const forceSync = args.has("--force");
 
 const supabaseUrl = process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL;
 const supabaseKey =
@@ -70,6 +72,14 @@ function listMarkdownFiles(targetPath) {
   return fs
     .readdirSync(targetPath, { withFileTypes: true })
     .filter((entry) => entry.isFile() && entry.name.endsWith(".md"));
+}
+
+function hashContent(content) {
+  return crypto.createHash("sha256").update(content).digest("hex");
+}
+
+function normalizePath(filePath) {
+  return path.relative(repoRoot, filePath).split(path.sep).join("/");
 }
 
 function parseFrontmatter(contents) {
@@ -145,7 +155,11 @@ function chunkRows(rows, size = 500) {
 }
 
 function readMarkdown(filePath) {
-  return fs.readFileSync(filePath, "utf8");
+  const content = fs.readFileSync(filePath, "utf8");
+  const relativePath = normalizePath(filePath);
+  fileChecksums.set(relativePath, hashContent(content));
+  manifestItems.add(`file:${relativePath}:${fileChecksums.get(relativePath)}`);
+  return content;
 }
 
 function docTypeFromFilename(filePath) {
@@ -244,6 +258,8 @@ const courseCategories = [];
 const courseDocs = [];
 const books = [];
 const bookGuides = [];
+const fileChecksums = new Map();
+const manifestItems = new Set();
 
 const courseDirs = listDirectories(repoRoot)
   .filter((dir) => /^\d{2}-\d{2}\s+/.test(dir.name))
@@ -253,6 +269,7 @@ const courseDirs = listDirectories(repoRoot)
 
 for (const courseId of courseDirs) {
   const coursePath = path.join(repoRoot, courseId);
+  manifestItems.add(`dir:${normalizePath(coursePath)}`);
   const title = courseTitleFromId(courseId);
   const courseType = courseTypeFromTitle(title);
 
@@ -281,6 +298,9 @@ for (const courseId of courseDirs) {
   const managementPath = managementDir
     ? path.join(coursePath, managementDir.name)
     : null;
+  if (managementPath) {
+    manifestItems.add(`dir:${normalizePath(managementPath)}`);
+  }
 
   let syllabusPath = null;
   let indexPath = null;
@@ -308,6 +328,7 @@ for (const courseId of courseDirs) {
     .filter((dir) => !/^\d{2}\sManagement$/.test(dir.name));
 
   for (const category of categories) {
+    manifestItems.add(`dir:${normalizePath(path.join(coursePath, category.name))}`);
     courseCategories.push(buildCategoryEntry(courseId, category.name));
     const categoryPath = path.join(coursePath, category.name);
     const bookDirs = listDirectories(categoryPath)
@@ -316,6 +337,9 @@ for (const courseId of courseDirs) {
       .sort();
 
     for (const bookDirName of bookDirs) {
+      manifestItems.add(
+        `dir:${normalizePath(path.join(categoryPath, bookDirName))}`
+      );
       const bookEntry = buildBookEntry(courseId, category.name, bookDirName);
       books.push(bookEntry);
       const bookPath = path.join(categoryPath, bookDirName);
@@ -348,6 +372,11 @@ const supabase = createClient(supabaseUrl, supabaseKey, {
   auth: { persistSession: false }
 });
 
+function buildManifestHash() {
+  const manifestList = Array.from(manifestItems).sort().join("\n");
+  return hashContent(manifestList);
+}
+
 async function upsertRows(table, rows, onConflict) {
   if (!rows.length) return;
   for (const chunk of chunkRows(rows, 500)) {
@@ -361,6 +390,20 @@ async function upsertRows(table, rows, onConflict) {
 }
 
 async function run() {
+  const manifestHash = buildManifestHash();
+  if (!forceSync) {
+    const { data, error } = await supabase
+      .from("content_sync")
+      .select("checksum")
+      .eq("source", "md")
+      .eq("source_path", "repo_manifest")
+      .maybeSingle();
+    if (!error && data?.checksum === manifestHash) {
+      console.log("No content changes detected. Skipping sync.");
+      return;
+    }
+  }
+
   if (!skipDelete) {
     const { error } = await supabase
       .from("courses")
@@ -376,6 +419,23 @@ async function run() {
   await upsertRows("course_docs", courseDocs, "course_id,doc_type");
   await upsertRows("books", books, "book_id");
   await upsertRows("book_guides", bookGuides, "book_id,guide_type");
+
+  const syncRows = [
+    {
+      source: "md",
+      source_path: "repo_manifest",
+      checksum: manifestHash
+    }
+  ];
+  for (const [filePath, checksum] of fileChecksums.entries()) {
+    syncRows.push({
+      source: "md",
+      source_path: filePath,
+      checksum
+    });
+  }
+
+  await upsertRows("content_sync", syncRows, "source,source_path");
 
   console.log(
     `Synced ${courses.length} courses, ${books.length} books, ${bookGuides.length} guides.`
