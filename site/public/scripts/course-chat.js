@@ -59,22 +59,35 @@ async function fetchCoverUpdates(bookRows) {
       })
     });
 
-    if (!response.ok) return;
+    if (!response.ok) {
+      console.warn("Cover fetch request failed.", response.status);
+      return;
+    }
     const data = await response.json();
     const covers = Array.isArray(data?.covers) ? data.covers : [];
-    if (!covers.length) return;
+    if (!covers.length) {
+      console.warn("No covers returned.", data);
+      return;
+    }
 
     await Promise.all(
-      covers.map((cover) =>
-        supabase
+      covers.map(async (cover) => {
+        const { error } = await supabase
           .from("books")
           .update({
             cover_url: cover.cover_url,
             cover_source: cover.cover_source,
             cover_source_id: cover.cover_source_id
           })
-          .eq("book_id", cover.book_id)
-      )
+          .eq("book_id", cover.book_id);
+
+        if (error) {
+          console.warn("Cover update failed.", {
+            book_id: cover.book_id,
+            error: error.message
+          });
+        }
+      })
     );
 
     window.dispatchEvent(new CustomEvent("course-list-refresh"));

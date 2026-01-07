@@ -39,10 +39,22 @@ async function fetchCover(book) {
   url.searchParams.set("limit", "10");
 
   const response = await fetch(url.toString());
-  if (!response.ok) return null;
+  if (!response.ok) {
+    console.warn("Cover lookup failed.", {
+      book_id: book.book_id,
+      status: response.status
+    });
+    return null;
+  }
   const json = await response.json();
   const doc = chooseDoc(json?.docs, book.author);
-  if (!doc?.cover_i) return null;
+  if (!doc?.cover_i) {
+    console.warn("No cover found.", {
+      book_id: book.book_id,
+      title: book.title
+    });
+    return null;
+  }
 
   return {
     book_id: book.book_id,

@@ -29,7 +29,7 @@ const courseSchema = z.object({
 const systemPrompt = [
   "You are drafting a private literature course for a reader.",
   "Return a concise course payload only, no markdown.",
-  "Use a short course title, a clear course_type (genre or theme),",
+  "Use a short course title, a short course_type label (1-3 words, genre or theme),",
   "and a 1-2 sentence summary.",
   "Provide exactly three distinct books with title and author."
 ].join(" ");
