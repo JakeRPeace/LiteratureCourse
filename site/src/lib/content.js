@@ -4,7 +4,26 @@ import { fileURLToPath } from "node:url";
 import { slugify } from "./slug.js";
 import coverMap from "../data/cover-map.json";
 
-const projectRoot = fileURLToPath(new URL("../../../", import.meta.url));
+const cwd = process.cwd();
+const rootCandidates = [
+  cwd,
+  path.resolve(cwd, ".."),
+  fileURLToPath(new URL("../../../", import.meta.url))
+];
+
+function hasCourseDirs(targetPath) {
+  try {
+    return fs
+      .readdirSync(targetPath, { withFileTypes: true })
+      .some((entry) => entry.isDirectory() && /^\d{2}-\d{2}\s+/.test(entry.name));
+  } catch (error) {
+    return false;
+  }
+}
+
+const projectRoot =
+  rootCandidates.find((candidate) => candidate && hasCourseDirs(candidate)) ||
+  path.resolve(cwd, "..");
 
 const markdownModules = import.meta.glob("../../../**/*.md", { eager: true });
 
