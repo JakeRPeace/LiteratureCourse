@@ -61,11 +61,11 @@ const sourceLabel = systemCourseSource === "supabase" ? "Supabase" : "Markdown";
         <p class="section-subtitle">Browse each course, track your reading, and rate completed books.</p>
       </div>
     </div>
-    <div class="card" data-course-test-panel hidden>
-      <div class="section-title">Add test course</div>
-      <p class="section-subtitle">Creates a private course with one book for your account.</p>
-      <button type="button" data-course-test-button>Add test course</button>
-      <p class="section-subtitle" data-course-test-note></p>
+    <div class="card" data-course-chat-panel hidden>
+      <div class="section-title">Create a course with chat</div>
+      <p class="section-subtitle">Describe the course and we will draft a 3-book outline.</p>
+      <button type="button" data-course-chat-open>Open course creator</button>
+      <p class="section-subtitle" data-course-chat-note></p>
     </div>
     <div class="section-divider"></div>
     <div class="data-list">
@@ -123,7 +123,34 @@ const sourceLabel = systemCourseSource === "supabase" ? "Supabase" : "Markdown";
       })}
     </div>
   </section>
+  <dialog class="chat-modal" data-course-chat-modal>
+    <div class="chat-modal-frame">
+      <div class="chat-header">
+        <div>
+          <div class="chat-title">Course Creator</div>
+          <div class="chat-subtitle">Describe the course you want. We will draft a 3-book outline.</div>
+        </div>
+        <button type="button" class="chat-close" data-course-chat-close>Close</button>
+      </div>
+      <div class="chat-log" data-course-chat-log></div>
+      <div class="chat-actions">
+        <button type="button" class="chat-secondary" data-course-chat-clear>Clear</button>
+        <button type="button" class="chat-primary" data-course-chat-create disabled>Create course</button>
+      </div>
+      <form class="chat-input" data-course-chat-form>
+        <textarea
+          name="course-chat"
+          rows="3"
+          placeholder="Example: Build a Modern Literature course focused on identity and exile."
+          data-course-chat-input
+          required
+        ></textarea>
+        <button type="submit" data-course-chat-send>Send</button>
+      </form>
+      <div class="chat-note" data-course-chat-modal-note></div>
+    </div>
+  </dialog>
   <script type="module" src="/scripts/course-list-status.js"></script>
   <script type="module" src="/scripts/course-list-user.js"></script>
-  <script type="module" src="/scripts/course-add-test.js"></script>
+  <script type="module" src="/scripts/course-chat.js"></script>
 </Base>
