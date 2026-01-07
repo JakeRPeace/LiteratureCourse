@@ -2,6 +2,9 @@
   "name": "literature-course-site",
   "type": "module",
   "private": true,
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "npm run validate && node scripts/fetch-covers.mjs --auto && node scripts/sync-content-to-supabase.mjs --auto && node scripts/verify-supabase-content.mjs --auto && astro build",
