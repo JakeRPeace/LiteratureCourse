@@ -45,7 +45,45 @@ function formatDraft(course) {
   return lines.join("\n");
 }
 
-async function createCourseFromDraft(course, note) {
+async function fetchCoverUpdates(bookRows) {
+  try {
+    const response = await fetch("/api/book-covers", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        books: bookRows.map((book) => ({
+          book_id: book.book_id,
+          title: book.title,
+          author: book.author
+        }))
+      })
+    });
+
+    if (!response.ok) return;
+    const data = await response.json();
+    const covers = Array.isArray(data?.covers) ? data.covers : [];
+    if (!covers.length) return;
+
+    await Promise.all(
+      covers.map((cover) =>
+        supabase
+          .from("books")
+          .update({
+            cover_url: cover.cover_url,
+            cover_source: cover.cover_source,
+            cover_source_id: cover.cover_source_id
+          })
+          .eq("book_id", cover.book_id)
+      )
+    );
+
+    window.dispatchEvent(new CustomEvent("course-list-refresh"));
+  } catch (error) {
+    console.warn("Cover fetch failed.", error);
+  }
+}
+
+async function createCourseFromDraft(course, note, onSuccess) {
   const { data: sessionData } = await supabase.auth.getSession();
   if (!sessionData.session) {
     setNote(note, "Sign in to create a course.", true);
@@ -94,9 +132,11 @@ async function createCourseFromDraft(course, note) {
     return;
   }
 
-  setNote(note, "Course created. It should appear below.");
+  fetchCoverUpdates(bookRows);
+  setNote(note, "");
   window.dispatchEvent(new CustomEvent("course-list-refresh"));
   window.dispatchEvent(new CustomEvent("course-switcher-refresh"));
+  if (onSuccess) onSuccess();
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -121,10 +161,33 @@ window.addEventListener("DOMContentLoaded", () => {
   let draftCourse = null;
   let pendingMessage = null;
   let isBusy = false;
+  let closeTimer = null;
+  let toastTimer = null;
+
+  const toast = document.createElement("div");
+  toast.className = "toast-banner";
+  toast.setAttribute("role", "status");
+  document.body.appendChild(toast);
+
+  const showToast = (message, duration = 5000) => {
+    toast.textContent = message;
+    toast.classList.add("is-visible");
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      toast.classList.remove("is-visible");
+    }, duration);
+  };
 
   const resetDraft = () => {
     draftCourse = null;
     createButton.disabled = true;
+  };
+
+  const resetChat = () => {
+    messages = [];
+    log.innerHTML = "";
+    resetDraft();
+    appendMessage("assistant", summaryFallback);
   };
 
   const appendMessage = (role, text) => {
@@ -176,10 +239,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   clearButton?.addEventListener("click", () => {
-    messages = [];
-    log.innerHTML = "";
-    resetDraft();
-    appendMessage("assistant", summaryFallback);
+    resetChat();
   });
 
   form.addEventListener("submit", async (event) => {
@@ -247,7 +307,14 @@ window.addEventListener("DOMContentLoaded", () => {
   createButton.addEventListener("click", async () => {
     if (!draftCourse) return;
     createButton.disabled = true;
-    await createCourseFromDraft(draftCourse, modalNote);
+    await createCourseFromDraft(draftCourse, modalNote, () => {
+      showToast("Course created. It should appear below.");
+      if (closeTimer) clearTimeout(closeTimer);
+      closeTimer = setTimeout(() => {
+        closeModal();
+        resetChat();
+      }, 5000);
+    });
   });
 
   supabase.auth.onAuthStateChange(() => {

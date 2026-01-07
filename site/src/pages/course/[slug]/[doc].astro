@@ -4,6 +4,8 @@ import { getCourses, getCourseBySlug } from "../../../lib/content.js";
 import { createClient } from "@supabase/supabase-js";
 import { marked } from "marked";
 
+export const prerender = true;
+
 export function getStaticPaths() {
   const courses = getCourses();
   return courses.flatMap((course) =>

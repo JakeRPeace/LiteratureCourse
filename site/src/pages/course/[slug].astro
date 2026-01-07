@@ -4,6 +4,8 @@ import CourseStatus from "../../components/CourseStatus.astro";
 import { getCourses, getCourseBySlug } from "../../lib/content.js";
 import { createClient } from "@supabase/supabase-js";
 
+export const prerender = true;
+
 export function getStaticPaths() {
   return getCourses().map((course) => ({
     params: { slug: course.slug }
