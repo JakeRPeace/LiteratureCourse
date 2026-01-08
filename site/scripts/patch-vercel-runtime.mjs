@@ -1,30 +1,46 @@
-import { readFile, writeFile } from "node:fs/promises";
+import { readFile, readdir, writeFile } from "node:fs/promises";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const outputConfigUrl = new URL("../.vercel/output/config.json", import.meta.url);
-const outputConfigPath = fileURLToPath(outputConfigUrl);
+const outputDir = fileURLToPath(new URL("../.vercel/output", import.meta.url));
+const outputConfigPath = join(outputDir, "config.json");
+const functionsDir = join(outputDir, "functions");
 
+const envRuntime = process.env.VERCEL_FUNCTION_RUNTIME;
 const targetMajor = Number.parseInt(process.versions.node.split(".")[0], 10);
-const targetRuntime = Number.isFinite(targetMajor)
-  ? `nodejs${targetMajor}.x`
-  : null;
+const targetRuntime =
+  envRuntime && typeof envRuntime === "string"
+    ? envRuntime
+    : Number.isFinite(targetMajor)
+      ? `nodejs${targetMajor}.x`
+      : null;
 
-const applyRuntime = (config) => {
-  if (!config || !config.functions || typeof config.functions !== "object") {
-    return false;
-  }
+const applyRuntimeField = (node) => {
+  if (!node || typeof node !== "object") return false;
+  if (typeof node.runtime !== "string") return false;
+  if (!node.runtime.startsWith("nodejs")) return false;
+  if (node.runtime === targetRuntime) return false;
+  node.runtime = targetRuntime;
+  return true;
+};
 
+const updateJsonFile = async (path) => {
+  const raw = await readFile(path, "utf8");
+  const data = JSON.parse(raw);
   let updated = false;
-  for (const fn of Object.values(config.functions)) {
-    if (!fn || typeof fn !== "object") continue;
-    if (typeof fn.runtime !== "string") continue;
-    if (!fn.runtime.startsWith("nodejs")) continue;
-    if (fn.runtime === targetRuntime) continue;
-    fn.runtime = targetRuntime;
+
+  if (data && data.functions && typeof data.functions === "object") {
+    for (const fn of Object.values(data.functions)) {
+      if (applyRuntimeField(fn)) updated = true;
+    }
+  } else if (applyRuntimeField(data)) {
     updated = true;
   }
 
-  return updated;
+  if (!updated) return false;
+
+  await writeFile(path, JSON.stringify(data, null, 2) + "\n", "utf8");
+  return true;
 };
 
 try {
@@ -33,17 +49,38 @@ try {
     process.exit(0);
   }
 
-  const raw = await readFile(outputConfigPath, "utf8");
-  const config = JSON.parse(raw);
-  const updated = applyRuntime(config);
+  let updatedCount = 0;
 
-  if (!updated) {
+  try {
+    if (await updateJsonFile(outputConfigPath)) updatedCount += 1;
+  } catch (error) {
+    if (error && error.code !== "ENOENT") throw error;
+  }
+
+  try {
+    const entries = await readdir(functionsDir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (!entry.isDirectory()) continue;
+      if (!entry.name.endsWith(".func")) continue;
+      const fnConfigPath = join(functionsDir, entry.name, "config.json");
+      try {
+        if (await updateJsonFile(fnConfigPath)) updatedCount += 1;
+      } catch (error) {
+        if (error && error.code !== "ENOENT") throw error;
+      }
+    }
+  } catch (error) {
+    if (error && error.code !== "ENOENT") throw error;
+  }
+
+  if (!updatedCount) {
     console.log("[runtime] No changes needed.");
     process.exit(0);
   }
 
-  await writeFile(outputConfigPath, JSON.stringify(config, null, 2) + "\n", "utf8");
-  console.log(`[runtime] Updated function runtimes to ${targetRuntime}.`);
+  console.log(
+    `[runtime] Updated ${updatedCount} runtime file(s) to ${targetRuntime}.`
+  );
 } catch (error) {
   if (error && error.code === "ENOENT") {
     console.log("[runtime] No build output found; skipping.");
