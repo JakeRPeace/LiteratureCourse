@@ -11,6 +11,31 @@ const requestSchema = z.object({
   books: z.array(bookSchema).min(1).max(5)
 });
 
+const OPEN_LIBRARY_URL = "https://openlibrary.org/search.json";
+const OPEN_LIBRARY_HEADERS = {
+  "User-Agent": "LiteratureCourse/1.0 (book covers)"
+};
+
+function normalizeTitle(value) {
+  return (value || "").replace(/\s+/g, " ").trim();
+}
+
+function getTitleVariants(title) {
+  const base = normalizeTitle(title);
+  const variants = [base];
+
+  const colon = base.split(":")[0].trim();
+  if (colon && colon !== base) variants.push(colon);
+
+  const dash = base.split(" - ")[0].trim();
+  if (dash && dash !== base && !variants.includes(dash)) variants.push(dash);
+
+  const paren = base.replace(/\s*\([^)]*\)\s*$/, "").trim();
+  if (paren && paren !== base && !variants.includes(paren)) variants.push(paren);
+
+  return variants.filter(Boolean);
+}
+
 function chooseDoc(docs, author) {
   if (!Array.isArray(docs)) return null;
   const candidates = docs.filter((doc) => doc && doc.cover_i);
@@ -30,38 +55,65 @@ function chooseDoc(docs, author) {
   return partial || candidates[0];
 }
 
-async function fetchCover(book) {
-  const url = new URL("https://openlibrary.org/search.json");
-  url.searchParams.set("title", book.title);
-  if (book.author) {
-    url.searchParams.set("author", book.author);
+async function searchOpenLibrary(title, author) {
+  const url = new URL(OPEN_LIBRARY_URL);
+  url.searchParams.set("title", title);
+  if (author) {
+    url.searchParams.set("author", author);
   }
   url.searchParams.set("limit", "10");
 
-  const response = await fetch(url.toString());
+  const response = await fetch(url.toString(), {
+    headers: OPEN_LIBRARY_HEADERS
+  });
   if (!response.ok) {
     console.warn("Cover lookup failed.", {
-      book_id: book.book_id,
-      status: response.status
+      status: response.status,
+      title,
+      author
     });
-    return null;
+    return [];
   }
   const json = await response.json();
-  const doc = chooseDoc(json?.docs, book.author);
-  if (!doc?.cover_i) {
-    console.warn("No cover found.", {
-      book_id: book.book_id,
-      title: book.title
-    });
-    return null;
+  return Array.isArray(json?.docs) ? json.docs : [];
+}
+
+async function fetchCover(book) {
+  const author = (book.author || "").trim();
+  const titleVariants = getTitleVariants(book.title);
+
+  for (const title of titleVariants) {
+    let docs = await searchOpenLibrary(title, author || null);
+    let doc = chooseDoc(docs, author);
+    if (doc?.cover_i) {
+      return {
+        book_id: book.book_id,
+        cover_url: `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`,
+        cover_source: "openlibrary",
+        cover_source_id: String(doc.cover_i)
+      };
+    }
+
+    if (author) {
+      docs = await searchOpenLibrary(title, null);
+      doc = chooseDoc(docs, null);
+      if (doc?.cover_i) {
+        return {
+          book_id: book.book_id,
+          cover_url: `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`,
+          cover_source: "openlibrary",
+          cover_source_id: String(doc.cover_i)
+        };
+      }
+    }
   }
 
-  return {
+  console.warn("No cover found.", {
     book_id: book.book_id,
-    cover_url: `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`,
-    cover_source: "openlibrary",
-    cover_source_id: String(doc.cover_i)
-  };
+    title: book.title,
+    author: author || null
+  });
+  return null;
 }
 
 export const POST: APIRoute = async ({ request }) => {

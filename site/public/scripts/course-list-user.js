@@ -2,6 +2,7 @@ import { supabase } from "./supabase.js";
 
 const summaryFallback = "Short course overview available in the syllabus.";
 let loadSequence = 0;
+const coverRetryCache = new Set();
 
 function slugify(value) {
   return value
@@ -106,6 +107,64 @@ function buildCourseRow(course, stats) {
   return row;
 }
 
+async function refreshMissingCovers(bookRows) {
+  const missing = (bookRows || []).filter(
+    (book) => book && !book.cover_url && !coverRetryCache.has(book.book_id)
+  );
+
+  if (!missing.length) return;
+
+  const batch = missing.slice(0, 5);
+  batch.forEach((book) => coverRetryCache.add(book.book_id));
+
+  try {
+    const response = await fetch("/api/book-covers", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        books: batch.map((book) => ({
+          book_id: book.book_id,
+          title: book.title,
+          author: book.author
+        }))
+      })
+    });
+
+    if (!response.ok) {
+      console.warn("Cover refresh request failed.", response.status);
+      return;
+    }
+
+    const data = await response.json();
+    const covers = Array.isArray(data?.covers) ? data.covers : [];
+    if (!covers.length) return;
+
+    await Promise.all(
+      covers.map(async (cover) => {
+        const { error } = await supabase
+          .from("books")
+          .update({
+            cover_url: cover.cover_url,
+            cover_source: cover.cover_source,
+            cover_source_id: cover.cover_source_id
+          })
+          .eq("book_id", cover.book_id);
+
+        if (error) {
+          console.warn("Cover update failed.", {
+            book_id: cover.book_id,
+            error: error.message
+          });
+        }
+      })
+    );
+
+    window.dispatchEvent(new CustomEvent("course-list-refresh"));
+  } catch (error) {
+    console.warn("Cover refresh failed.", error);
+  }
+}
+
 async function loadUserCourses(list) {
   const sequence = ++loadSequence;
   const { data: sessionData } = await supabase.auth.getSession();
@@ -138,7 +197,7 @@ async function loadUserCourses(list) {
   const courseIds = courses.map((course) => course.course_id);
   const { data: bookRows } = await supabase
     .from("books")
-    .select("course_id, cover_url")
+    .select("course_id, book_id, title, author, cover_url")
     .in("course_id", courseIds);
 
   if (sequence !== loadSequence) return;
@@ -162,6 +221,8 @@ async function loadUserCourses(list) {
 
   list.appendChild(fragment);
   window.dispatchEvent(new CustomEvent("course-rows-updated"));
+
+  void refreshMissingCovers(bookRows);
 }
 
 window.addEventListener("DOMContentLoaded", () => {

@@ -45,7 +45,7 @@ function formatDraft(course) {
   return lines.join("\n");
 }
 
-async function fetchCoverUpdates(bookRows) {
+async function fetchCoverPayload(bookRows) {
   try {
     const response = await fetch("/api/book-covers", {
       method: "POST",
@@ -61,38 +61,19 @@ async function fetchCoverUpdates(bookRows) {
 
     if (!response.ok) {
       console.warn("Cover fetch request failed.", response.status);
-      return;
+      return [];
     }
     const data = await response.json();
     const covers = Array.isArray(data?.covers) ? data.covers : [];
     if (!covers.length) {
       console.warn("No covers returned.", data);
-      return;
+      return [];
     }
 
-    await Promise.all(
-      covers.map(async (cover) => {
-        const { error } = await supabase
-          .from("books")
-          .update({
-            cover_url: cover.cover_url,
-            cover_source: cover.cover_source,
-            cover_source_id: cover.cover_source_id
-          })
-          .eq("book_id", cover.book_id);
-
-        if (error) {
-          console.warn("Cover update failed.", {
-            book_id: cover.book_id,
-            error: error.message
-          });
-        }
-      })
-    );
-
-    window.dispatchEvent(new CustomEvent("course-list-refresh"));
+    return covers;
   } catch (error) {
     console.warn("Cover fetch failed.", error);
+    return [];
   }
 }
 
@@ -138,14 +119,26 @@ async function createCourseFromDraft(course, note, onSuccess) {
     sort_order: index + 1
   }));
 
-  const { error: bookError } = await supabase.from("books").insert(bookRows);
+  const coverPayload = await fetchCoverPayload(bookRows);
+  const coverMap = new Map(coverPayload.map((cover) => [cover.book_id, cover]));
+  const booksToInsert = bookRows.map((book) => {
+    const cover = coverMap.get(book.book_id);
+    if (!cover) return book;
+    return {
+      ...book,
+      cover_url: cover.cover_url,
+      cover_source: cover.cover_source,
+      cover_source_id: cover.cover_source_id
+    };
+  });
+
+  const { error: bookError } = await supabase.from("books").insert(booksToInsert);
 
   if (bookError) {
     setNote(note, bookError.message || "Course created, but books failed.", true);
     return;
   }
 
-  fetchCoverUpdates(bookRows);
   setNote(note, "");
   window.dispatchEvent(new CustomEvent("course-list-refresh"));
   window.dispatchEvent(new CustomEvent("course-switcher-refresh"));
