@@ -62,11 +62,15 @@ try {
     for (const entry of entries) {
       if (!entry.isDirectory()) continue;
       if (!entry.name.endsWith(".func")) continue;
-      const fnConfigPath = join(functionsDir, entry.name, "config.json");
-      try {
-        if (await updateJsonFile(fnConfigPath)) updatedCount += 1;
-      } catch (error) {
-        if (error && error.code !== "ENOENT") throw error;
+      const fnDir = join(functionsDir, entry.name);
+      const candidates = ["config.json", ".vc-config.json"];
+      for (const candidate of candidates) {
+        const fnConfigPath = join(fnDir, candidate);
+        try {
+          if (await updateJsonFile(fnConfigPath)) updatedCount += 1;
+        } catch (error) {
+          if (error && error.code !== "ENOENT") throw error;
+        }
       }
     }
   } catch (error) {
