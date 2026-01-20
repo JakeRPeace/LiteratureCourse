@@ -9,7 +9,9 @@
     "covers": "node scripts/fetch-covers.mjs",
     "sync:content": "node scripts/sync-content-to-supabase.mjs",
     "verify:content": "node scripts/verify-supabase-content.mjs",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "test": "vitest",
+    "test:run": "vitest run"
   },
   "dependencies": {
     "@astrojs/vercel": "^7.8.2",
@@ -19,5 +21,8 @@
     "astro": "^4.15.4",
     "marked": "^12.0.2",
     "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "vitest": "^1.6.0"
   }
 }

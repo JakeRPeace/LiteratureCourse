@@ -1,4 +1,5 @@
 import { supabase } from "./supabase.js";
+import { applyStatusCounts } from "./course-progress-utils.js";
 
 window.addEventListener("DOMContentLoaded", () => {
   const widgets = document.querySelectorAll("[data-course-progress]");
@@ -77,13 +78,27 @@ window.addEventListener("DOMContentLoaded", () => {
         ])
       );
 
-      (data || []).forEach((row) => {
-        const courseId = (row.book_id || "").split(/[\\/]/)[0];
-        const entry = courseMap.get(courseId);
-        if (!entry) return;
-        if (row.status === "read") entry.readCount += 1;
-        if (row.status === "in_progress") entry.inProgressCount += 1;
-      });
+      const statusRows = data || [];
+      const pending = applyStatusCounts(courseMap, statusRows);
+
+      if (pending.length) {
+        const bookIds = Array.from(
+          new Set(pending.map((row) => row?.book_id).filter(Boolean))
+        );
+        if (bookIds.length) {
+          const { data: bookRows, error: bookError } = await supabase
+            .from("books")
+            .select("book_id, course_id")
+            .in("book_id", bookIds);
+
+          if (!bookError && bookRows?.length) {
+            const bookMap = new Map(
+              bookRows.map((row) => [row.book_id, row.course_id])
+            );
+            applyStatusCounts(courseMap, pending, bookMap);
+          }
+        }
+      }
 
       const ranked = Array.from(courseMap.values())
         .sort((a, b) => {
