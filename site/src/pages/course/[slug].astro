@@ -2,81 +2,43 @@
 import Base from "../../layouts/Base.astro";
 import CourseStatus from "../../components/CourseStatus.astro";
 import { getCourses, getCourseBySlug } from "../../lib/content.js";
-import { createClient } from "@supabase/supabase-js";
+import { resolveSourceLabel } from "../../lib/source-labels.js";
+import {
+  loadSystemCourseBySlug,
+  loadSystemCourseBooks,
+  loadSystemCourseDocs,
+  loadSystemCourses
+} from "../../lib/system-content.js";
 
 export const prerender = true;
 
-export function getStaticPaths() {
-  return getCourses().map((course) => ({
+export async function getStaticPaths() {
+  const systemCourses = await loadSystemCourses();
+  const courses = systemCourses ?? getCourses();
+  return courses.map((course) => ({
     params: { slug: course.slug }
   }));
 }
 
 const { slug } = Astro.params;
-const courses = getCourses();
-const course = getCourseBySlug(slug);
+const systemCourses = await loadSystemCourses();
+const courses = systemCourses ?? getCourses();
+const systemCourse = await loadSystemCourseBySlug(slug);
+const markdownCourse = getCourseBySlug(slug);
+const course = systemCourse ?? markdownCourse;
 if (!course) {
   throw new Error(`Course not found: ${slug}`);
 }
 
-const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
-const supabase =
-  supabaseUrl && supabaseKey
-    ? createClient(supabaseUrl, supabaseKey, {
-        auth: { persistSession: false }
-      })
-    : null;
-
-async function loadSystemBooks(courseId) {
-  if (!supabase) return null;
-
-  const { data: bookRows, error } = await supabase
-    .from("books")
-    .select("book_id, title, author, slug, cover_url, sort_order")
-    .eq("course_id", courseId)
-    .order("sort_order", { ascending: true });
-
-  if (error || !bookRows || !bookRows.length) return null;
-
-  return bookRows.map((book) => ({
-    id: book.book_id,
-    title: book.title,
-    author: book.author || "",
-    slug: book.slug,
-    coverUrl: book.cover_url || null
-  }));
-}
-
-async function loadSystemDocs(courseId) {
-  if (!supabase) return null;
-
-  const { data: docRows, error } = await supabase
-    .from("course_docs")
-    .select("doc_type, label, stage, excerpt, slug, sort_order")
-    .eq("course_id", courseId)
-    .order("sort_order", { ascending: true });
-
-  if (error || !docRows || !docRows.length) return null;
-
-  return docRows.map((doc) => ({
-    docType: doc.doc_type,
-    label: doc.label || "Course document",
-    stage: doc.stage || "Course material",
-    excerpt: doc.excerpt || "",
-    slug: doc.slug
-  }));
-}
-
-const systemBooks = await loadSystemBooks(course.id);
-const courseBooks = systemBooks ?? course.books;
+const systemBooks = await loadSystemCourseBooks(course.id);
+const courseBooks = systemBooks ?? markdownCourse?.books ?? course.books ?? [];
 const booksSource = systemBooks ? "supabase" : "markdown";
-const booksSourceLabel = booksSource === "supabase" ? "Supabase" : "Markdown";
+const booksSourceLabel = resolveSourceLabel(booksSource);
 
-const systemDocs = await loadSystemDocs(course.id);
+const systemDocs = await loadSystemCourseDocs(course.id);
 const docsSource = systemDocs ? "supabase" : "markdown";
-const docsSourceLabel = docsSource === "supabase" ? "Supabase" : "Markdown";
-const courseDocs = (systemDocs ?? course.docs ?? []).filter(
+const docsSourceLabel = resolveSourceLabel(docsSource);
+const courseDocs = (systemDocs ?? markdownCourse?.docs ?? course.docs ?? []).filter(
   (doc) => doc.docType !== "index"
 );
 const bookIds = courseBooks.map((book) => book.id);
@@ -84,6 +46,7 @@ const bookIds = courseBooks.map((book) => book.id);
 <Base
   title={`${course.title} | Literature Course Library`}
   authRequired={true}
+  heroCourses={courses}
   courseSwitcher={{
     current: course,
     courses

@@ -1,12 +1,24 @@
 ---
 import Base from "../../../layouts/Base.astro";
 import { getCourses, getBookBySlug } from "../../../lib/content.js";
-import { createClient } from "@supabase/supabase-js";
+import {
+  loadSystemBookBySlug,
+  loadSystemBookGuide,
+  loadSystemBookGuidesIndex
+} from "../../../lib/system-content.js";
+import { resolveSourceLabel } from "../../../lib/source-labels.js";
 import { marked } from "marked";
 
 export const prerender = true;
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+  const systemGuidesIndex = await loadSystemBookGuidesIndex();
+  if (systemGuidesIndex) {
+    return systemGuidesIndex.map((entry) => ({
+      params: { slug: entry.bookSlug, guide: entry.guideSlug }
+    }));
+  }
+
   const books = getCourses().flatMap((course) => course.books);
   return books.flatMap((book) =>
     book.guides.map((guide) => ({
@@ -16,51 +28,26 @@ export function getStaticPaths() {
 }
 
 const { slug, guide: guideSlug } = Astro.params;
-const book = getBookBySlug(slug);
+const systemBook = await loadSystemBookBySlug(slug);
+const markdownBook = getBookBySlug(slug);
+const book = systemBook ?? markdownBook;
 if (!book) {
   throw new Error(`Book not found: ${slug}`);
 }
 
-const guideEntry = book.guides.find((guide) => guide.slug === guideSlug);
-if (!guideEntry) {
+const guideEntry =
+  markdownBook?.guides.find((guide) => guide.slug === guideSlug) || null;
+
+const systemGuide = await loadSystemBookGuide(book.id, guideSlug);
+if (!systemGuide && !guideEntry) {
   throw new Error(`Guide not found: ${guideSlug}`);
 }
 
-const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
-const supabase =
-  supabaseUrl && supabaseKey
-    ? createClient(supabaseUrl, supabaseKey, {
-        auth: { persistSession: false }
-      })
-    : null;
-
-async function loadSystemGuide(bookId, slugParam) {
-  if (!supabase) return null;
-
-  const { data, error } = await supabase
-    .from("book_guides")
-    .select("guide_type, label, stage, content_md, excerpt, slug")
-    .eq("book_id", bookId)
-    .eq("slug", slugParam)
-    .maybeSingle();
-
-  if (error || !data || !data.content_md) return null;
-
-  return {
-    guideType: data.guide_type,
-    label: data.label || guideEntry.label,
-    stage: data.stage || guideEntry.stage,
-    content: data.content_md
-  };
-}
-
-const systemGuide = await loadSystemGuide(book.id, guideSlug);
-const guideModule = systemGuide ? null : guideEntry.module;
+const guideModule = systemGuide ? null : guideEntry?.module;
 const guideSource = systemGuide ? "supabase" : "markdown";
-const guideSourceLabel = guideSource === "supabase" ? "Supabase" : "Markdown";
-const guideLabel = systemGuide?.label || guideEntry.label;
-const guideStage = systemGuide?.stage || guideEntry.stage;
+const guideSourceLabel = resolveSourceLabel(guideSource);
+const guideLabel = systemGuide?.label || guideEntry?.label || "Guide";
+const guideStage = systemGuide?.stage || guideEntry?.stage || "Reading guide";
 const guideHtml = systemGuide ? marked.parse(systemGuide.content) : null;
 ---
 <Base title={`${guideLabel} | ${book.title} | Literature Course Library`} authRequired={true}>

@@ -1,6 +1,7 @@
 ---
 import AuthPanel from "../components/AuthPanel.astro";
 import { getCourses } from "../lib/content.js";
+import { loadSystemCourses } from "../lib/system-content.js";
 const {
   title = "Literature Courses",
   showAuth = true,
@@ -27,13 +28,22 @@ const normalizeHeroCourses = (courses) =>
             : 0
     }));
 
-const heroCourses = heroCoursesInput
-  ? normalizeHeroCourses(heroCoursesInput)
-  : getCourses().map((course) => ({
-      id: course.id,
-      title: course.title,
-      totalBooks: course.books.length
-    }));
+let heroCourses = heroCoursesInput ? normalizeHeroCourses(heroCoursesInput) : null;
+if (!heroCourses && showHero) {
+  const systemCourses = await loadSystemCourses();
+  if (systemCourses) {
+    heroCourses = normalizeHeroCourses(systemCourses);
+  } else {
+    heroCourses = normalizeHeroCourses(
+      getCourses().map((course) => ({
+        id: course.id,
+        title: course.title,
+        totalBooks: course.books.length
+      }))
+    );
+  }
+}
+heroCourses = heroCourses || [];
 const heroSlots = Array.from({ length: 3 });
 ---
 <!doctype html>

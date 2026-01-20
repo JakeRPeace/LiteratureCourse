@@ -2,6 +2,10 @@
 import Base from "../../layouts/Base.astro";
 import StatusWidget from "../../components/StatusWidget.astro";
 import { getCourses } from "../../lib/content.js";
+import { loadSystemCourses } from "../../lib/system-content.js";
+
+const systemCourses = await loadSystemCourses();
+const courses = systemCourses ?? getCourses();
 
 const courseSwitcher = {
   current: {
@@ -10,7 +14,7 @@ const courseSwitcher = {
     slug: "",
     source: "user"
   },
-  courses: getCourses()
+  courses
 };
 
 const bookSwitcher = {
@@ -26,6 +30,7 @@ const bookSwitcher = {
 <Base
   title="Book | Literature Course Library"
   authRequired={true}
+  heroCourses={courses}
   courseSwitcher={courseSwitcher}
   bookSwitcher={bookSwitcher}
 >

@@ -1,12 +1,24 @@
 ---
 import Base from "../../../layouts/Base.astro";
 import { getCourses, getCourseBySlug } from "../../../lib/content.js";
-import { createClient } from "@supabase/supabase-js";
+import {
+  loadSystemCourseBySlug,
+  loadSystemCourseDoc,
+  loadSystemCourseDocIndex
+} from "../../../lib/system-content.js";
+import { resolveSourceLabel } from "../../../lib/source-labels.js";
 import { marked } from "marked";
 
 export const prerender = true;
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+  const systemDocIndex = await loadSystemCourseDocIndex();
+  if (systemDocIndex) {
+    return systemDocIndex.map((entry) => ({
+      params: { slug: entry.courseSlug, doc: entry.docSlug }
+    }));
+  }
+
   const courses = getCourses();
   return courses.flatMap((course) =>
     (course.docs || []).map((doc) => ({
@@ -16,51 +28,25 @@ export function getStaticPaths() {
 }
 
 const { slug, doc: docSlug } = Astro.params;
-const course = getCourseBySlug(slug);
+const systemCourse = await loadSystemCourseBySlug(slug);
+const markdownCourse = getCourseBySlug(slug);
+const course = systemCourse ?? markdownCourse;
 if (!course) {
   throw new Error(`Course not found: ${slug}`);
 }
 
-const docEntry = (course.docs || []).find((doc) => doc.slug === docSlug);
-if (!docEntry) {
+const docEntry = (markdownCourse?.docs || []).find((doc) => doc.slug === docSlug) || null;
+
+const systemDoc = await loadSystemCourseDoc(course.id, docSlug);
+if (!systemDoc && !docEntry) {
   throw new Error(`Course doc not found: ${docSlug}`);
 }
 
-const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
-const supabase =
-  supabaseUrl && supabaseKey
-    ? createClient(supabaseUrl, supabaseKey, {
-        auth: { persistSession: false }
-      })
-    : null;
-
-async function loadSystemDoc(courseId, docSlugParam) {
-  if (!supabase) return null;
-
-  const { data, error } = await supabase
-    .from("course_docs")
-    .select("doc_type, label, stage, content_md, excerpt, slug")
-    .eq("course_id", courseId)
-    .eq("slug", docSlugParam)
-    .maybeSingle();
-
-  if (error || !data || !data.content_md) return null;
-
-  return {
-    docType: data.doc_type,
-    label: data.label || docEntry.label,
-    stage: data.stage || docEntry.stage,
-    content: data.content_md
-  };
-}
-
-const systemDoc = await loadSystemDoc(course.id, docSlug);
-const docModule = systemDoc ? null : docEntry.module;
+const docModule = systemDoc ? null : docEntry?.module;
 const docSource = systemDoc ? "supabase" : "markdown";
-const docSourceLabel = docSource === "supabase" ? "Supabase" : "Markdown";
-const docLabel = systemDoc?.label || docEntry.label;
-const docStage = systemDoc?.stage || docEntry.stage;
+const docSourceLabel = resolveSourceLabel(docSource);
+const docLabel = systemDoc?.label || docEntry?.label || "Course document";
+const docStage = systemDoc?.stage || docEntry?.stage || "Course material";
 const docHtml = systemDoc ? marked.parse(systemDoc.content) : null;
 ---
 <Base title={`${docLabel} | ${course.title} | Literature Course Library`} authRequired={true}>

@@ -2,87 +2,66 @@
 import Base from "../../layouts/Base.astro";
 import StatusWidget from "../../components/StatusWidget.astro";
 import { getCourses, getBookBySlug } from "../../lib/content.js";
-import { createClient } from "@supabase/supabase-js";
+import { resolveSourceLabel } from "../../lib/source-labels.js";
+import { slugify } from "../../lib/slug.js";
+import {
+  loadSystemBookBySlug,
+  loadSystemBookGuides,
+  loadSystemBooks,
+  loadSystemCourseBooks,
+  loadSystemCourses
+} from "../../lib/system-content.js";
 
 export const prerender = true;
 
-export function getStaticPaths() {
-  const books = getCourses().flatMap((course) => course.books);
+export async function getStaticPaths() {
+  const systemBooks = await loadSystemBooks();
+  const books = systemBooks ?? getCourses().flatMap((course) => course.books);
   return books.map((book) => ({
     params: { slug: book.slug }
   }));
 }
 
 const { slug } = Astro.params;
-const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
-
-async function loadSystemBook(bookSlug) {
-  if (!supabaseUrl || !supabaseKey) return null;
-  const supabase = createClient(supabaseUrl, supabaseKey, {
-    auth: { persistSession: false }
-  });
-
-  const { data: bookRow, error } = await supabase
-    .from("books")
-    .select("book_id, course_id, title, author, slug, cover_url")
-    .eq("slug", bookSlug)
-    .maybeSingle();
-
-  if (error || !bookRow) return null;
-
-  const { data: guideRows, error: guideError } = await supabase
-    .from("book_guides")
-    .select("guide_type, label, stage, excerpt, slug, sort_order")
-    .eq("book_id", bookRow.book_id)
-    .order("sort_order", { ascending: true });
-
-  if (guideError) return null;
-
-  const guides = (guideRows || []).map((guide) => ({
-    guideType: guide.guide_type,
-    label: guide.label || "Guide",
-    stage: guide.stage || "Reading guide",
-    excerpt: guide.excerpt || "",
-    slug: guide.slug,
-    order: guide.sort_order,
-    source: "supabase"
-  }));
-
-  return {
-    id: bookRow.book_id,
-    courseId: bookRow.course_id,
-    title: bookRow.title,
-    author: bookRow.author || "",
-    slug: bookRow.slug,
-    coverUrl: bookRow.cover_url || null,
-    guides
-  };
-}
-
-const systemBook = await loadSystemBook(slug);
-const book = systemBook ?? getBookBySlug(slug);
+const systemCourses = await loadSystemCourses();
+const markdownCourses = getCourses();
+const courses = systemCourses ?? markdownCourses;
+const systemBook = await loadSystemBookBySlug(slug);
+const markdownBook = getBookBySlug(slug);
+const book = systemBook ?? markdownBook;
 if (!book) {
   throw new Error(`Book not found: ${slug}`);
 }
 const bookSource = systemBook ? "supabase" : "markdown";
-const bookSourceLabel = bookSource === "supabase" ? "Supabase" : "Markdown";
+const bookSourceLabel = resolveSourceLabel(bookSource);
 
-const courses = getCourses();
-const course = courses.find((c) => c.id === book.courseId);
+const systemGuides = await loadSystemBookGuides(book.id);
+const guideSource = systemGuides ? "supabase" : "markdown";
+const guideSourceLabel = resolveSourceLabel(guideSource);
 
-const guideCards = systemBook ? book.guides : book.guides.filter((guide) => guide.module);
+const markdownCourse = markdownCourses.find((c) => c.id === book.courseId) || null;
+const course = courses.find((c) => c.id === book.courseId) || markdownCourse || {
+  id: book.courseId,
+  slug: book.courseId ? slugify(book.courseId) : "",
+  title: "Course"
+};
+const systemCourseBooks = await loadSystemCourseBooks(book.courseId);
+const courseBooks = systemCourseBooks ?? markdownCourse?.books ?? course.books ?? [];
+
+const guideCards =
+  systemGuides ?? (markdownBook?.guides ?? []).filter((guide) => guide.module);
 ---
 <Base
   title={`${book.title} | Literature Course Library`}
   authRequired={true}
+  heroCourses={courses}
   courseSwitcher={{
     current: course,
     courses
   }}
   bookSwitcher={{
     current: book,
-    books: course.books
+    books: courseBooks
   }}
 >
   <section class="stack">
@@ -141,7 +120,7 @@ const guideCards = systemBook ? book.guides : book.guides.filter((guide) => guid
             <div class="guide-meta">
               {guide.order ? <span class="guide-chip">Guide {guide.order}</span> : null}
               <span class="guide-chip">{book.id}</span>
-              <span class="data-source-pill">{bookSourceLabel}</span>
+              <span class="data-source-pill">{guideSourceLabel}</span>
             </div>
           </a>
         ))}

@@ -1,57 +1,13 @@
 ---
 import Base from "../layouts/Base.astro";
 import { getCourses } from "../lib/content.js";
-import { slugify } from "../lib/slug.js";
-import { createClient } from "@supabase/supabase-js";
-
-const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
-
-async function loadSystemCourses() {
-  if (!supabaseUrl || !supabaseKey) return null;
-  const supabase = createClient(supabaseUrl, supabaseKey, {
-    auth: { persistSession: false }
-  });
-
-  const { data: courseRows, error: courseError } = await supabase
-    .from("courses")
-    .select("course_id, title, course_type, summary, slug")
-    .eq("source", "system")
-    .order("course_id");
-
-  if (courseError || !courseRows || !courseRows.length) return null;
-
-  const courseIds = courseRows.map((course) => course.course_id);
-
-  const { data: bookRows, error: bookError } = await supabase
-    .from("books")
-    .select("course_id, cover_url")
-    .in("course_id", courseIds);
-
-  if (bookError) return null;
-
-  const bookMap = new Map();
-  (bookRows || []).forEach((book) => {
-    if (!book?.course_id) return;
-    const entries = bookMap.get(book.course_id) || [];
-    entries.push({ coverUrl: book.cover_url || null });
-    bookMap.set(book.course_id, entries);
-  });
-
-  return courseRows.map((course) => ({
-    id: course.course_id,
-    title: course.title,
-    summary: course.summary || "",
-    slug: course.slug || slugify(course.course_id),
-    books: bookMap.get(course.course_id) || [],
-    courseType: course.course_type || ""
-  }));
-}
+import { resolveSourceLabel } from "../lib/source-labels.js";
+import { loadSystemCourses } from "../lib/system-content.js";
 
 const systemCourses = await loadSystemCourses();
 const courses = systemCourses ?? getCourses();
 const systemCourseSource = systemCourses ? "supabase" : "markdown";
-const sourceLabel = systemCourseSource === "supabase" ? "Supabase" : "Markdown";
+const sourceLabel = resolveSourceLabel(systemCourseSource);
 ---
 <Base title="Literature Course Library" authRequired={true} heroCourses={courses}>
   <section class="stack">
