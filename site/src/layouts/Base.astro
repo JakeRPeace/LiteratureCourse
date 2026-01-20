@@ -11,7 +11,8 @@ const {
   loginPage = false,
   courseSwitcher = null,
   bookSwitcher = null,
-  heroCourses: heroCoursesInput = null
+  heroCourses: heroCoursesInput = null,
+  showSourcePills: showSourcePillsProp = null
 } = Astro.props;
 
 const normalizeHeroCourses = (courses) =>
@@ -45,6 +46,10 @@ if (!heroCourses && showHero) {
 }
 heroCourses = heroCourses || [];
 const heroSlots = Array.from({ length: 3 });
+const showSourcePills =
+  typeof showSourcePillsProp === "boolean"
+    ? showSourcePillsProp
+    : import.meta.env.PUBLIC_SHOW_SOURCE_PILLS === "true";
 ---
 <!doctype html>
 <html lang="en">
@@ -107,6 +112,10 @@ const heroSlots = Array.from({ length: 3 });
       }
 
       [hidden] {
+        display: none !important;
+      }
+
+      [data-show-sources="false"] .data-source-pill {
         display: none !important;
       }
 
@@ -1277,7 +1286,11 @@ const heroSlots = Array.from({ length: 3 });
       }
     </style>
   </head>
-  <body data-auth-required={authRequired ? "true" : "false"} data-login-page={loginPage ? "true" : "false"}>
+  <body
+    data-auth-required={authRequired ? "true" : "false"}
+    data-login-page={loginPage ? "true" : "false"}
+    data-show-sources={showSourcePills ? "true" : "false"}
+  >
     <div class="page">
       {showNav ? (
         <header class="nav">
