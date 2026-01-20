@@ -8,6 +8,7 @@ Use this to confirm system content is Supabase-first with markdown fallback reta
 
 ## Supabase-first checks (happy path)
 - Home (`/`): Course cards show Supabase pills when Supabase is available.
+- Home (`/`): Hero progress cards display course titles from Supabase (not markdown).
 - Course detail (`/course/{slug}`): Course materials and books show Supabase pills.
 - Course doc (`/course/{slug}/{doc}`): Doc page shows Supabase pill and renders Supabase content.
 - Book detail (`/book/{slug}`): Book pill shows Supabase; guide cards show Supabase.
@@ -15,6 +16,7 @@ Use this to confirm system content is Supabase-first with markdown fallback reta
 - User pages (`/course/user`, `/book/user`, `/course/user/doc`, `/book/user/guide`):
   - Header course switcher includes system courses from Supabase.
   - User pills remain “User”.
+- Book switcher (`/book/{slug}`): List shows Supabase course books when available.
 
 ## Fallback checks (markdown)
 - Temporarily unset Supabase env vars or point to an empty project.
