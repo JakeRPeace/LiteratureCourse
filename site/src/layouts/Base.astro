@@ -9,14 +9,31 @@ const {
   authRequired = false,
   loginPage = false,
   courseSwitcher = null,
-  bookSwitcher = null
+  bookSwitcher = null,
+  heroCourses: heroCoursesInput = null
 } = Astro.props;
 
-const heroCourses = getCourses().map((course) => ({
-  id: course.id,
-  title: course.title,
-  totalBooks: course.books.length
-}));
+const normalizeHeroCourses = (courses) =>
+  (Array.isArray(courses) ? courses : [])
+    .filter((course) => course && course.id && course.title)
+    .map((course) => ({
+      id: course.id,
+      title: course.title,
+      totalBooks:
+        typeof course.totalBooks === "number"
+          ? course.totalBooks
+          : Array.isArray(course.books)
+            ? course.books.length
+            : 0
+    }));
+
+const heroCourses = heroCoursesInput
+  ? normalizeHeroCourses(heroCoursesInput)
+  : getCourses().map((course) => ({
+      id: course.id,
+      title: course.title,
+      totalBooks: course.books.length
+    }));
 const heroSlots = Array.from({ length: 3 });
 ---
 <!doctype html>

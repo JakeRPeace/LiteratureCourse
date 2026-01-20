@@ -53,7 +53,7 @@ const courses = systemCourses ?? getCourses();
 const systemCourseSource = systemCourses ? "supabase" : "markdown";
 const sourceLabel = systemCourseSource === "supabase" ? "Supabase" : "Markdown";
 ---
-<Base title="Literature Course Library" authRequired={true}>
+<Base title="Literature Course Library" authRequired={true} heroCourses={courses}>
   <section class="stack">
     <div class="section-header">
       <div>
