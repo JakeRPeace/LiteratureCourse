@@ -7,6 +7,7 @@ A curated set of literature courses organized with the Johnny.Decimal system, no
 - Course materials in the root (Johnny.Decimal structure)
 - A web app in `site/` (Astro + Supabase + Vercel)
 - Templates and formatting rules for consistent content parsing
+- Unit tests in `site/tests`
 
 ## Web App Quickstart
 
