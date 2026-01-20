@@ -5,6 +5,7 @@ Use this to confirm system content is Supabase-first with markdown fallback reta
 ## Setup
 - Ensure `PUBLIC_SUPABASE_URL` and `PUBLIC_SUPABASE_ANON_KEY` are set in `site/.env`.
 - Restart the dev server after changing env vars.
+- Optional: set `PUBLIC_SHOW_SOURCE_PILLS=true` to display source pills during verification.
 
 ## Supabase-first checks (happy path)
 - Home (`/`): Course cards show Supabase pills when Supabase is available.
