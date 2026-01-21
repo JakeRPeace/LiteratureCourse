@@ -25,8 +25,15 @@ const allowedAttributes = {
 
 const allowedSchemes = ["http", "https", "mailto"];
 
+function stripFrontmatter(contents) {
+  if (!contents.startsWith("---\n")) return contents;
+  const end = contents.indexOf("\n---\n", 4);
+  if (end === -1) return contents;
+  return contents.slice(end + 5);
+}
+
 export function renderMarkdownSafe(markdown = "") {
-  const html = marked.parse(markdown || "");
+  const html = marked.parse(stripFrontmatter(markdown || ""));
   return sanitizeHtml(html, {
     allowedTags,
     allowedAttributes,
