@@ -29,7 +29,7 @@ import AuthPanel from "../components/AuthPanel.astro";
       position: absolute;
       inset: -20% 0 auto;
       height: 320px;
-      background: radial-gradient(circle at center, rgba(74, 124, 255, 0.35), transparent 65%);
+      background: radial-gradient(circle at center, var(--glow-2), transparent 65%);
       pointer-events: none;
       opacity: 0.8;
     }
@@ -38,13 +38,13 @@ import AuthPanel from "../components/AuthPanel.astro";
       position: relative;
       width: min(960px, 92vw);
       border-radius: 22px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: linear-gradient(135deg, rgba(18, 18, 18, 0.95), rgba(6, 6, 6, 0.95));
+      border: 1px solid var(--line-soft);
+      background: linear-gradient(135deg, var(--surface-2), var(--surface));
       padding: 32px;
       display: grid;
       gap: 24px;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.65);
+      box-shadow: var(--shadow-lg);
     }
 
     .login-brand h1 {

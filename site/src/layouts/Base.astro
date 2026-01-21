@@ -76,17 +76,23 @@ const showSourcePills =
       :root {
         color-scheme: dark;
         font-family: "Geist", "Geist Sans", system-ui, sans-serif;
-        background-color: #000000;
+        background-color: #050505;
         color: #ededed;
         --ink: #ededed;
         --muted: #a1a1a1;
         --accent: #ededed;
         --accent-2: #444;
-        --surface: #0a0a0a;
-        --line: #333;
-        --shadow: 0px 6px 12px rgba(0, 0, 0, 0.4);
+        --surface: rgba(10, 10, 10, 0.92);
+        --surface-2: rgba(16, 16, 16, 0.88);
+        --line: rgba(255, 255, 255, 0.12);
+        --line-soft: rgba(255, 255, 255, 0.08);
+        --line-strong: rgba(255, 255, 255, 0.18);
+        --shadow-lg: 0 28px 56px rgba(0, 0, 0, 0.6);
+        --shadow-md: 0 18px 36px rgba(0, 0, 0, 0.5);
+        --shadow-sm: 0 10px 22px rgba(0, 0, 0, 0.45);
         --glow: rgba(255, 255, 255, 0.15);
         --glow-2: rgba(0, 112, 243, 0.3); /* Vercel Blue-ish */
+        --glow-warm: rgba(255, 185, 120, 0.22);
         --heading-72: 4.5rem;
         --heading-56: 3.5rem;
         --heading-40: 2.5rem;
@@ -101,14 +107,45 @@ const showSourcePills =
       body {
         margin: 0;
         min-height: 100vh;
-        background: #000;
+        background: #050505;
+        position: relative;
         -webkit-font-smoothing: antialiased;
         text-rendering: optimizeLegibility;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: -10% 0 0;
+        background:
+          radial-gradient(circle at 15% 10%, rgba(90, 140, 255, 0.18), transparent 55%),
+          radial-gradient(circle at 85% 15%, rgba(255, 190, 120, 0.12), transparent 60%),
+          radial-gradient(circle at 50% 90%, rgba(120, 240, 180, 0.12), transparent 65%);
+        opacity: 0.7;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+        background-size: 120px 120px;
+        opacity: 0.06;
+        pointer-events: none;
+        z-index: 0;
       }
 
       a {
         color: inherit;
         text-decoration: none;
+      }
+
+      a:focus-visible {
+        outline: 2px solid rgba(255, 255, 255, 0.4);
+        outline-offset: 3px;
+        border-radius: 6px;
       }
 
       [hidden] {
@@ -123,6 +160,8 @@ const showSourcePills =
         max-width: 1200px;
         margin: 0 auto;
         padding: 32px 24px 88px;
+        position: relative;
+        z-index: 1;
       }
 
       @media (max-width: 720px) {
@@ -401,19 +440,21 @@ const showSourcePills =
       }
 
       .card {
-        background: #000;
+        background: linear-gradient(150deg, rgba(20, 20, 20, 0.95), rgba(6, 6, 6, 0.95));
         border-radius: var(--radius-md);
         padding: 24px;
-        border: 1px solid #333;
-        transition: border-color 0.15s ease;
+        border: 1px solid var(--line-soft);
+        box-shadow: var(--shadow-sm);
+        transition: border-color 0.15s ease, box-shadow 0.2s ease, transform 0.2s ease;
       }
       
       .card:hover {
-        border-color: #555;
+        border-color: var(--line-strong);
+        box-shadow: var(--shadow-md);
       }
 
       .card, .link-card, .auth-panel, .hero-visual, .brand {
-        backdrop-filter: blur(6px);
+        backdrop-filter: blur(8px);
       }
 
       .chat-modal {
@@ -595,16 +636,21 @@ const showSourcePills =
         padding: 16px 18px;
         position: relative;
         border-radius: 14px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background: linear-gradient(135deg, rgba(16, 16, 16, 0.95), rgba(6, 6, 6, 0.9));
-        box-shadow: 0 16px 34px rgba(0, 0, 0, 0.5);
+        border: 1px solid var(--line-soft);
+        background: linear-gradient(135deg, rgba(18, 18, 18, 0.95), rgba(6, 6, 6, 0.9));
+        box-shadow: var(--shadow-sm);
         transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
       }
 
       .data-row:hover {
         transform: translateY(-2px);
-        border-color: rgba(255, 255, 255, 0.2);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55);
+        border-color: var(--line-strong);
+        box-shadow: var(--shadow-md);
+      }
+
+      .data-row:focus-visible {
+        outline: 2px solid rgba(255, 255, 255, 0.35);
+        outline-offset: 3px;
       }
 
       .data-row::after {
@@ -655,11 +701,11 @@ const showSourcePills =
         width: 56px;
         height: 78px;
         border-radius: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        border: 1px solid var(--line-soft);
         overflow: hidden;
         flex-shrink: 0;
         background: linear-gradient(155deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.45);
+        box-shadow: var(--shadow-sm);
       }
 
       .data-cover img {
@@ -755,13 +801,13 @@ const showSourcePills =
         gap: 6px;
         padding: 2px 8px;
         border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        border: 1px solid var(--line-soft);
         font-size: 10px;
         font-weight: 600;
         letter-spacing: 0.08em;
         text-transform: uppercase;
         color: rgba(255, 255, 255, 0.7);
-        background: rgba(8, 8, 8, 0.6);
+        background: rgba(8, 8, 8, 0.7);
       }
 
       .data-meta {
@@ -777,7 +823,7 @@ const showSourcePills =
       .data-chip {
         padding: 4px 8px;
         border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.14);
+        border: 1px solid var(--line-soft);
         font-size: 11px;
         color: #f0f0f0;
         max-width: min(420px, 48vw);
@@ -799,11 +845,11 @@ const showSourcePills =
         gap: 8px;
         padding: 6px 12px;
         border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.16);
+        border: 1px solid var(--line-soft);
         font-size: 11px;
         font-weight: 600;
         letter-spacing: 0.02em;
-        background: rgba(12, 12, 12, 0.8);
+        background: rgba(12, 12, 12, 0.85);
         color: #f0f0f0;
         white-space: nowrap;
       }
@@ -887,11 +933,16 @@ const showSourcePills =
         gap: 6px;
         padding: 4px 8px;
         border-radius: 999px;
-        border: 1px solid #333;
-        background: transparent;
+        border: 1px solid var(--line-soft);
+        background: rgba(8, 8, 8, 0.5);
         color: #888;
         font-size: 12px;
         font-weight: 500;
+      }
+
+      .pill:hover {
+        border-color: var(--line-strong);
+        color: #f0f0f0;
       }
 
       .pill-link {
@@ -1002,6 +1053,20 @@ const showSourcePills =
         outline-offset: 2px;
       }
 
+      button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      input:focus-visible,
+      select:focus-visible,
+      textarea:focus-visible {
+        outline: 2px solid rgba(255, 255, 255, 0.35);
+        outline-offset: 2px;
+      }
+
       button[data-auth-action="signup"] {
         background: transparent;
         color: #f7f7f7;
@@ -1043,17 +1108,17 @@ const showSourcePills =
       .section-divider {
         height: 1px;
         width: 100%;
-        background: rgba(255, 255, 255, 0.08);
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent);
         margin: 8px 0 16px;
       }
 
       .link-card {
         display: grid;
         gap: 8px;
-        border: 1px solid #333;
+        border: 1px solid var(--line-soft);
         border-radius: var(--radius-md);
         padding: 16px;
-        background: #000;
+        background: linear-gradient(150deg, rgba(18, 18, 18, 0.92), rgba(6, 6, 6, 0.95));
         transition: transform 0.2s ease, box-shadow 0.2s ease;
       }
 
@@ -1145,7 +1210,8 @@ const showSourcePills =
 
       .link-card:hover {
         transform: translateY(-2px);
-        border-color: #fff;
+        border-color: var(--line-strong);
+        box-shadow: var(--shadow-md);
       }
 
       .course-card:hover {
@@ -1172,6 +1238,170 @@ const showSourcePills =
         font-size: var(--copy-14);
       }
 
+      .link-card:hover h3 {
+        color: #ffffff;
+      }
+
+      .book-hero {
+        display: grid;
+        grid-template-columns: minmax(160px, 220px) 1fr;
+        gap: 24px;
+        align-items: center;
+      }
+
+      .book-intro {
+        display: grid;
+        gap: 10px;
+      }
+
+      .book-cover {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 2 / 3;
+        border-radius: 16px;
+        border: 1px solid var(--line-soft);
+        overflow: hidden;
+        background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+        box-shadow: var(--shadow-md);
+      }
+
+      .book-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .book-cover.is-empty::after {
+        content: "";
+        position: absolute;
+        inset: 12px;
+        border-radius: 12px;
+        border: 1px dashed rgba(255, 255, 255, 0.2);
+      }
+
+      .guide-grid,
+      .course-doc-grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .guide-card,
+      .course-doc-card {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        min-height: 220px;
+        border-color: rgba(255, 255, 255, 0.12);
+        background: linear-gradient(135deg, rgba(16, 16, 16, 0.92), rgba(6, 6, 6, 0.94));
+        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        --card-accent: rgba(120, 120, 120, 0.25);
+      }
+
+      .guide-card::after,
+      .course-doc-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: radial-gradient(circle at top right, var(--card-accent), transparent 60%);
+        opacity: 0.85;
+        pointer-events: none;
+      }
+
+      .guide-card:hover,
+      .course-doc-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(255, 255, 255, 0.3);
+        box-shadow: 0 18px 36px rgba(0, 0, 0, 0.55);
+      }
+
+      .guide-card[data-guide-type="pre_reading"],
+      .course-doc-card[data-doc-type="readme"] {
+        --card-accent: rgba(120, 200, 255, 0.35);
+      }
+
+      .guide-card[data-guide-type="notes"],
+      .course-doc-card[data-doc-type="syllabus"] {
+        --card-accent: rgba(255, 190, 120, 0.35);
+      }
+
+      .guide-card[data-guide-type="post_reading"],
+      .course-doc-card[data-doc-type="index"] {
+        --card-accent: rgba(120, 240, 180, 0.35);
+      }
+
+      .guide-card-top,
+      .course-doc-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+      }
+
+      .guide-kicker,
+      .course-doc-kicker {
+        position: relative;
+        z-index: 1;
+      }
+
+      .guide-action,
+      .course-doc-action {
+        position: relative;
+        z-index: 1;
+        font-weight: 600;
+      }
+
+      .guide-title,
+      .course-doc-title {
+        position: relative;
+        z-index: 1;
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+
+      .guide-excerpt,
+      .course-doc-excerpt {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .guide-meta,
+      .course-doc-meta {
+        position: relative;
+        z-index: 1;
+        margin-top: auto;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .guide-chip,
+      .course-doc-chip {
+        font-size: 11px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: #f0f0f0;
+        background: rgba(10, 10, 10, 0.6);
+      }
+
       .guide-content {
         line-height: 1.6;
       }
@@ -1182,27 +1412,21 @@ const showSourcePills =
         letter-spacing: -0.02em;
       }
 
-      .link-card:hover h3 {
-        color: #ffffff;
-      }
-
-      .link-card h3 {
-        margin: 0;
-        font-size: 18px;
-      }
-
-      .link-card p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 13px;
-      }
-
       .guide-content :global(h2) {
         margin-top: 24px;
       }
 
       .guide-content :global(h3) {
         margin-top: 18px;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
       }
 
       @media (max-width: 720px) {
@@ -1270,6 +1494,14 @@ const showSourcePills =
           border-left: 0;
           border-right: 0;
           padding: 24px 16px; /* Adjust internal padding */
+        }
+
+        .book-hero {
+          grid-template-columns: 1fr;
+        }
+
+        .book-cover {
+          max-width: 220px;
         }
       }
 
