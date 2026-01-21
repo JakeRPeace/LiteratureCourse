@@ -1,4 +1,5 @@
 import { supabase } from "./supabase.js";
+import { getSession, onSessionChange } from "./session-store.js";
 
 window.addEventListener("DOMContentLoaded", async () => {
   const loginLink = document.querySelector("[data-auth-login]");
@@ -15,11 +16,11 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
-  const { data } = await supabase.auth.getSession();
-  setState(data.session);
+  const session = await getSession();
+  setState(session);
 
-  supabase.auth.onAuthStateChange((_event, session) => {
-    setState(session);
+  onSessionChange((nextSession) => {
+    setState(nextSession);
   });
 
   if (logoutLink) {

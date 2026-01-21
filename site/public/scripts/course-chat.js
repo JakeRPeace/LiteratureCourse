@@ -1,7 +1,14 @@
 import { supabase } from "./supabase.js";
+import { getSession, onSessionChange } from "./session-store.js";
 
 const summaryFallback = "Describe your course to get a draft.";
 const maxMessages = 8;
+
+async function getAuthHeaders() {
+  const session = await getSession();
+  const token = session?.access_token;
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
 
 function slugify(value) {
   return value
@@ -47,9 +54,10 @@ function formatDraft(course) {
 
 async function fetchCoverPayload(bookRows) {
   try {
+    const authHeaders = await getAuthHeaders();
     const response = await fetch("/api/book-covers", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...authHeaders },
       body: JSON.stringify({
         books: bookRows.map((book) => ({
           book_id: book.book_id,
@@ -78,13 +86,13 @@ async function fetchCoverPayload(bookRows) {
 }
 
 async function createCourseFromDraft(course, note, onSuccess) {
-  const { data: sessionData } = await supabase.auth.getSession();
-  if (!sessionData.session) {
+  const session = await getSession();
+  if (!session) {
     setNote(note, "Sign in to create a course.", true);
     return;
   }
 
-  const userId = sessionData.session.user.id;
+  const userId = session.user.id;
   const timestamp = Date.now();
   const courseId = `user-${userId}-${timestamp}`;
   const title = course.title;
@@ -145,7 +153,7 @@ async function createCourseFromDraft(course, note, onSuccess) {
   if (onSuccess) onSuccess();
 }
 
-window.addEventListener("DOMContentLoaded", () => {
+const initCourseChat = () => {
   const panel = document.querySelector("[data-course-chat-panel]");
   const modal = document.querySelector("[data-course-chat-modal]");
   if (!panel || !modal) return;
@@ -204,8 +212,8 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
   const updateVisibility = async () => {
-    const { data } = await supabase.auth.getSession();
-    panel.hidden = !data.session;
+    const session = await getSession();
+    panel.hidden = !session;
   };
 
   const openModal = () => {
@@ -267,9 +275,10 @@ window.addEventListener("DOMContentLoaded", () => {
     pendingMessage = appendMessage("assistant", "Thinking...");
 
     try {
+      const authHeaders = await getAuthHeaders();
       const response = await fetch("/api/course-chat", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...authHeaders },
         body: JSON.stringify({ messages })
       });
 
@@ -323,9 +332,15 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  supabase.auth.onAuthStateChange(() => {
+  onSessionChange(() => {
     updateVisibility();
   });
 
   updateVisibility();
-});
+};
+
+if (document.readyState === "loading") {
+  window.addEventListener("DOMContentLoaded", initCourseChat);
+} else {
+  initCourseChat();
+}

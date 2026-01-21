@@ -7,7 +7,7 @@ import {
   loadSystemCourseDocIndex
 } from "../../../lib/system-content.js";
 import { resolveSourceLabel } from "../../../lib/source-labels.js";
-import { marked } from "marked";
+import { renderMarkdownSafe } from "../../../lib/markdown.js";
 
 export const prerender = true;
 
@@ -47,7 +47,7 @@ const docSource = systemDoc ? "supabase" : "markdown";
 const docSourceLabel = resolveSourceLabel(docSource);
 const docLabel = systemDoc?.label || docEntry?.label || "Course document";
 const docStage = systemDoc?.stage || docEntry?.stage || "Course material";
-const docHtml = systemDoc ? marked.parse(systemDoc.content) : null;
+const docHtml = systemDoc ? renderMarkdownSafe(systemDoc.content) : null;
 ---
 <Base title={`${docLabel} | ${course.title} | Literature Course Library`} authRequired={true}>
   <section class="stack">

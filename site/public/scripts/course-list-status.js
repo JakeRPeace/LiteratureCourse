@@ -1,4 +1,5 @@
 import { supabase } from "./supabase.js";
+import { getSession, onSessionChange } from "./session-store.js";
 
 const statusLabels = {
   not_started: "Not started",
@@ -56,15 +57,16 @@ async function loadStatuses() {
   const { rows, courseMap } = collectRows();
   if (!rows.length) return;
 
-  const { data: sessionData } = await supabase.auth.getSession();
-  if (!sessionData.session) {
+  const session = await getSession();
+  if (!session) {
     setLoggedOut(rows);
     return;
   }
 
   const { data, error } = await supabase
     .from("book_status")
-    .select("book_id, status");
+    .select("book_id, status")
+    .eq("user_id", session.user.id);
 
   if (error) {
     setError(rows);
@@ -86,7 +88,7 @@ async function loadStatuses() {
 
 window.addEventListener("DOMContentLoaded", () => {
   loadStatuses();
-  supabase.auth.onAuthStateChange(() => {
+  onSessionChange(() => {
     loadStatuses();
   });
   window.addEventListener("course-rows-updated", () => {

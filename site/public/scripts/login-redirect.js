@@ -1,14 +1,14 @@
-import { supabase } from "./supabase.js";
+import { getSession, onSessionChange } from "./session-store.js";
 
 window.addEventListener("DOMContentLoaded", async () => {
-  const { data } = await supabase.auth.getSession();
-  if (data.session) {
+  const session = await getSession();
+  if (session) {
     window.location.href = "/";
     return;
   }
 
-  supabase.auth.onAuthStateChange((_event, session) => {
-    if (session) {
+  onSessionChange((nextSession) => {
+    if (nextSession) {
       window.location.href = "/";
     }
   });

@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { z } from "zod";
+import { checkRateLimit, getAuthUser } from "../../lib/api-guards";
 
 const bookSchema = z.object({
   book_id: z.string().min(1),
@@ -15,6 +16,8 @@ const OPEN_LIBRARY_URL = "https://openlibrary.org/search.json";
 const OPEN_LIBRARY_HEADERS = {
   "User-Agent": "LiteratureCourse/1.0 (book covers)"
 };
+
+const RATE_LIMIT = { limit: 20, windowMs: 60_000 };
 
 function normalizeTitle(value) {
   return (value || "").replace(/\s+/g, " ").trim();
@@ -117,6 +120,19 @@ async function fetchCover(book) {
 }
 
 export const POST: APIRoute = async ({ request }) => {
+  const user = await getAuthUser(request);
+  if (!user) {
+    return Response.json({ error: "Unauthorized." }, { status: 401 });
+  }
+
+  const { allowed, retryAfter } = checkRateLimit(`book-covers:${user.id}`, RATE_LIMIT);
+  if (!allowed) {
+    return Response.json(
+      { error: "Rate limit exceeded." },
+      { status: 429, headers: { "Retry-After": String(retryAfter) } }
+    );
+  }
+
   let payload;
   try {
     payload = requestSchema.parse(await request.json());

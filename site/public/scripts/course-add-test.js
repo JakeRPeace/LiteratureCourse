@@ -1,4 +1,5 @@
 import { supabase } from "./supabase.js";
+import { getSession, onSessionChange } from "./session-store.js";
 
 function slugify(value) {
   return value
@@ -17,13 +18,13 @@ function setNote(note, message, isError = false) {
 }
 
 async function createTestCourse(note, button) {
-  const { data: sessionData } = await supabase.auth.getSession();
-  if (!sessionData.session) {
+  const session = await getSession();
+  if (!session) {
     setNote(note, "Sign in to create a course.", true);
     return;
   }
 
-  const userId = sessionData.session.user.id;
+  const userId = session.user.id;
   const timestamp = Date.now();
   const courseId = `user-${userId}-${timestamp}`;
   const title = `Test Course ${timestamp} - Modern Literature`;
@@ -83,15 +84,15 @@ window.addEventListener("DOMContentLoaded", () => {
   const note = panel.querySelector("[data-course-test-note]");
 
   const updateVisibility = async () => {
-    const { data } = await supabase.auth.getSession();
-    panel.hidden = !data.session;
+    const session = await getSession();
+    panel.hidden = !session;
   };
 
   button?.addEventListener("click", () => {
     createTestCourse(note, button);
   });
 
-  supabase.auth.onAuthStateChange(() => {
+  onSessionChange(() => {
     updateVisibility();
   });
 

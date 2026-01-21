@@ -1,4 +1,5 @@
 import { supabase } from "./supabase.js";
+import { getSession } from "./session-store.js";
 
 function getCourseId() {
   const params = new URLSearchParams(window.location.search);
@@ -150,8 +151,8 @@ async function loadCoursePage() {
     return;
   }
 
-  const { data: sessionData } = await supabase.auth.getSession();
-  if (!sessionData.session) {
+  const session = await getSession();
+  if (!session) {
     setError("Sign in to view this course.");
     return;
   }
@@ -187,12 +188,24 @@ async function loadCoursePage() {
   const docsEmpty = document.querySelector("[data-user-course-docs-empty]");
   if (docsWrap) docsWrap.innerHTML = "";
 
-  const { data: docs } = await supabase
-    .from("course_docs")
-    .select("doc_type, label, stage, excerpt, slug, sort_order")
-    .eq("course_id", course.course_id)
-    .order("sort_order", { ascending: true });
+  const booksWrap = document.querySelector("[data-user-course-books]");
+  const booksEmpty = document.querySelector("[data-user-course-books-empty]");
+  if (booksWrap) booksWrap.innerHTML = "";
 
+  const [docsResult, booksResult] = await Promise.all([
+    supabase
+      .from("course_docs")
+      .select("doc_type, label, stage, excerpt, slug, sort_order")
+      .eq("course_id", course.course_id)
+      .order("sort_order", { ascending: true }),
+    supabase
+      .from("books")
+      .select("book_id, title, cover_url, sort_order")
+      .eq("course_id", course.course_id)
+      .order("sort_order", { ascending: true })
+  ]);
+
+  const docs = docsResult.data;
   if (!docs || !docs.length) {
     if (docsEmpty) docsEmpty.hidden = false;
   } else {
@@ -202,16 +215,7 @@ async function loadCoursePage() {
     if (docsWrap) docsWrap.appendChild(fragment);
   }
 
-  const booksWrap = document.querySelector("[data-user-course-books]");
-  const booksEmpty = document.querySelector("[data-user-course-books-empty]");
-  if (booksWrap) booksWrap.innerHTML = "";
-
-  const { data: books } = await supabase
-    .from("books")
-    .select("book_id, title, cover_url, sort_order")
-    .eq("course_id", course.course_id)
-    .order("sort_order", { ascending: true });
-
+  const books = booksResult.data;
   if (!books || !books.length) {
     if (booksEmpty) booksEmpty.hidden = false;
   } else {

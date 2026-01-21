@@ -1,4 +1,5 @@
 import { supabase } from "./supabase.js";
+import { getSession, onSessionChange } from "./session-store.js";
 
 const statusLabels = {
   not_started: "Not started",
@@ -35,8 +36,8 @@ async function loadStatuses() {
   const { rows, bookIds } = collectRows();
   if (!rows.length) return;
 
-  const { data: sessionData } = await supabase.auth.getSession();
-  if (!sessionData.session) {
+  const session = await getSession();
+  if (!session) {
     setLoggedOut(rows);
     return;
   }
@@ -46,7 +47,8 @@ async function loadStatuses() {
   const { data, error } = await supabase
     .from("book_status")
     .select("status, book_id")
-    .in("book_id", bookIds);
+    .in("book_id", bookIds)
+    .eq("user_id", session.user.id);
 
   if (error) {
     setError(rows);
@@ -66,7 +68,7 @@ async function loadStatuses() {
 
 window.addEventListener("DOMContentLoaded", () => {
   loadStatuses();
-  supabase.auth.onAuthStateChange(() => {
+  onSessionChange(() => {
     loadStatuses();
   });
   window.addEventListener("book-rows-updated", () => {

@@ -1,4 +1,5 @@
 import { supabase } from "./supabase.js";
+import { getSession } from "./session-store.js";
 
 function getBookId() {
   const params = new URLSearchParams(window.location.search);
@@ -115,8 +116,8 @@ async function loadBookPage() {
     return;
   }
 
-  const { data: sessionData } = await supabase.auth.getSession();
-  if (!sessionData.session) {
+  const session = await getSession();
+  if (!session) {
     setError("Sign in to view this book.");
     return;
   }
@@ -160,17 +161,13 @@ async function loadBookPage() {
     courseSwitcher.dataset.currentCourseId = book.course_id;
     courseSwitcher.dataset.currentCourseSource = "user";
   }
-  if (courseTitle) {
-    const { data: courseRow } = await supabase
-      .from("courses")
-      .select("title")
-      .eq("course_id", book.course_id)
-      .maybeSingle();
-    if (courseRow?.title) {
-      courseTitle.textContent = courseRow.title;
-    }
-  }
-  window.dispatchEvent(new CustomEvent("course-switcher-refresh"));
+  const courseTitlePromise = courseTitle
+    ? supabase
+        .from("courses")
+        .select("title")
+        .eq("course_id", book.course_id)
+        .maybeSingle()
+    : Promise.resolve({ data: null });
 
   const bookSwitcher = document.querySelector("[data-book-switcher]");
   const bookTitle = document.querySelector("[data-book-switcher-title]");
@@ -181,13 +178,37 @@ async function loadBookPage() {
     bookSwitcher.dataset.currentCourseSource = "user";
   }
   if (bookTitle) bookTitle.textContent = book.title || "Untitled Book";
+  const bookMenuPromise = bookMenu
+    ? supabase
+        .from("books")
+        .select("book_id, title, sort_order")
+        .eq("course_id", book.course_id)
+        .order("sort_order", { ascending: true })
+    : Promise.resolve({ data: null });
+
+  const guidesWrap = document.querySelector("[data-user-book-guides]");
+  const guidesEmpty = document.querySelector("[data-user-book-guides-empty]");
+  if (guidesWrap) guidesWrap.innerHTML = "";
+
+  const guidesPromise = supabase
+    .from("book_guides")
+    .select("guide_type, label, stage, excerpt, slug, sort_order")
+    .eq("book_id", book.book_id)
+    .order("sort_order", { ascending: true });
+
+  const [{ data: courseRow }, { data: books }, { data: guides }] = await Promise.all([
+    courseTitlePromise,
+    bookMenuPromise,
+    guidesPromise
+  ]);
+
+  if (courseTitle && courseRow?.title) {
+    courseTitle.textContent = courseRow.title;
+  }
+  window.dispatchEvent(new CustomEvent("course-switcher-refresh"));
+
   if (bookMenu) {
     bookMenu.querySelectorAll('[data-book-source="user"]').forEach((item) => item.remove());
-    const { data: books } = await supabase
-      .from("books")
-      .select("book_id, title, sort_order")
-      .eq("course_id", book.course_id)
-      .order("sort_order", { ascending: true });
     if (books && books.length) {
       const fragment = document.createDocumentFragment();
       books.forEach((entry) => {
@@ -197,16 +218,6 @@ async function loadBookPage() {
       bookMenu.appendChild(fragment);
     }
   }
-
-  const guidesWrap = document.querySelector("[data-user-book-guides]");
-  const guidesEmpty = document.querySelector("[data-user-book-guides-empty]");
-  if (guidesWrap) guidesWrap.innerHTML = "";
-
-  const { data: guides } = await supabase
-    .from("book_guides")
-    .select("guide_type, label, stage, excerpt, slug, sort_order")
-    .eq("book_id", book.book_id)
-    .order("sort_order", { ascending: true });
 
   if (!guides || !guides.length) {
     if (guidesEmpty) guidesEmpty.hidden = false;

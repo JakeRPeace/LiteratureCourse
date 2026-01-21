@@ -1,8 +1,15 @@
 import { supabase } from "./supabase.js";
+import { getSession, onSessionChange } from "./session-store.js";
 
 const summaryFallback = "Short course overview available in the syllabus.";
 let loadSequence = 0;
 const coverRetryCache = new Set();
+
+async function getAuthHeaders() {
+  const session = await getSession();
+  const token = session?.access_token;
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
 
 function slugify(value) {
   return value
@@ -118,9 +125,10 @@ async function refreshMissingCovers(bookRows) {
   batch.forEach((book) => coverRetryCache.add(book.book_id));
 
   try {
+    const authHeaders = await getAuthHeaders();
     const response = await fetch("/api/book-covers", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...authHeaders },
       body: JSON.stringify({
         books: batch.map((book) => ({
           book_id: book.book_id,
@@ -167,9 +175,9 @@ async function refreshMissingCovers(bookRows) {
 
 async function loadUserCourses(list) {
   const sequence = ++loadSequence;
-  const { data: sessionData } = await supabase.auth.getSession();
+  const session = await getSession();
   if (sequence !== loadSequence) return;
-  if (!sessionData.session) {
+  if (!session) {
     if (sequence !== loadSequence) return;
     clearUserRows(list);
     window.dispatchEvent(new CustomEvent("course-rows-updated"));
@@ -230,7 +238,7 @@ window.addEventListener("DOMContentLoaded", () => {
   if (!list) return;
 
   loadUserCourses(list);
-  supabase.auth.onAuthStateChange(() => {
+  onSessionChange(() => {
     loadUserCourses(list);
   });
   window.addEventListener("course-list-refresh", () => {

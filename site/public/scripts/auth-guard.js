@@ -1,8 +1,8 @@
-import { supabase } from "./supabase.js";
+import { getSession } from "./session-store.js";
 
 window.addEventListener("DOMContentLoaded", async () => {
-  const { data } = await supabase.auth.getSession();
-  if (!data.session) {
+  const session = await getSession();
+  if (!session) {
     window.location.href = "/login";
   }
 });

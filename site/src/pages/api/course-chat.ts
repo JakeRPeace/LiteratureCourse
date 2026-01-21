@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import { generateObject } from "ai";
 import { gateway } from "@ai-sdk/gateway";
 import { z } from "zod";
+import { checkRateLimit, getAuthUser } from "../../lib/api-guards";
 
 const messageSchema = z.object({
   role: z.enum(["user", "assistant"]),
@@ -35,7 +36,22 @@ const systemPrompt = [
   "Provide exactly three distinct books with title and author."
 ].join(" ");
 
+const RATE_LIMIT = { limit: 8, windowMs: 60_000 };
+
 export const POST: APIRoute = async ({ request }) => {
+  const user = await getAuthUser(request);
+  if (!user) {
+    return Response.json({ error: "Unauthorized." }, { status: 401 });
+  }
+
+  const { allowed, retryAfter } = checkRateLimit(`course-chat:${user.id}`, RATE_LIMIT);
+  if (!allowed) {
+    return Response.json(
+      { error: "Rate limit exceeded." },
+      { status: 429, headers: { "Retry-After": String(retryAfter) } }
+    );
+  }
+
   if (!process.env.AI_GATEWAY_API_KEY && !process.env.VERCEL) {
     return Response.json(
       { error: "AI gateway key not configured." },

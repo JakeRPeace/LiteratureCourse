@@ -1,4 +1,5 @@
 import { supabase } from "./supabase.js";
+import { getSession, onSessionChange } from "./session-store.js";
 
 let loadSequence = 0;
 
@@ -40,9 +41,9 @@ async function loadUserCourses() {
   if (sequence !== loadSequence) return;
   menu.querySelectorAll('[data-course-source="user"]').forEach((item) => item.remove());
 
-  const { data: sessionData } = await supabase.auth.getSession();
+  const session = await getSession();
   if (sequence !== loadSequence) return;
-  if (!sessionData.session) return;
+  if (!session) return;
 
   const { data: courses, error } = await supabase
     .from("courses")
@@ -68,7 +69,7 @@ async function loadUserCourses() {
 
 window.addEventListener("DOMContentLoaded", () => {
   loadUserCourses();
-  supabase.auth.onAuthStateChange(() => {
+  onSessionChange(() => {
     loadUserCourses();
   });
   window.addEventListener("course-switcher-refresh", () => {

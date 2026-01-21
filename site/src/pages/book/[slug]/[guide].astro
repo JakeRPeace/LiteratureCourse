@@ -7,7 +7,7 @@ import {
   loadSystemBookGuidesIndex
 } from "../../../lib/system-content.js";
 import { resolveSourceLabel } from "../../../lib/source-labels.js";
-import { marked } from "marked";
+import { renderMarkdownSafe } from "../../../lib/markdown.js";
 
 export const prerender = true;
 
@@ -48,7 +48,7 @@ const guideSource = systemGuide ? "supabase" : "markdown";
 const guideSourceLabel = resolveSourceLabel(guideSource);
 const guideLabel = systemGuide?.label || guideEntry?.label || "Guide";
 const guideStage = systemGuide?.stage || guideEntry?.stage || "Reading guide";
-const guideHtml = systemGuide ? marked.parse(systemGuide.content) : null;
+const guideHtml = systemGuide ? renderMarkdownSafe(systemGuide.content) : null;
 ---
 <Base title={`${guideLabel} | ${book.title} | Literature Course Library`} authRequired={true}>
   <section class="stack">

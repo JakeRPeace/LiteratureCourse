@@ -1,4 +1,5 @@
 import { supabase } from "./supabase.js";
+import { getSession, onSessionChange } from "./session-store.js";
 
 window.addEventListener("DOMContentLoaded", () => {
   const root = document.querySelector("[data-auth]");
@@ -44,19 +45,15 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
   const refreshSession = async () => {
-    const { data, error } = await supabase.auth.getSession();
-    if (error) {
-      setError(error.message);
-      return;
-    }
-    setState(data.session);
+    const session = await getSession();
+    setState(session);
 
     // Auto-wipe guest data on a fresh session start to simulate 24h reset
-    if (data.session?.user?.email === GUEST_EMAIL) {
+    if (session?.user?.email === GUEST_EMAIL) {
       const lastWipe = localStorage.getItem("last_guest_wipe");
       const now = Date.now();
       if (!lastWipe || (now - parseInt(lastWipe)) > 1000 * 60 * 60) { // Wipe if > 1 hour since last local record of wipe
-        await wipeGuestData(data.session.user);
+        await wipeGuestData(session.user);
         localStorage.setItem("last_guest_wipe", now.toString());
       }
     }
@@ -128,7 +125,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  supabase.auth.onAuthStateChange(() => {
+  onSessionChange(() => {
     refreshSession();
   });
 

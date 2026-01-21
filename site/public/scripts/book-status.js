@@ -1,4 +1,5 @@
 import { supabase } from "./supabase.js";
+import { getSession, onSessionChange } from "./session-store.js";
 
 function initWidgets() {
   const widgets = document.querySelectorAll("[data-book-status]:not([data-status-init])");
@@ -87,8 +88,8 @@ function initWidgets() {
     const getBookId = () => root.dataset.bookId || "";
 
     const loadStatus = async () => {
-      const { data: sessionData } = await supabase.auth.getSession();
-      if (!sessionData.session) {
+      const session = await getSession();
+      if (!session) {
         setEnabled(false);
         setNote("Sign in to save your status.");
         return;
@@ -106,6 +107,7 @@ function initWidgets() {
         .from("book_status")
         .select("status, score")
         .eq("book_id", bookId)
+        .eq("user_id", session.user.id)
         .maybeSingle();
 
       if (error) {
@@ -122,11 +124,11 @@ function initWidgets() {
     };
 
     const saveStatus = async () => {
-      const { data: sessionData } = await supabase.auth.getSession();
-      if (!sessionData.session) return;
+      const session = await getSession();
+      if (!session) return;
       const bookId = getBookId();
       if (!bookId) return;
-      const userId = sessionData.session.user.id;
+      const userId = session.user.id;
 
       const status = statusSelect.value;
       const scoreValue = scoreIsEmpty ? null : Number(scoreInput.value);
@@ -173,7 +175,7 @@ function initWidgets() {
       });
     }
 
-    supabase.auth.onAuthStateChange(() => {
+    onSessionChange(() => {
       loadStatus();
     });
 

@@ -1,4 +1,5 @@
 import { supabase } from "./supabase.js";
+import { getSession, onSessionChange } from "./session-store.js";
 
 const statusLabels = {
   not_started: "Not started",
@@ -61,8 +62,8 @@ window.addEventListener("DOMContentLoaded", () => {
     };
 
     const loadStatus = async () => {
-      const { data: sessionData } = await supabase.auth.getSession();
-      if (!sessionData.session) {
+      const session = await getSession();
+      if (!session) {
         updateUI("signed_out");
         return;
       }
@@ -75,7 +76,8 @@ window.addEventListener("DOMContentLoaded", () => {
       const { data, error } = await supabase
         .from("book_status")
         .select("status, book_id")
-        .in("book_id", bookIds);
+        .in("book_id", bookIds)
+        .eq("user_id", session.user.id);
 
       if (error) {
         if (label) label.textContent = "Error loading status";
@@ -91,7 +93,7 @@ window.addEventListener("DOMContentLoaded", () => {
       updateUI(status, readCount, inProgressCount);
     };
 
-    supabase.auth.onAuthStateChange(() => {
+    onSessionChange(() => {
       loadStatus();
     });
 

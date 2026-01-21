@@ -1,5 +1,6 @@
 import { supabase } from "./supabase.js";
 import { applyStatusCounts } from "./course-progress-utils.js";
+import { getSession, onSessionChange } from "./session-store.js";
 
 window.addEventListener("DOMContentLoaded", () => {
   const widgets = document.querySelectorAll("[data-course-progress]");
@@ -52,15 +53,16 @@ window.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const { data: sessionData } = await supabase.auth.getSession();
-      if (!sessionData.session) {
+      const session = await getSession();
+      if (!session) {
         setMessage("Sign in to see progress.");
         return;
       }
 
       const { data, error } = await supabase
         .from("book_status")
-        .select("book_id, status");
+        .select("book_id, status")
+        .eq("user_id", session.user.id);
 
       if (error) {
         setMessage(error.message);
@@ -117,7 +119,7 @@ window.addEventListener("DOMContentLoaded", () => {
       renderCourses(selected);
     };
 
-    supabase.auth.onAuthStateChange(() => {
+    onSessionChange(() => {
       loadProgress();
     });
 
