@@ -108,25 +108,5 @@ const sourceLabel = resolveSourceLabel(systemCourseSource);
   </dialog>
   <script type="module" src="/scripts/course-list-status.js"></script>
   <script type="module" src="/scripts/course-list-user.js"></script>
-  <script type="module">
-    const panel = document.querySelector("[data-course-chat-panel]");
-    const openButton = panel?.querySelector("[data-course-chat-open]");
-    if (openButton) {
-      let loaded = false;
-      const loadChat = async () => {
-        if (loaded) return;
-        loaded = true;
-        await import("/scripts/course-chat.js");
-      };
-      openButton.addEventListener("pointerenter", loadChat, { once: true });
-      openButton.addEventListener("focus", loadChat, { once: true });
-      openButton.addEventListener("touchstart", loadChat, { once: true });
-      openButton.addEventListener("click", async (event) => {
-        if (loaded) return;
-        event.preventDefault();
-        await loadChat();
-        openButton.click();
-      });
-    }
-  </script>
+  <script type="module" src="/scripts/course-chat-entry.js"></script>
 </Base>
