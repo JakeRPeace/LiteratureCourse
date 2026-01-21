@@ -1,12 +1,38 @@
 # Content Formatting Standard
 
-This repository uses a simple frontmatter convention to keep parsing predictable and future-proof.
+This repository uses a simple, strict frontmatter format so content can be validated, parsed, and synced to Supabase.
 
-## Required frontmatter blocks
+## Frontmatter Format
 
-### Course documents
+- Every content file starts with a frontmatter block delimited by `---` lines.
+- Frontmatter is **flat** `key: value` pairs only (no nested YAML, no lists).
+- Keep values single-line and avoid unescaped `:` characters.
+
+Example:
+
+```yaml
+---
+type: book_guide
+course_id: 10-19
+book_id: 11.01
+guide_type: pre_reading
+---
+```
+
+## Required Frontmatter
+
+### Course Documents
 
 Applies to course `README.md`, `X0 Management/XX.00 Index.md`, and `X0 Management/XX.01 Syllabus.md`.
+
+Required fields:
+
+- `type`: `course_doc`
+- `course_id`: `10-19`
+- `course_title`: `Great Literature 101 - Modern Literature`
+- `doc_type`: `readme` | `index` | `syllabus`
+
+Example:
 
 ```yaml
 ---
@@ -17,11 +43,23 @@ doc_type: syllabus
 ---
 ```
 
-Allowed `doc_type`: `readme`, `index`, `syllabus`.
+Optional fields:
 
-### Book metadata
+- `course_summary` or `summary` (used for course cards and excerpts)
+
+### Book Metadata
 
 Create a `Book Metadata.md` file inside each book folder.
+
+Required fields:
+
+- `type`: `book`
+- `course_id`: `10-19`
+- `book_id`: `11.01`
+- `book_title`: `The Old Man and the Sea`
+- `author`: `Ernest Hemingway`
+
+Example:
 
 ```yaml
 ---
@@ -35,11 +73,26 @@ genre: Fiction
 ---
 ```
 
-`published` and `genre` are optional.
+Optional fields (used for cover lookup or display):
 
-### Book guides
+- `published`
+- `genre`
+- `isbn`
+- `open_library_id`
+- `cover_url`
+
+### Book Guides
 
 Applies to `01 Pre-Reading Guide.md`, `02 Chapter-by-Chapter Notes.md`, `03 Post-Reading Analysis.md`.
+
+Required fields:
+
+- `type`: `book_guide`
+- `course_id`: `10-19`
+- `book_id`: `11.01`
+- `guide_type`: `pre_reading` | `notes` | `post_reading`
+
+Example:
 
 ```yaml
 ---
@@ -50,11 +103,21 @@ guide_type: pre_reading
 ---
 ```
 
-Allowed `guide_type`: `pre_reading`, `notes`, `post_reading`.
+## File Naming Rules
 
-## Content rules
+- Keep Johnny.Decimal numbering in file and folder names.
+- Use Title Case for course titles and document headings.
+- Book folder names follow: `NN.NN Title - Author/`.
+- Guides use the numbered template names (`01`, `02`, `03`).
 
-- Keep titles in Title Case.
-- Do not remove the Johnny.Decimal numbering in file and folder names.
-- Use short, directive headings in guides and favor bullet lists.
-- Validation is enforced by `site/scripts/validate-content.mjs` and runs on build.
+## Validation
+
+Frontmatter and structure are enforced by `site/scripts/validate-content.mjs`.
+Run:
+
+```bash
+cd site
+npm run validate
+```
+
+Fix validation errors before running sync or deploy.

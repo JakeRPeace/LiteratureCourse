@@ -81,7 +81,7 @@ When adding a new book, use the templates in the `11 Books/` folder:
 
 Copy each template into your new book's folder and fill in the book-specific information.
 
-See `EXPANSION GUIDE.md` for detailed instructions on adding new books.
+See `00-09 Templates and Resources/00 System Management/00.01 Course Creation Guide.md` for detailed instructions on adding new books.
 
 ---
 
@@ -96,4 +96,3 @@ This three-part system ensures you get the most out of each book while maintaini
 ---
 
 *Structure established: 2025-12-24*
-

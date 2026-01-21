@@ -1,15 +1,14 @@
 # Literature Study Collection
 
-A curated set of literature courses organized with the Johnny.Decimal system, now paired with a web app for browsing and progress tracking.
+A curated collection of literature courses organized with the Johnny.Decimal system, with an Astro + Supabase web app for browsing, progress tracking, and publishing.
 
-## What This Repo Contains
+## Project Layout
 
-- Course materials in the root (Johnny.Decimal structure)
-- A web app in `site/` (Astro + Supabase + Vercel)
-- Templates and formatting rules for consistent content parsing
-- Unit tests in `site/tests`
+- Course materials live at the repo root (Johnny.Decimal structure).
+- Templates and system resources live in `00-09 Templates and Resources/`.
+- The web app lives in `site/` (Astro + Supabase + Vercel).
 
-## Web App Quickstart
+## Quick Start (Web App)
 
 ```bash
 cd site
@@ -25,26 +24,40 @@ Set these variables in `.env`:
 
 Run the database schema once in Supabase using `site/supabase/schema.sql`.
 
-## Content Rules (Required)
+## Content Workflow (Summary)
 
-All course and book documents must include frontmatter per `FORMAT.md`.
-
-Validation runs on build:
+1. Create or update course folders using Johnny.Decimal naming.
+2. Add required frontmatter to all course docs and book materials (see `FORMAT.md`).
+3. Update the course index and the master index.
+4. Validate content:
 
 ```bash
 cd site
 npm run validate
 ```
 
-## Where Things Live
+## Build, Covers, and Sync
 
-- Courses: top-level folders like `10-19 Great Literature 101 - Modern Literature`
-- Book metadata: `Book Metadata.md` inside each book folder
-- Guide templates: `00-09 Templates and Resources/01 Study Guide Templates`
-- Course templates: `00-09 Templates and Resources/02 Course Templates`
-- Book templates: `00-09 Templates and Resources/03 Book Templates`
-- Web app: `site/`
+`npm run build` runs:
 
-## Deployment (Vercel + Supabase)
+1. Content validation.
+2. Cover fetching (auto mode).
+3. Content sync to Supabase (auto mode).
+4. Supabase verification (auto mode).
+5. Astro build.
 
-See `DEPLOYMENT.md` for step-by-step setup and CI/CD notes.
+To enable sync/verify, set these **build-time** env vars (do not expose them in client-side code):
+
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+
+Without these, sync/verify will be skipped in auto mode.
+
+## Documentation
+
+- `FORMAT.md` — frontmatter and content rules.
+- `DEPLOYMENT.md` — Vercel + Supabase setup.
+- `site/WEBSITE.md` — local setup, covers, and sync workflows.
+- `SUPABASE_MIGRATION_CHECKLIST.md` — Supabase-first verification.
+- `00-09 Templates and Resources/README.md` — templates and system resources.
+- `00-09 Templates and Resources/00 System Management/00.01 Course Creation Guide.md` — adding new courses.

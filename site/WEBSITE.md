@@ -1,14 +1,14 @@
 # Website Setup
 
-This repo can be served as a static Astro site with Supabase-backed progress tracking.
+This repo can be served as a static Astro site with Supabase-backed progress tracking and optional Supabase-first content.
 
 ## Prerequisites
 
 - Node.js 18+
 - A Supabase project
-- A Vercel account
+- A Vercel account (for deployment)
 
-## Local setup
+## Local Setup
 
 1. Move into the web app directory:
 
@@ -35,7 +35,7 @@ npm install
 npm run dev
 ```
 
-## Content validation
+## Content Validation
 
 Run the validation script to enforce frontmatter and folder conventions:
 
@@ -43,9 +43,33 @@ Run the validation script to enforce frontmatter and folder conventions:
 npm run validate
 ```
 
-## Book covers
+## Build Pipeline
 
-The site can display local book cover images generated from Open Library.
+`npm run build` runs, in order:
+
+1. Content validation.
+2. Cover fetching (auto mode).
+3. Content sync to Supabase (auto mode).
+4. Supabase verification (auto mode).
+5. Astro build.
+
+To enable sync and verification, set build-time environment variables:
+
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+
+If those are missing, sync/verify are skipped in auto mode.
+
+## Manual Sync and Verification
+
+```bash
+npm run sync:content
+npm run verify:content
+```
+
+## Book Covers
+
+The site can display local cover images generated from Open Library.
 
 1. Fetch and cache covers into `site/public/covers`:
 
@@ -65,17 +89,16 @@ Optional controls:
 - `--limit=10` to fetch only the first 10 books.
 - Add `isbn`, `open_library_id`, or `cover_url` to `Book Metadata.md` for better matches or manual overrides.
 
-On Vercel, `npm run build` now runs the cover fetcher automatically in auto mode.
-Set `COVER_FETCH=1` if you want that auto step to run locally as well.
+Auto mode runs during `npm run build` on Vercel. Set `COVER_FETCH=1` to run auto mode locally.
 
-## Supabase auth
+## Supabase Auth
 
 - Enable Email/Password auth in Supabase Auth settings.
 - The app uses row-level security so only the logged-in user can read/write status rows.
 
-## Vercel deployment
+## Vercel Deployment
 
 - Import this repo into Vercel.
-- Set environment variables from `.env`.
-- Build command: `npm run build`
-- Output: `dist`
+- Set environment variables from `.env` and optionally the service role keys for sync.
+- Build command: `npm run build`.
+- Output: `dist`.

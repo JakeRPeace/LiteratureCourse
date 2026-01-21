@@ -1,99 +1,49 @@
 # Templates and Resources
 
-This area contains shared templates and resources that can be used across all your literature courses.
+Shared templates and reference materials used across all courses.
 
----
+## Study Guide Templates
 
-## 📋 Study Guide Templates
+Location: `01 Study Guide Templates/`
 
-**Location:** `01 Study Guide Templates/`
+- `_TEMPLATE 01 Pre-Reading Guide.md`
+- `_TEMPLATE 02 Chapter-by-Chapter Notes.md`
+- `_TEMPLATE 03 Post-Reading Analysis.md`
 
-These templates are designed to work for any book, poem, or literary work across all your courses.
+How to use:
 
-### Available Templates
+1. Copy the templates into a book folder.
+2. Remove the `_TEMPLATE` prefix.
+3. Fill in book-specific content and required frontmatter (see `FORMAT.md`).
 
-1. **`_TEMPLATE 01 Pre-Reading Guide.md`**
-   - Use for: Overview, importance, what to think about before reading
-   - Works for: Books, poetry collections, plays, etc.
+Adaptations:
 
-2. **`_TEMPLATE 02 Chapter-by-Chapter Notes.md`**
-   - Use for: Section-by-section breakdown while reading
-   - Works for: Books (adjust for chapters/sections), poetry (by poem or section)
+- Poetry: replace “Chapter” with “Poem” or “Section”.
+- Short stories: “Story-by-Story” works well.
+- Genre or regional courses: add context sections where needed.
 
-3. **`_TEMPLATE 03 Post-Reading Analysis.md`**
-   - Use for: In-depth analysis after finishing
-   - Works for: Any literary work
+## Course Templates
 
-### How to Use Templates
+Location: `02 Course Templates/`
 
-1. **For a new book/item:**
-   - Navigate to your course's book/item folder
-   - Copy the three template files
-   - Rename them (remove the `_TEMPLATE` prefix)
-   - Fill in the book-specific information
+Use these to create consistent course `README.md`, `Index`, and `Syllabus` files. Add required frontmatter before writing content.
 
-2. **For poetry or other formats:**
-   - Templates can be adapted
-   - "Chapter-by-Chapter" becomes "Poem-by-Poem" or "Section-by-Section"
-   - Adjust the structure as needed
+## Book Templates
 
-3. **For different course types:**
-   - Templates are generic enough to work for any literature course
-   - Just adjust the prompts and questions to fit your course's focus
+Location: `03 Book Templates/`
 
----
+Use these as starting points for `Book Metadata.md` and any other book-level docs.
 
-## 🎯 Template Customization Tips
+## System Management
 
-### For Poetry Courses
-- Change "Chapter" to "Poem" or "Section"
-- Adjust questions to focus on poetic devices, form, imagery
-- Modify structure as needed
-
-### For Regional Literature (e.g., Russian Literature)
-- Add sections on historical/cultural context
-- Include translation notes if applicable
-- Adjust themes to focus on regional concerns
-
-### For Genre Courses (e.g., Science Fiction)
-- Add sections on genre conventions
-- Include subgenre classifications
-- Focus on speculative elements
-
-### For Short Story Collections
-- "Chapter-by-Chapter" becomes "Story-by-Story"
-- Adjust structure for shorter works
-- May combine multiple stories in one analysis
-
----
-
-## 📚 Course-Specific Resources
-
-If you need course-specific templates or resources:
-
-1. Create a new folder in this area: `02 [Course Name] Resources/`
-2. Store course-specific templates there
-3. Reference them in your course's README or Index
-
----
-
-## 🧭 System Management
-
-**Location:** `00 System Management/`
+Location: `00 System Management/`
 
 - `00.00 Master Index.md`
 - `00.01 Course Creation Guide.md`
-- `00.02 Course Data Pipeline Plan.md`
 - `00.03 Course Creator Chatbot Plan.md`
 
-## 🔄 Keeping Templates Updated
+## Maintenance Notes
 
-- Templates are designed to be flexible
-- If you find a better structure, update the templates
-- All courses can benefit from template improvements
-- Consider backward compatibility when updating
-
----
-
-*Templates created: 2025-12-24*  
-*Last updated: 2025-12-24*
+- Keep template structure consistent across courses.
+- Update templates when you learn a better pattern, then backfill only when it adds value.
+- Maintain Title Case in headings and filenames.
