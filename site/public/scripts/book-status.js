@@ -151,6 +151,7 @@ function initWidgets() {
       }
 
       setNote("Saved.");
+      window.dispatchEvent(new CustomEvent("book-status-refresh"));
     };
 
     root.addEventListener("change", (event) => {

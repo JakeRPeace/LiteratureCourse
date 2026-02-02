@@ -1,15 +1,4 @@
-import { supabase } from "./supabase.js";
 import { getSession, onSessionChange } from "./session-store.js";
-
-function slugify(value) {
-  return value
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/&/g, "and")
-    .replace(/[^a-zA-Z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .toLowerCase();
-}
 
 function setNote(note, message, isError = false) {
   if (!note) return;
@@ -24,49 +13,38 @@ async function createTestCourse(note, button) {
     return;
   }
 
-  const userId = session.user.id;
   const timestamp = Date.now();
-  const courseId = `user-${userId}-${timestamp}`;
   const title = `Test Course ${timestamp} - Modern Literature`;
   const courseType = "Modern Literature";
   const summary = "Test course created via the UI button.";
-  const slug = slugify(title);
 
   button.disabled = true;
   setNote(note, "Creating test course...");
 
-  const { error: courseError } = await supabase.from("courses").insert({
-    course_id: courseId,
-    title,
-    course_type: courseType,
-    summary,
-    slug,
-    source: "user",
-    owner_id: userId
-  });
+  try {
+    const response = await fetch("/api/course-create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
+      body: JSON.stringify({
+        course: {
+          title,
+          course_type: courseType,
+          summary,
+          books: [
+            { title: "Test Book", author: "Test Author" }
+          ]
+        }
+      })
+    });
 
-  if (courseError) {
-    setNote(note, courseError.message || "Failed to create course.", true);
-    button.disabled = false;
-    return;
-  }
-
-  const bookId = `${courseId}/book-01`;
-  const bookTitle = "Test Book";
-  const bookSlug = slugify(`${courseId}-book-01`);
-
-  const { error: bookError } = await supabase.from("books").insert({
-    book_id: bookId,
-    course_id: courseId,
-    category: "01 Books",
-    title: bookTitle,
-    author: "Test Author",
-    slug: bookSlug,
-    sort_order: 1
-  });
-
-  if (bookError) {
-    setNote(note, bookError.message || "Course created, but book failed.", true);
+    const data = await response.json();
+    if (!response.ok) {
+      setNote(note, data?.error || "Failed to create course.", true);
+      button.disabled = false;
+      return;
+    }
+  } catch (error) {
+    setNote(note, "Failed to create course.", true);
     button.disabled = false;
     return;
   }

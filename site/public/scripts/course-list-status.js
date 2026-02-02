@@ -1,5 +1,4 @@
-import { supabase } from "./supabase.js";
-import { getSession, onSessionChange } from "./session-store.js";
+import { getBookStatusState, onBookStatusState } from "./status-store.js";
 
 const statusLabels = {
   not_started: "Not started",
@@ -57,23 +56,17 @@ async function loadStatuses() {
   const { rows, courseMap } = collectRows();
   if (!rows.length) return;
 
-  const session = await getSession();
-  if (!session) {
+  const state = await getBookStatusState();
+  if (state.status === "signed_out") {
     setLoggedOut(rows);
     return;
   }
-
-  const { data, error } = await supabase
-    .from("book_status")
-    .select("book_id, status")
-    .eq("user_id", session.user.id);
-
-  if (error) {
-    setError(rows);
+  if (state.status !== "ready") {
+    if (state.status === "error") setError(rows);
     return;
   }
 
-  (data || []).forEach((entry) => {
+  (state.data || []).forEach((entry) => {
     const courseId = (entry.book_id || "").split(/[\\/]/)[0];
     const course = courseMap.get(courseId);
     if (!course) return;
@@ -88,9 +81,7 @@ async function loadStatuses() {
 
 window.addEventListener("DOMContentLoaded", () => {
   loadStatuses();
-  onSessionChange(() => {
-    loadStatuses();
-  });
+  onBookStatusState(() => loadStatuses());
   window.addEventListener("course-rows-updated", () => {
     loadStatuses();
   });

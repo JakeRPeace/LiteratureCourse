@@ -23,10 +23,12 @@ export async function getStaticPaths() {
 }
 
 const { slug } = Astro.params;
-const systemCourses = await loadSystemCourses();
+const [systemCourses, systemBook] = await Promise.all([
+  loadSystemCourses(),
+  loadSystemBookBySlug(slug)
+]);
 const markdownCourses = getCourses();
 const courses = systemCourses ?? markdownCourses;
-const systemBook = await loadSystemBookBySlug(slug);
 const markdownBook = getBookBySlug(slug);
 const book = systemBook ?? markdownBook;
 if (!book) {
@@ -35,7 +37,10 @@ if (!book) {
 const bookSource = systemBook ? "supabase" : "markdown";
 const bookSourceLabel = resolveSourceLabel(bookSource);
 
-const systemGuides = await loadSystemBookGuides(book.id);
+const [systemGuides, systemCourseBooks] = await Promise.all([
+  loadSystemBookGuides(book.id),
+  loadSystemCourseBooks(book.courseId)
+]);
 const guideSource = systemGuides ? "supabase" : "markdown";
 const guideSourceLabel = resolveSourceLabel(guideSource);
 
@@ -45,11 +50,10 @@ const course = courses.find((c) => c.id === book.courseId) || markdownCourse || 
   slug: book.courseId ? slugify(book.courseId) : "",
   title: "Course"
 };
-const systemCourseBooks = await loadSystemCourseBooks(book.courseId);
 const courseBooks = systemCourseBooks ?? markdownCourse?.books ?? course.books ?? [];
 
 const guideCards =
-  systemGuides ?? (markdownBook?.guides ?? []).filter((guide) => guide.module);
+  systemGuides ?? (markdownBook?.guides ?? []).filter((guide) => guide.content);
 ---
 <Base
   title={`${book.title} | Literature Course Library`}

@@ -1,4 +1,3 @@
-import { supabase } from "./supabase.js";
 import { getSession, onSessionChange } from "./session-store.js";
 
 const summaryFallback = "Describe your course to get a draft.";
@@ -8,16 +7,6 @@ async function getAuthHeaders() {
   const session = await getSession();
   const token = session?.access_token;
   return token ? { Authorization: `Bearer ${token}` } : {};
-}
-
-function slugify(value) {
-  return value
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/&/g, "and")
-    .replace(/[^a-zA-Z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .toLowerCase();
 }
 
 function setNote(note, message, isError = false) {
@@ -52,39 +41,6 @@ function formatDraft(course) {
   return lines.join("\n");
 }
 
-async function fetchCoverPayload(bookRows) {
-  try {
-    const authHeaders = await getAuthHeaders();
-    const response = await fetch("/api/book-covers", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", ...authHeaders },
-      body: JSON.stringify({
-        books: bookRows.map((book) => ({
-          book_id: book.book_id,
-          title: book.title,
-          author: book.author
-        }))
-      })
-    });
-
-    if (!response.ok) {
-      console.warn("Cover fetch request failed.", response.status);
-      return [];
-    }
-    const data = await response.json();
-    const covers = Array.isArray(data?.covers) ? data.covers : [];
-    if (!covers.length) {
-      console.warn("No covers returned.", data);
-      return [];
-    }
-
-    return covers;
-  } catch (error) {
-    console.warn("Cover fetch failed.", error);
-    return [];
-  }
-}
-
 async function createCourseFromDraft(course, note, onSuccess) {
   const session = await getSession();
   if (!session) {
@@ -92,58 +48,23 @@ async function createCourseFromDraft(course, note, onSuccess) {
     return;
   }
 
-  const userId = session.user.id;
-  const timestamp = Date.now();
-  const courseId = `user-${userId}-${timestamp}`;
-  const title = course.title;
-  const courseType = course.course_type;
-  const summary = course.summary;
-  const slug = slugify(title);
-
   setNote(note, "Creating course...");
 
-  const { error: courseError } = await supabase.from("courses").insert({
-    course_id: courseId,
-    title,
-    course_type: courseType,
-    summary,
-    slug,
-    source: "user",
-    owner_id: userId
-  });
+  try {
+    const authHeaders = await getAuthHeaders();
+    const response = await fetch("/api/course-create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeaders },
+      body: JSON.stringify({ course })
+    });
 
-  if (courseError) {
-    setNote(note, courseError.message || "Failed to create course.", true);
-    return;
-  }
-
-  const bookRows = course.books.map((book, index) => ({
-    book_id: `${courseId}/book-${String(index + 1).padStart(2, "0")}`,
-    course_id: courseId,
-    category: "01 Books",
-    title: book.title,
-    author: book.author,
-    slug: slugify(`${courseId}-${book.title}`),
-    sort_order: index + 1
-  }));
-
-  const coverPayload = await fetchCoverPayload(bookRows);
-  const coverMap = new Map(coverPayload.map((cover) => [cover.book_id, cover]));
-  const booksToInsert = bookRows.map((book) => {
-    const cover = coverMap.get(book.book_id);
-    if (!cover) return book;
-    return {
-      ...book,
-      cover_url: cover.cover_url,
-      cover_source: cover.cover_source,
-      cover_source_id: cover.cover_source_id
-    };
-  });
-
-  const { error: bookError } = await supabase.from("books").insert(booksToInsert);
-
-  if (bookError) {
-    setNote(note, bookError.message || "Course created, but books failed.", true);
+    const data = await response.json();
+    if (!response.ok) {
+      setNote(note, data?.error || "Failed to create course.", true);
+      return;
+    }
+  } catch (error) {
+    setNote(note, "Course creation failed.", true);
     return;
   }
 
