@@ -1,5 +1,4 @@
-import { supabase } from "./supabase.js";
-import { getSession, onSessionChange } from "./session-store.js";
+import { getBookStatusState, onBookStatusState } from "./status-store.js";
 
 const statusLabels = {
   not_started: "Not started",
@@ -62,30 +61,26 @@ window.addEventListener("DOMContentLoaded", () => {
     };
 
     const loadStatus = async () => {
-      const session = await getSession();
-      if (!session) {
-        updateUI("signed_out");
-        return;
-      }
-
       if (!bookIds.length) {
         if (label) label.textContent = "No books found";
         return;
       }
 
-      const { data, error } = await supabase
-        .from("book_status")
-        .select("status, book_id")
-        .in("book_id", bookIds)
-        .eq("user_id", session.user.id);
-
-      if (error) {
+      const state = await getBookStatusState();
+      if (state.status === "signed_out") {
+        updateUI("signed_out");
+        return;
+      }
+      if (state.status === "error") {
         if (label) label.textContent = "Error loading status";
-        console.error(error);
+        return;
+      }
+      if (state.status !== "ready") {
         return;
       }
 
-      const statusData = data || [];
+      const bookSet = new Set(bookIds);
+      const statusData = (state.data || []).filter((row) => bookSet.has(row.book_id));
       const status = deriveStatus(statusData, bookIds.length);
       const readCount = statusData.filter(d => d.status === "read").length;
       const inProgressCount = statusData.filter(d => d.status === "in_progress").length;
@@ -93,9 +88,7 @@ window.addEventListener("DOMContentLoaded", () => {
       updateUI(status, readCount, inProgressCount);
     };
 
-    onSessionChange(() => {
-      loadStatus();
-    });
+    onBookStatusState(() => loadStatus());
 
     loadStatus();
   });

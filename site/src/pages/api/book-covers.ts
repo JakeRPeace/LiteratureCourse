@@ -125,7 +125,10 @@ export const POST: APIRoute = async ({ request }) => {
     return Response.json({ error: "Unauthorized." }, { status: 401 });
   }
 
-  const { allowed, retryAfter } = checkRateLimit(`book-covers:${user.id}`, RATE_LIMIT);
+  const { allowed, retryAfter } = await checkRateLimit(
+    `book-covers:${user.id}`,
+    RATE_LIMIT
+  );
   if (!allowed) {
     return Response.json(
       { error: "Rate limit exceeded." },

@@ -1,6 +1,6 @@
 import { supabase } from "./supabase.js";
 import { applyStatusCounts } from "./course-progress-utils.js";
-import { getSession, onSessionChange } from "./session-store.js";
+import { getBookStatusState, onBookStatusState } from "./status-store.js";
 
 window.addEventListener("DOMContentLoaded", () => {
   const widgets = document.querySelectorAll("[data-course-progress]");
@@ -53,19 +53,17 @@ window.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const session = await getSession();
-      if (!session) {
+      const state = await getBookStatusState();
+      if (state.status === "signed_out") {
         setMessage("Sign in to see progress.");
         return;
       }
-
-      const { data, error } = await supabase
-        .from("book_status")
-        .select("book_id, status")
-        .eq("user_id", session.user.id);
-
-      if (error) {
-        setMessage(error.message);
+      if (state.status === "error") {
+        setMessage(state.error?.message || "Status unavailable.");
+        return;
+      }
+      if (state.status !== "ready") {
+        setMessage("Loading progress...");
         return;
       }
 
@@ -80,7 +78,7 @@ window.addEventListener("DOMContentLoaded", () => {
         ])
       );
 
-      const statusRows = data || [];
+      const statusRows = state.data || [];
       const pending = applyStatusCounts(courseMap, statusRows);
 
       if (pending.length) {
@@ -119,9 +117,7 @@ window.addEventListener("DOMContentLoaded", () => {
       renderCourses(selected);
     };
 
-    onSessionChange(() => {
-      loadProgress();
-    });
+    onBookStatusState(() => loadProgress());
 
     loadProgress();
   });

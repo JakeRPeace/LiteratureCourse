@@ -21,21 +21,25 @@ export async function getStaticPaths() {
 }
 
 const { slug } = Astro.params;
-const systemCourses = await loadSystemCourses();
+const [systemCourses, systemCourse] = await Promise.all([
+  loadSystemCourses(),
+  loadSystemCourseBySlug(slug)
+]);
 const courses = systemCourses ?? getCourses();
-const systemCourse = await loadSystemCourseBySlug(slug);
 const markdownCourse = getCourseBySlug(slug);
 const course = systemCourse ?? markdownCourse;
 if (!course) {
   throw new Error(`Course not found: ${slug}`);
 }
 
-const systemBooks = await loadSystemCourseBooks(course.id);
+const [systemBooks, systemDocs] = await Promise.all([
+  loadSystemCourseBooks(course.id),
+  loadSystemCourseDocs(course.id)
+]);
 const courseBooks = systemBooks ?? markdownCourse?.books ?? course.books ?? [];
 const booksSource = systemBooks ? "supabase" : "markdown";
 const booksSourceLabel = resolveSourceLabel(booksSource);
 
-const systemDocs = await loadSystemCourseDocs(course.id);
 const docsSource = systemDocs ? "supabase" : "markdown";
 const docsSourceLabel = resolveSourceLabel(docsSource);
 const courseDocs = (systemDocs ?? markdownCourse?.docs ?? course.docs ?? []).filter(
