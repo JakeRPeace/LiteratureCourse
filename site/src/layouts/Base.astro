@@ -205,6 +205,21 @@ const showSourcePills =
         color: #f7f7f7;
       }
 
+      .nav-logo {
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-logo img {
+        display: block;
+        opacity: 0.9;
+        transition: opacity 0.15s ease;
+      }
+
+      .nav-logo:hover img {
+        opacity: 1;
+      }
+
       .nav-links {
         display: flex;
         align-items: center;
@@ -1528,7 +1543,9 @@ const showSourcePills =
         <header class="nav">
           <div class="nav-inner">
             <div class="nav-links">
-              <a href="/">Courses</a>
+              <a href="/" class="nav-logo" aria-label="Lit101 - Home">
+                <img src="/logo.svg" alt="Lit101" height="34" />
+              </a>
               <a href="/docs">Docs</a>
               <a href="/deploy">Deploy</a>
             </div>
