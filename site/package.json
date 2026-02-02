@@ -14,8 +14,8 @@
     "test:run": "vitest run"
   },
   "dependencies": {
-    "@astrojs/vercel": "^7.8.2",
     "@ai-sdk/gateway": "^2.0.0-beta.85",
+    "@astrojs/vercel": "^7.8.2",
     "@supabase/supabase-js": "^2.46.1",
     "ai": "^6.0.0-beta.159",
     "astro": "^4.15.4",
@@ -24,6 +24,7 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "sharp": "^0.34.5",
     "vitest": "^1.6.0"
   }
 }
