@@ -25,6 +25,21 @@ const projectRoot =
   rootCandidates.find((candidate) => candidate && hasCourseDirs(candidate)) ||
   path.resolve(cwd, "..");
 
+const markdownModules = import.meta.glob("../../../**/*.md", { eager: true });
+
+const ignoredRoots = ["/node_modules/", "/dist/", "/.git/", "/src/", "/site/"];
+const filteredMarkdownModules = Object.fromEntries(
+  Object.entries(markdownModules).filter(([filePath]) => {
+    return !ignoredRoots.some((segment) => filePath.includes(segment));
+  })
+);
+
+const markdownByFile = new Map(
+  Object.values(filteredMarkdownModules)
+    .filter((module) => module && module.file)
+    .map((module) => [path.normalize(module.file), module])
+);
+
 const coverLookup = coverMap?.covers || {};
 
 const guideTypeMeta = {
@@ -64,27 +79,6 @@ function stripFrontmatter(contents) {
   return contents.slice(end + 5);
 }
 
-function parseFrontmatter(contents) {
-  if (!contents.startsWith("---\n")) {
-    return { data: {}, body: contents };
-  }
-  const end = contents.indexOf("\n---\n", 4);
-  if (end === -1) {
-    return { data: {}, body: contents };
-  }
-  const raw = contents.slice(4, end);
-  const data = {};
-  raw.split("\n").forEach((line) => {
-    if (!line.trim()) return;
-    const match = line.match(/^([^:]+):\s*(.*)$/);
-    if (!match) return;
-    const key = match[1].trim();
-    const value = match[2].trim();
-    data[key] = value;
-  });
-  return { data, body: contents.slice(end + 5) };
-}
-
 function stripMarkdown(text) {
   return text
     .replace(/`{1,3}[^`]*`{1,3}/g, "")
@@ -115,42 +109,18 @@ function extractExcerpt(contents, maxLength = 220) {
   return "";
 }
 
-function docTypeFromFilename(filePath) {
-  const name = path.basename(filePath).toLowerCase();
-  if (name === "readme.md") return "readme";
-  if (name.includes("syllabus")) return "syllabus";
-  if (name.includes("index")) return "index";
-  return "";
-}
-
-const markdownCache = new Map();
-
-function readMarkdownFile(filePath) {
-  if (!filePath) return null;
-  const normalized = path.normalize(filePath);
-  if (markdownCache.has(normalized)) {
-    return markdownCache.get(normalized);
-  }
-  try {
-    const rawContent = fs.readFileSync(filePath, "utf8");
-    const { data, body } = parseFrontmatter(rawContent);
-    const entry = { rawContent, body, frontmatter: data, file: normalized };
-    markdownCache.set(normalized, entry);
-    return entry;
-  } catch (error) {
-    return null;
-  }
-}
-
 function buildCourseDoc(filePath) {
   if (!filePath) return null;
-  const module = readMarkdownFile(filePath);
+  const module = getMarkdownModule(filePath);
   if (!module) return null;
-  const docType = module?.frontmatter?.doc_type || docTypeFromFilename(filePath) || "";
+  const docType = module?.frontmatter?.doc_type || "";
   const baseTitle = path.basename(filePath, ".md");
   const displayTitle = baseTitle.replace(/^\d+\.\d+\s+/, "");
   const meta = courseDocMeta[docType] || {};
-  const rawContent = typeof module?.rawContent === "string" ? module.rawContent : "";
+  const rawContent =
+    typeof module?.rawContent === "string"
+      ? module.rawContent
+      : fs.readFileSync(filePath, "utf8");
   return {
     title: baseTitle,
     displayTitle,
@@ -160,9 +130,12 @@ function buildCourseDoc(filePath) {
     stage: meta.stage || "Course material",
     excerpt: extractExcerpt(rawContent),
     filePath,
-    content: rawContent,
-    module: null
+    module
   };
+}
+
+function getMarkdownModule(filePath) {
+  return markdownByFile.get(path.normalize(filePath));
 }
 
 function listDirectories(targetPath) {
@@ -234,7 +207,7 @@ export function getCourses() {
         const bookPath = path.join(categoryPath, bookDirName);
         const metadataPath = path.join(bookPath, "Book Metadata.md");
         const metadataModule = fs.existsSync(metadataPath)
-          ? readMarkdownFile(metadataPath)
+          ? getMarkdownModule(metadataPath)
           : null;
         const metadata = metadataModule?.frontmatter || {};
         const slug = slugify(`${courseId}-${bookDirName}`);
@@ -245,12 +218,15 @@ export function getCourses() {
           .sort()
           .map((fileName) => {
             const filePath = path.join(bookPath, fileName);
-            const module = readMarkdownFile(filePath);
+            const module = getMarkdownModule(filePath);
             const baseTitle = fileName.replace(/\.md$/, "");
             const displayTitle = baseTitle.replace(/^\d+\s+/, "");
             const guideType = module?.frontmatter?.guide_type || "";
             const typeMeta = guideTypeMeta[guideType] || {};
-            const rawContent = typeof module?.rawContent === "string" ? module.rawContent : "";
+            const rawContent =
+              typeof module?.rawContent === "string"
+                ? module.rawContent
+                : fs.readFileSync(filePath, "utf8");
             const excerpt = extractExcerpt(rawContent);
             const orderMatch = baseTitle.match(/^(\d+)\s+/);
             return {
@@ -263,8 +239,7 @@ export function getCourses() {
               stage: typeMeta.stage || "Reading guide",
               excerpt,
               filePath,
-              content: rawContent,
-              module: null
+              module
             };
           });
 
@@ -288,7 +263,7 @@ export function getCourses() {
 
     const readmePath = path.join(coursePath, "README.md");
     const readmeModule = fs.existsSync(readmePath)
-      ? readMarkdownFile(readmePath)
+      ? getMarkdownModule(readmePath)
       : null;
     const readmeFrontmatter = readmeModule?.frontmatter || {};
     let summary = readmeFrontmatter.course_summary || readmeFrontmatter.summary || "";
@@ -310,8 +285,8 @@ export function getCourses() {
       title: courseTitleFromId(courseId),
       slug: slugify(courseId),
       path: coursePath,
-      syllabus: syllabus ? { filePath: syllabus, module: readMarkdownFile(syllabus) } : null,
-      index: index ? { filePath: index, module: readMarkdownFile(index) } : null,
+      syllabus: syllabus ? { filePath: syllabus, module: getMarkdownModule(syllabus) } : null,
+      index: index ? { filePath: index, module: getMarkdownModule(index) } : null,
       readme: readmeModule ? { filePath: readmePath, module: readmeModule } : null,
       summary,
       docs: courseDocs,

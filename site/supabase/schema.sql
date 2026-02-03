@@ -182,12 +182,6 @@ create table if not exists public.content_sync (
 create unique index if not exists content_sync_source_path_idx
   on public.content_sync (source, source_path);
 
-create table if not exists public.api_rate_limits (
-  key text primary key,
-  count integer not null,
-  reset_at timestamptz not null
-);
-
 drop trigger if exists courses_updated_at on public.courses;
 create trigger courses_updated_at
 before update on public.courses
@@ -224,7 +218,6 @@ alter table public.course_docs enable row level security;
 alter table public.books enable row level security;
 alter table public.book_guides enable row level security;
 alter table public.content_sync enable row level security;
-alter table public.api_rate_limits enable row level security;
 
 drop policy if exists "courses_select_visible" on public.courses;
 create policy "courses_select_visible"
