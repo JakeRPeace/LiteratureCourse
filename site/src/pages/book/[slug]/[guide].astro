@@ -43,12 +43,12 @@ if (!systemGuide && !guideEntry) {
   throw new Error(`Guide not found: ${guideSlug}`);
 }
 
+const guideModule = systemGuide ? null : guideEntry?.module;
 const guideSource = systemGuide ? "supabase" : "markdown";
 const guideSourceLabel = resolveSourceLabel(guideSource);
 const guideLabel = systemGuide?.label || guideEntry?.label || "Guide";
 const guideStage = systemGuide?.stage || guideEntry?.stage || "Reading guide";
-const guideContent = systemGuide?.content || guideEntry?.content || "";
-const guideHtml = guideContent ? renderMarkdownSafe(guideContent) : null;
+const guideHtml = systemGuide ? renderMarkdownSafe(systemGuide.content) : null;
 ---
 <Base title={`${guideLabel} | ${book.title} | Literature Course Library`} authRequired={true}>
   <section class="stack">
@@ -63,6 +63,10 @@ const guideHtml = guideContent ? renderMarkdownSafe(guideContent) : null;
 
     {guideHtml ? (
       <div class="card guide-content" set:html={guideHtml} />
+    ) : guideModule ? (
+      <div class="card guide-content">
+        <guideModule.Content />
+      </div>
     ) : (
       <div class="card">
         <p>Guide content is unavailable.</p>

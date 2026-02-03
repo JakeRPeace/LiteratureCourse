@@ -42,12 +42,12 @@ if (!systemDoc && !docEntry) {
   throw new Error(`Course doc not found: ${docSlug}`);
 }
 
+const docModule = systemDoc ? null : docEntry?.module;
 const docSource = systemDoc ? "supabase" : "markdown";
 const docSourceLabel = resolveSourceLabel(docSource);
 const docLabel = systemDoc?.label || docEntry?.label || "Course document";
 const docStage = systemDoc?.stage || docEntry?.stage || "Course material";
-const docContent = systemDoc?.content || docEntry?.content || "";
-const docHtml = docContent ? renderMarkdownSafe(docContent) : null;
+const docHtml = systemDoc ? renderMarkdownSafe(systemDoc.content) : null;
 ---
 <Base title={`${docLabel} | ${course.title} | Literature Course Library`} authRequired={true}>
   <section class="stack">
@@ -62,6 +62,10 @@ const docHtml = docContent ? renderMarkdownSafe(docContent) : null;
 
     {docHtml ? (
       <div class="card guide-content" set:html={docHtml} />
+    ) : docModule ? (
+      <div class="card guide-content">
+        <docModule.Content />
+      </div>
     ) : (
       <div class="card">
         <p>Course document is unavailable.</p>

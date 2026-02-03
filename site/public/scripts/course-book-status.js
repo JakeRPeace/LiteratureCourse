@@ -1,4 +1,5 @@
-import { getBookStatusState, onBookStatusState } from "./status-store.js";
+import { supabase } from "./supabase.js";
+import { getSession, onSessionChange } from "./session-store.js";
 
 const statusLabels = {
   not_started: "Not started",
@@ -35,22 +36,27 @@ async function loadStatuses() {
   const { rows, bookIds } = collectRows();
   if (!rows.length) return;
 
-  const state = await getBookStatusState();
-  if (state.status === "signed_out") {
+  const session = await getSession();
+  if (!session) {
     setLoggedOut(rows);
-    return;
-  }
-  if (state.status !== "ready") {
-    if (state.status === "error") setError(rows);
     return;
   }
 
   if (!bookIds.length) return;
 
+  const { data, error } = await supabase
+    .from("book_status")
+    .select("status, book_id")
+    .in("book_id", bookIds)
+    .eq("user_id", session.user.id);
+
+  if (error) {
+    setError(rows);
+    return;
+  }
+
   const statusMap = new Map();
-  const bookIdSet = new Set(bookIds);
-  (state.data || []).forEach((entry) => {
-    if (!bookIdSet.has(entry.book_id)) return;
+  (data || []).forEach((entry) => {
     statusMap.set(entry.book_id, entry.status || "not_started");
   });
 
@@ -62,7 +68,9 @@ async function loadStatuses() {
 
 window.addEventListener("DOMContentLoaded", () => {
   loadStatuses();
-  onBookStatusState(() => loadStatuses());
+  onSessionChange(() => {
+    loadStatuses();
+  });
   window.addEventListener("book-rows-updated", () => {
     loadStatuses();
   });
