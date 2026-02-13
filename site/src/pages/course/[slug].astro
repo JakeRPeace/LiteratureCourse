@@ -1,0 +1,146 @@
+---
+import Base from "../../layouts/Base.astro";
+import CourseStatus from "../../components/CourseStatus.astro";
+import { getCourses, getCourseBySlug } from "../../lib/content.js";
+import { resolveSourceLabel } from "../../lib/source-labels.js";
+import {
+  loadSystemCourseBySlug,
+  loadSystemCourseBooks,
+  loadSystemCourseDocs,
+  loadSystemCourses
+} from "../../lib/system-content.js";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const systemCourses = await loadSystemCourses();
+  const courses = systemCourses ?? getCourses();
+  return courses.map((course) => ({
+    params: { slug: course.slug }
+  }));
+}
+
+const { slug } = Astro.params;
+const systemCourses = await loadSystemCourses();
+const courses = systemCourses ?? getCourses();
+const systemCourse = await loadSystemCourseBySlug(slug);
+const markdownCourse = getCourseBySlug(slug);
+const course = systemCourse ?? markdownCourse;
+if (!course) {
+  throw new Error(`Course not found: ${slug}`);
+}
+
+const systemBooks = await loadSystemCourseBooks(course.id);
+const courseBooks = systemBooks ?? markdownCourse?.books ?? course.books ?? [];
+const booksSource = systemBooks ? "supabase" : "markdown";
+const booksSourceLabel = resolveSourceLabel(booksSource);
+
+const systemDocs = await loadSystemCourseDocs(course.id);
+const docsSource = systemDocs ? "supabase" : "markdown";
+const docsSourceLabel = resolveSourceLabel(docsSource);
+const courseDocs = (systemDocs ?? markdownCourse?.docs ?? course.docs ?? []).filter(
+  (doc) => doc.docType !== "index"
+);
+const bookIds = courseBooks.map((book) => book.id);
+---
+<Base
+  title={`${course.title} | Literature Course Library`}
+  authRequired={true}
+  heroCourses={courses}
+  courseSwitcher={{
+    current: course,
+    courses
+  }}
+>
+  <section class="stack">
+    <div>
+      <a class="pill" href="/">Back to courses</a>
+      <h2 class="section-title">{course.title}</h2>
+      <p class="section-subtitle">{course.id}</p>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <CourseStatus bookIds={bookIds} />
+
+    <div class="section-header">
+      <div>
+        <h3 class="section-title">Course Materials</h3>
+        <p class="section-subtitle">Scan the overview and syllabus before diving in.</p>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    {courseDocs.length ? (
+      <div class="course-doc-grid">
+        {courseDocs.map((doc) => (
+          <a
+            class="card course-doc-card"
+            href={`/course/${course.slug}/${doc.slug}`}
+            data-doc-type={doc.docType || "other"}
+            data-doc-source={docsSource}
+          >
+            <div class="course-doc-top">
+              <span class="course-doc-kicker">{doc.stage}</span>
+              <span class="course-doc-action">Open -&gt;</span>
+            </div>
+            <div class="course-doc-title">{doc.label}</div>
+            <p class="course-doc-excerpt">
+              {doc.excerpt || "Open for the full course document."}
+            </p>
+            <div class="course-doc-meta">
+              <span class="course-doc-chip">{course.id}</span>
+              <span class="data-source-pill">{docsSourceLabel}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <div class="card">
+        <p>No course documents are available yet.</p>
+      </div>
+    )}
+
+    <div class="card">
+      <h3>Books</h3>
+      <div class="data-list">
+        {courseBooks.map((book) => (
+          <a
+            class="data-row"
+            href={`/book/${book.slug}`}
+            data-book-row
+            data-book-id={book.id}
+            data-status="not_started"
+            data-book-source={booksSource}
+          >
+            <div class="data-body">
+              <div class={`data-cover ${book.coverUrl ? "" : "is-empty"}`}>
+                {book.coverUrl ? (
+                  <img
+                    src={book.coverUrl}
+                    alt={`Cover of ${book.title}`}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : null}
+              </div>
+              <div class="data-main">
+                <div class="data-title">{book.title}</div>
+                <div class="data-sub">{book.id}</div>
+                <span class="data-source-pill">{booksSourceLabel}</span>
+              </div>
+            </div>
+            <div class="data-meta">
+              <span class="status-pill" data-status-pill data-status="not_started">
+                <span class="status-dot" aria-hidden="true"></span>
+                <span class="status-label" data-status-label>Not started</span>
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+  <script type="module" src="/scripts/course-book-status.js"></script>
+</Base>

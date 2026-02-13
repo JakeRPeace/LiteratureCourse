@@ -1,0 +1,41 @@
+---
+import Base from "../../../layouts/Base.astro";
+import { getCourses } from "../../../lib/content.js";
+import { loadSystemCourses } from "../../../lib/system-content.js";
+
+const systemCourses = await loadSystemCourses();
+const courses = systemCourses ?? getCourses();
+
+const courseSwitcher = {
+  current: {
+    title: "Loading course...",
+    id: "",
+    slug: "",
+    source: "user"
+  },
+  courses
+};
+---
+<Base
+  title="Course Doc | Literature Course Library"
+  authRequired={true}
+  heroCourses={courses}
+  courseSwitcher={courseSwitcher}
+>
+  <section class="stack" data-user-course-doc>
+    <div>
+      <a class="pill" href="/" data-user-course-doc-back>Back to course</a>
+      <h2 class="section-title" data-user-course-doc-title>Loading document...</h2>
+      <p class="section-subtitle" data-user-course-doc-stage></p>
+      <span class="data-source-pill">User</span>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="card guide-content" data-user-course-doc-content></div>
+    <div class="card" data-user-course-doc-error hidden>
+      <p></p>
+    </div>
+  </section>
+  <script type="module" src="/scripts/user-course-doc.js"></script>
+</Base>

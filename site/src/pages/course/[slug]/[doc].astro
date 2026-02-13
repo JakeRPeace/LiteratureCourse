@@ -1,0 +1,75 @@
+---
+import Base from "../../../layouts/Base.astro";
+import { getCourses, getCourseBySlug } from "../../../lib/content.js";
+import {
+  loadSystemCourseBySlug,
+  loadSystemCourseDoc,
+  loadSystemCourseDocIndex
+} from "../../../lib/system-content.js";
+import { resolveSourceLabel } from "../../../lib/source-labels.js";
+import { renderMarkdownSafe } from "../../../lib/markdown.js";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const systemDocIndex = await loadSystemCourseDocIndex();
+  if (systemDocIndex) {
+    return systemDocIndex.map((entry) => ({
+      params: { slug: entry.courseSlug, doc: entry.docSlug }
+    }));
+  }
+
+  const courses = getCourses();
+  return courses.flatMap((course) =>
+    (course.docs || []).map((doc) => ({
+      params: { slug: course.slug, doc: doc.slug }
+    }))
+  );
+}
+
+const { slug, doc: docSlug } = Astro.params;
+const systemCourse = await loadSystemCourseBySlug(slug);
+const markdownCourse = getCourseBySlug(slug);
+const course = systemCourse ?? markdownCourse;
+if (!course) {
+  throw new Error(`Course not found: ${slug}`);
+}
+
+const docEntry = (markdownCourse?.docs || []).find((doc) => doc.slug === docSlug) || null;
+
+const systemDoc = await loadSystemCourseDoc(course.id, docSlug);
+if (!systemDoc && !docEntry) {
+  throw new Error(`Course doc not found: ${docSlug}`);
+}
+
+const docModule = systemDoc ? null : docEntry?.module;
+const docSource = systemDoc ? "supabase" : "markdown";
+const docSourceLabel = resolveSourceLabel(docSource);
+const docLabel = systemDoc?.label || docEntry?.label || "Course document";
+const docStage = systemDoc?.stage || docEntry?.stage || "Course material";
+const docHtml = systemDoc ? renderMarkdownSafe(systemDoc.content) : null;
+---
+<Base title={`${docLabel} | ${course.title} | Literature Course Library`} authRequired={true}>
+  <section class="stack">
+    <div>
+      <a class="pill" href={`/course/${course.slug}`}>Back to course</a>
+      <h2 class="section-title">{docLabel}</h2>
+      <p class="section-subtitle">{course.title} · {docStage}</p>
+      <span class="data-source-pill">{docSourceLabel}</span>
+    </div>
+
+    <div class="section-divider"></div>
+
+    {docHtml ? (
+      <div class="card guide-content" set:html={docHtml} />
+    ) : docModule ? (
+      <div class="card guide-content">
+        <docModule.Content />
+      </div>
+    ) : (
+      <div class="card">
+        <p>Course document is unavailable.</p>
+      </div>
+    )}
+  </section>
+</Base>

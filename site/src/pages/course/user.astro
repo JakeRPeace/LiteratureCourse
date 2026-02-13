@@ -1,0 +1,62 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCourses } from "../../lib/content.js";
+import { loadSystemCourses } from "../../lib/system-content.js";
+
+const systemCourses = await loadSystemCourses();
+const courses = systemCourses ?? getCourses();
+
+const courseSwitcher = {
+  current: {
+    title: "Loading course...",
+    id: "",
+    slug: "",
+    source: "user"
+  },
+  courses
+};
+---
+<Base
+  title="Course | Literature Course Library"
+  authRequired={true}
+  heroCourses={courses}
+  courseSwitcher={courseSwitcher}
+>
+  <section class="stack" data-user-course>
+    <div>
+      <a class="pill" href="/">Back to courses</a>
+      <h2 class="section-title" data-user-course-title>Loading course...</h2>
+      <p class="section-subtitle" data-user-course-id></p>
+      <span class="data-source-pill">User</span>
+    </div>
+
+    <div class="section-divider"></div>
+    <div class="card" data-user-course-error hidden>
+      <p></p>
+    </div>
+
+    <div class="section-header">
+      <div>
+        <h3 class="section-title">Course Materials</h3>
+        <p class="section-subtitle">Scan the overview and syllabus before diving in.</p>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="course-doc-grid" data-user-course-docs></div>
+    <div class="card" data-user-course-docs-empty hidden>
+      <p>No course documents are available yet.</p>
+    </div>
+
+    <div class="card">
+      <h3>Books</h3>
+      <div class="data-list" data-user-course-books></div>
+      <div data-user-course-books-empty hidden>
+        <p>No books are available yet.</p>
+      </div>
+    </div>
+  </section>
+  <script type="module" src="/scripts/user-course-page.js"></script>
+  <script type="module" src="/scripts/course-book-status.js"></script>
+</Base>

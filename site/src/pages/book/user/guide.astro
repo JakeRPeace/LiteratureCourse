@@ -1,0 +1,52 @@
+---
+import Base from "../../../layouts/Base.astro";
+import { getCourses } from "../../../lib/content.js";
+import { loadSystemCourses } from "../../../lib/system-content.js";
+
+const systemCourses = await loadSystemCourses();
+const courses = systemCourses ?? getCourses();
+
+const courseSwitcher = {
+  current: {
+    title: "Loading course...",
+    id: "",
+    slug: "",
+    source: "user"
+  },
+  courses
+};
+
+const bookSwitcher = {
+  current: {
+    title: "Loading book...",
+    id: "",
+    slug: "",
+    courseId: ""
+  },
+  books: []
+};
+---
+<Base
+  title="Guide | Literature Course Library"
+  authRequired={true}
+  heroCourses={courses}
+  courseSwitcher={courseSwitcher}
+  bookSwitcher={bookSwitcher}
+>
+  <section class="stack" data-user-book-guide>
+    <div>
+      <a class="pill" href="/" data-user-book-guide-back>Back to book</a>
+      <h2 class="section-title" data-user-book-guide-title>Loading guide...</h2>
+      <p class="section-subtitle" data-user-book-guide-stage></p>
+      <span class="data-source-pill">User</span>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="card guide-content" data-user-book-guide-content></div>
+    <div class="card" data-user-book-guide-error hidden>
+      <p></p>
+    </div>
+  </section>
+  <script type="module" src="/scripts/user-book-guide.js"></script>
+</Base>

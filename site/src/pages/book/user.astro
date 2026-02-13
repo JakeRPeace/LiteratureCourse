@@ -1,0 +1,73 @@
+---
+import Base from "../../layouts/Base.astro";
+import StatusWidget from "../../components/StatusWidget.astro";
+import { getCourses } from "../../lib/content.js";
+import { loadSystemCourses } from "../../lib/system-content.js";
+
+const systemCourses = await loadSystemCourses();
+const courses = systemCourses ?? getCourses();
+
+const courseSwitcher = {
+  current: {
+    title: "Loading course...",
+    id: "",
+    slug: "",
+    source: "user"
+  },
+  courses
+};
+
+const bookSwitcher = {
+  current: {
+    title: "Loading book...",
+    id: "",
+    slug: "",
+    courseId: ""
+  },
+  books: []
+};
+---
+<Base
+  title="Book | Literature Course Library"
+  authRequired={true}
+  heroCourses={courses}
+  courseSwitcher={courseSwitcher}
+  bookSwitcher={bookSwitcher}
+>
+  <section class="stack" data-user-book>
+    <div>
+      <a class="pill" href="/" data-user-book-back>Back to course</a>
+    </div>
+    <div class="book-hero">
+      <div class="book-cover is-empty" data-user-book-cover></div>
+      <div class="book-intro">
+        <h2 class="section-title" data-user-book-title>Loading book...</h2>
+        <p class="section-subtitle" data-user-book-meta></p>
+        <span class="data-source-pill">User</span>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="card" data-user-book-error hidden>
+      <p></p>
+    </div>
+
+    <StatusWidget bookId="" />
+
+    <div class="section-header">
+      <div>
+        <h3 class="section-title">Study Guides</h3>
+        <p class="section-subtitle">Explore the reading flow without drowning in full text.</p>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="guide-grid" data-user-book-guides></div>
+    <div class="card" data-user-book-guides-empty hidden>
+      <p>No study guides are available yet for this book.</p>
+    </div>
+  </section>
+  <script type="module" src="/scripts/user-book-page.js"></script>
+</Base>
