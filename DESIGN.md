@@ -158,7 +158,7 @@ components:
 
 The Literature Course Library is a private ledger of one real canon. The page should feel like a warm reading room, the independent-bookstore shelf a reader walks back into. Density is a column of books on bone paper, not a grid of metrics. A library-green band carries the name across the top and the colophon across the bottom. Iron ink does the reading. Vermilion marks the place.
 
-Spectral carries the library's name, the titles, and the guide. Karla carries navigation, buttons, fields, stamps, and metadata. A course row is a raised sheet: a cover fan, a title, a summary, a book count, and a status stamp. Hover or focus lifts that sheet, opens the fan, and draws one vermilion rule under the title. A guide then sits in a 68ch Spectral measure on the bare paper. Status stays a steady stamp: not started, in progress, or read. A score, when it exists, stays on that book's own sheet.
+Spectral carries the library's name, the titles, and the guide. Karla carries navigation, buttons, fields, stamps, and metadata. Course and book rows sit on a wood shelf tray: raised paper leaves over warm oak, with a lip under the stack. Covers carry a page-edge thickness. Hover or focus lifts a leaf, opens the cover fan, and draws one vermilion rule under the title. Selecting a row pulls the volume forward and turns it toward the reader before the next page opens. A guide then sits in a 68ch Spectral measure on the bare paper. Status stays a steady stamp: not started, in progress, or read. A score, when it exists, stays on that book's own sheet.
 
 Color is flat. There is no glass and no second theme. Depth is a soft ink shadow under a raised sheet, a stronger lift when the row is active, and a warmer shadow under a cover because the cover is an object on the shelf. The shelf refuses the dark glass dashboard and the floating pill.
 
@@ -167,7 +167,7 @@ Color is flat. There is no glass and no second theme. Depth is a soft ink shadow
 - Bone paper page, full-bleed library green on the header and colophon, iron ink for text
 - Spectral for the name, titles, and reading; Karla for chrome
 - Vermilion for the place-mark and the primary button; brass for focus; moss when a book is read
-- Flat color, a soft lift on rows, and the cover fan with one vermilion rule
+- Paper grain, a wood shelf tray under the rows, cover thickness, the cover fan, and a pull-and-turn on select
 - Status as a steady uppercase stamp
 - Guides set in a 68ch Spectral measure on the bare paper
 
@@ -245,7 +245,7 @@ The system is flat color. Depth is tonal paper plus a soft ink shadow. A raised 
 
 Covers are objects, so their shadow is offset as well as blurred. A small cover uses `3px 6px 12px rgba(36, 30, 22, 0.16)`. A fan leaf uses `2px 4px 8px rgba(36, 30, 22, 0.18)`. The book-page cover uses `8px 16px 28px rgba(36, 30, 22, 0.18)`. The score thumb uses `0 4px 8px rgba(36, 30, 22, 0.2)`. The dialog scrim is iron ink at 46% opacity, `rgba(36, 30, 22, 0.46)`.
 
-Motion sits on one curve, `cubic-bezier(0.16, 1, 0.3, 1)`. Rows and linked sheets take 0.35s. The cover fan and the vermilion title rule take 0.45s. Buttons take 0.25s. The course progress fill takes 0.6s.
+Motion sits on one curve, `cubic-bezier(0.16, 1, 0.3, 1)`, with a shelf slide `cubic-bezier(0.3, 0.7, 0.4, 1)` and a cover turn `cubic-bezier(0.22, 1, 0.36, 1)`. Rows and linked sheets take 0.35s. The cover fan and the vermilion title rule take 0.45s. Selecting a shelf row pulls the cover for about 0.46s, then navigates. Buttons take 0.25s. The course progress fill takes 0.6s. The book-page cover settles in 0.7s.
 
 ### Named Rules
 
@@ -281,6 +281,8 @@ The shelf row lifts 3px on hover and focus into the lift shadow. Its cover fan o
 The book cover is a 2 / 3 board with a 4px corner. An empty cover centers a Spectral monogram in library green.
 
 **The Cover Fan Rule.** Hover or focus on a course row opens the cover fan and draws one vermilion rule under the title.
+
+**The Pull Rule.** Choosing a course or book pulls that volume off the wood shelf and turns its cover toward the reader before the next page opens. Reduced motion skips the flourish.
 
 ### Inputs / Fields
 
@@ -327,7 +329,8 @@ The course creator is a dialog on bone paper with a strong iron line, a 12px cor
 - **Do** mark the place with vermilion: the progress fill, the primary button, reading links, and the single rule under a hovered course title.
 - **Do** mark keyboard focus with a 2px brass outline, 3px outside the control.
 - **Do** stamp status in uppercase Karla at 12px, weight 700, tracking 0.06em, with a 2px corner.
-- **Do** lift a course row on hover and focus, open the cover fan, and draw the vermilion rule. Drop that motion when the reader prefers reduced motion.
+- **Do** lift a course row on hover and focus, open the cover fan, and draw the vermilion rule. On select, pull the volume forward. Drop that motion when the reader prefers reduced motion.
+- **Do** seat the shelf rows on wood and give covers a page edge, without turning the reading measure into a poster.
 - **Do** keep body text at or above 4.5:1 against its paper.
 
 ### Don't:
