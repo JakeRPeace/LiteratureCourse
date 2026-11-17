@@ -73,6 +73,7 @@ const guideCards =
           <img
             src={book.coverUrl}
             alt={`Cover of ${book.title}`}
+            data-monogram={monogram(book.title, book.author)}
             loading="lazy"
             decoding="async"
           />

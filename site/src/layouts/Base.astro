@@ -90,10 +90,11 @@ const showSourcePills =
           <a class="wordmark" href="/">Literature Course Library</a>
           <div class="nav-links">
             <a href="/">Courses</a>
-            <a href="/docs">Docs</a>
-            <a href="/deploy">Deploy</a>
+            <a class="nav-tool" href="/docs">Docs</a>
+            <a class="nav-tool" href="/deploy">Deploy</a>
           </div>
-          <div class="nav-actions">
+          {(courseSwitcher || bookSwitcher) ? (
+            <div class="nav-actions">
               {courseSwitcher ? (
                 <details
                   class="course-switcher"
@@ -157,13 +158,14 @@ const showSourcePills =
                   </div>
                 </details>
               ) : null}
-              {showAuth ? (
-                <div class="auth-nav">
-                  <a href="/login" data-auth-login>Login</a>
-                  <a href="/login" data-auth-logout hidden>Sign out</a>
-                </div>
-              ) : null}
             </div>
+          ) : null}
+          {showAuth ? (
+            <div class="auth-nav">
+              <a href="/login" data-auth-login>Login</a>
+              <a href="/login" data-auth-logout hidden>Sign out</a>
+            </div>
+          ) : null}
         </div>
       </header>
     ) : null}
@@ -197,6 +199,10 @@ const showSourcePills =
         <div class="colophon-inner">
           <span><strong>Literature Course Library</strong></span>
           <span>A private shelf for a structured canon.</span>
+          <span class="colophon-tools">
+            <a href="/docs">Docs</a>
+            <a href="/deploy">Deploy</a>
+          </span>
         </div>
       </footer>
     )}
@@ -206,5 +212,6 @@ const showSourcePills =
     {loginPage ? <script type="module" src="/scripts/login-redirect.js"></script> : null}
     <script type="module" src="/scripts/course-switcher-user.js"></script>
     <script type="module" src="/scripts/strip-heading-icons.js"></script>
+    <script type="module" src="/scripts/cover-fallback.js"></script>
   </body>
 </html>

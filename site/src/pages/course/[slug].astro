@@ -116,7 +116,8 @@ const bookIds = courseBooks.map((book) => book.id);
                 {book.coverUrl ? (
                   <img
                     src={book.coverUrl}
-                    alt={`Cover of ${book.title}`}
+                    alt=""
+                    data-monogram={monogram(book.title, book.author)}
                     loading="lazy"
                     decoding="async"
                   />

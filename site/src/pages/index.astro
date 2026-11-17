@@ -52,7 +52,13 @@ const sourceLabel = resolveSourceLabel(systemCourseSource);
                  {(recentBooks.length > 0 ? recentBooks : [null, null, null]).map((book) => (
                     <div class="cover-stack-item">
                       {book ? (
-                        <img src={book.coverUrl} alt="" loading="lazy" decoding="async" />
+                        <img
+                          src={book.coverUrl}
+                          alt=""
+                          data-monogram={monogram(book.title || displayTitle, book.author)}
+                          loading="lazy"
+                          decoding="async"
+                        />
                       ) : (
                         <span class="cover-monogram" aria-hidden="true">{monogram(displayTitle)}</span>
                       )}
