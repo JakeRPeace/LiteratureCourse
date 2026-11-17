@@ -2,6 +2,7 @@
 import Base from "../../layouts/Base.astro";
 import CourseStatus from "../../components/CourseStatus.astro";
 import { getCourses, getCourseBySlug } from "../../lib/content.js";
+import { monogram } from "../../lib/monogram.js";
 import { resolveSourceLabel } from "../../lib/source-labels.js";
 import {
   loadSystemCourseBySlug,
@@ -37,7 +38,6 @@ const booksSourceLabel = resolveSourceLabel(booksSource);
 
 const systemDocs = await loadSystemCourseDocs(course.id);
 const docsSource = systemDocs ? "supabase" : "markdown";
-const docsSourceLabel = resolveSourceLabel(docsSource);
 const courseDocs = (systemDocs ?? markdownCourse?.docs ?? course.docs ?? []).filter(
   (doc) => doc.docType !== "index"
 );
@@ -54,9 +54,9 @@ const bookIds = courseBooks.map((book) => book.id);
 >
   <section class="stack">
     <div>
-      <a class="pill" href="/">Back to courses</a>
+      <a class="back-link" href="/">Back to courses</a>
       <h2 class="section-title">{course.title}</h2>
-      <p class="section-subtitle">{course.id}</p>
+      {course.summary ? <p class="section-subtitle">{course.summary}</p> : null}
     </div>
 
     <div class="section-divider"></div>
@@ -81,17 +81,13 @@ const bookIds = courseBooks.map((book) => book.id);
             data-doc-type={doc.docType || "other"}
             data-doc-source={docsSource}
           >
-            <div class="course-doc-top">
-              <span class="course-doc-kicker">{doc.stage}</span>
-              <span class="course-doc-action">Open -&gt;</span>
-            </div>
             <div class="course-doc-title">{doc.label}</div>
             <p class="course-doc-excerpt">
               {doc.excerpt || "Open for the full course document."}
             </p>
             <div class="course-doc-meta">
-              <span class="course-doc-chip">{course.id}</span>
-              <span class="data-source-pill">{docsSourceLabel}</span>
+              <span class="course-doc-chip">{doc.stage}</span>
+              <span class="course-doc-action">Open</span>
             </div>
           </a>
         ))}
@@ -102,9 +98,10 @@ const bookIds = courseBooks.map((book) => book.id);
       </div>
     )}
 
-    <div class="card">
-      <h3>Books</h3>
-      <div class="data-list">
+    <div class="section-header">
+      <h3 class="section-title">Books</h3>
+    </div>
+    <div class="data-list">
         {courseBooks.map((book) => (
           <a
             class="data-row"
@@ -123,11 +120,13 @@ const bookIds = courseBooks.map((book) => book.id);
                     loading="lazy"
                     decoding="async"
                   />
-                ) : null}
+                ) : (
+                  <span class="cover-monogram" aria-hidden="true">{monogram(book.title, book.author)}</span>
+                )}
               </div>
               <div class="data-main">
                 <div class="data-title">{book.title}</div>
-                <div class="data-sub">{book.id}</div>
+                <div class="data-sub">{book.author || book.id}</div>
                 <span class="data-source-pill">{booksSourceLabel}</span>
               </div>
             </div>
@@ -139,7 +138,6 @@ const bookIds = courseBooks.map((book) => book.id);
             </div>
           </a>
         ))}
-      </div>
     </div>
   </section>
   <script type="module" src="/scripts/course-book-status.js"></script>

@@ -32,8 +32,15 @@ function stripFrontmatter(contents) {
   return contents.slice(end + 5);
 }
 
+function stripHeadingIcons(html) {
+  return html.replace(/<(h[1-6])(\s[^>]*)?>([\s\S]*?)<\/\1>/gi, (match, tag, attrs = "", inner) => {
+    const cleaned = inner.replace(/\p{Extended_Pictographic}|\uFE0F/gu, "").replace(/\s{2,}/g, " ");
+    return `<${tag}${attrs}>${cleaned}</${tag}>`;
+  });
+}
+
 export function renderMarkdownSafe(markdown = "") {
-  const html = marked.parse(stripFrontmatter(markdown || ""));
+  const html = stripHeadingIcons(marked.parse(stripFrontmatter(markdown || "")));
   return sanitizeHtml(html, {
     allowedTags,
     allowedAttributes,

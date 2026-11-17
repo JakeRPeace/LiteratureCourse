@@ -33,26 +33,16 @@ function updateCover(url, title) {
 
 function buildGuideCard(bookId, guide) {
   const card = document.createElement("a");
-  card.className = "card guide-card";
+  card.className = "guide-card";
   card.href = `/book/user/guide?book_id=${encodeURIComponent(bookId)}&guide=${encodeURIComponent(
     guide.slug
   )}`;
   card.dataset.guideType = guide.guide_type || "other";
   card.dataset.guideSource = "user";
 
-  const top = document.createElement("div");
-  top.className = "guide-card-top";
-
-  const kicker = document.createElement("span");
-  kicker.className = "guide-kicker";
-  kicker.textContent = guide.stage || "Reading guide";
-
   const action = document.createElement("span");
   action.className = "guide-action";
-  action.textContent = "Open ->";
-
-  top.appendChild(kicker);
-  top.appendChild(action);
+  action.textContent = "Open";
 
   const title = document.createElement("div");
   title.className = "guide-title";
@@ -65,6 +55,11 @@ function buildGuideCard(bookId, guide) {
   const meta = document.createElement("div");
   meta.className = "guide-meta";
 
+  const stageChip = document.createElement("span");
+  stageChip.className = "guide-chip";
+  stageChip.textContent = guide.stage || "Reading guide";
+  meta.appendChild(stageChip);
+
   if (guide.sort_order) {
     const chip = document.createElement("span");
     chip.className = "guide-chip";
@@ -76,13 +71,13 @@ function buildGuideCard(bookId, guide) {
   bookChip.className = "guide-chip";
   bookChip.textContent = bookId;
   meta.appendChild(bookChip);
+  meta.appendChild(action);
 
   const sourcePill = document.createElement("span");
   sourcePill.className = "data-source-pill";
   sourcePill.textContent = "User";
   meta.appendChild(sourcePill);
 
-  card.appendChild(top);
   card.appendChild(title);
   card.appendChild(excerpt);
   card.appendChild(meta);

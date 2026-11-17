@@ -6,19 +6,8 @@ const supabaseKey = config.key;
 
 function showBanner(message) {
   const banner = document.createElement("div");
+  banner.className = "config-banner";
   banner.textContent = message;
-  banner.style.position = "fixed";
-  banner.style.top = "16px";
-  banner.style.left = "50%";
-  banner.style.transform = "translateX(-50%)";
-  banner.style.background = "rgba(15, 15, 15, 0.95)";
-  banner.style.color = "#ffffff";
-  banner.style.border = "1px solid rgba(255, 255, 255, 0.2)";
-  banner.style.padding = "10px 16px";
-  banner.style.borderRadius = "999px";
-  banner.style.fontSize = "12px";
-  banner.style.zIndex = "9999";
-  banner.style.boxShadow = "0 16px 32px rgba(0, 0, 0, 0.45)";
   document.body.appendChild(banner);
 }
 

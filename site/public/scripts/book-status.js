@@ -24,22 +24,13 @@ function initWidgets() {
 
     const getScoreColor = (value) => {
       if (scoreIsEmpty) {
-        return "rgba(255, 255, 255, 0.2)";
+        return "#cfc4b2";
       }
 
       const clamped = Math.max(0, Math.min(5, value));
-      let hue = 8;
-      if (clamped <= 2) {
-        hue = 8;
-      } else if (clamped <= 3) {
-        hue = 8 + (clamped - 2) * 47;
-      } else if (clamped <= 4) {
-        hue = 55 + (clamped - 3) * 65;
-      } else {
-        hue = 120;
-      }
-
-      return `hsl(${Math.round(hue)} 78% 55%)`;
+      if (clamped < 2.5) return "#9d3428";
+      if (clamped < 4) return "#8d6a32";
+      return "#2c5c40";
     };
 
     const updateScoreDisplay = () => {
