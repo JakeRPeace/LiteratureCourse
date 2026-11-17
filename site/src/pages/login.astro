@@ -3,13 +3,12 @@ import Base from "../layouts/Base.astro";
 import AuthPanel from "../components/AuthPanel.astro";
 ---
 <Base title="Sign in | Literature Course Library" showNav={false} showHero={false} showAuth={false} loginPage={true}>
+  <a class="login-wordmark" href="/">Literature Course Library</a>
   <section class="login-shell">
-    <div class="login-glow"></div>
     <div class="login-card">
       <div class="login-brand">
-        <span class="pill">Literature Course Library</span>
-        <h1>Sign in to your canon.</h1>
-        <p>Track progress, save scores, and pick up where you left off.</p>
+        <h1>Sign in to keep your place.</h1>
+        <p>Progress and scores stay with your account, ready when you come back.</p>
       </div>
       <div class="login-panel">
         <AuthPanel />
@@ -17,51 +16,4 @@ import AuthPanel from "../components/AuthPanel.astro";
     </div>
   </section>
 
-  <style>
-    .login-shell {
-      min-height: 70vh;
-      display: grid;
-      place-items: center;
-      position: relative;
-    }
-
-    .login-glow {
-      position: absolute;
-      inset: -20% 0 auto;
-      height: 320px;
-      background: radial-gradient(circle at center, var(--glow-2), transparent 65%);
-      pointer-events: none;
-      opacity: 0.8;
-    }
-
-    .login-card {
-      position: relative;
-      width: min(960px, 92vw);
-      border-radius: 22px;
-      border: 1px solid var(--line-soft);
-      background: linear-gradient(135deg, var(--surface-2), var(--surface));
-      padding: 32px;
-      display: grid;
-      gap: 24px;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      box-shadow: var(--shadow-lg);
-    }
-
-    .login-brand h1 {
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      margin: 12px 0 8px;
-      letter-spacing: -0.03em;
-    }
-
-    .login-brand p {
-      color: var(--muted);
-      font-size: 1rem;
-      margin: 0;
-    }
-
-    .login-panel .auth-panel {
-      width: 100%;
-      min-width: unset;
-    }
-  </style>
 </Base>

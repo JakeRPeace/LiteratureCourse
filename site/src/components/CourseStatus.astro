@@ -4,8 +4,7 @@ const { bookIds } = Astro.props;
 <div class="course-status-header" data-course-status data-book-ids={JSON.stringify(bookIds)} data-status="signed_out">
   <div class="status-top">
     <div class="status-info">
-      <span class="status-kicker">Course Progress</span>
-      <h3 class="status-title" data-course-status-label>Sign in to see status</h3>
+      <h3 class="status-title" data-course-status-label>Sign in to see your place</h3>
     </div>
     <div class="status-badge">
        <span class="status-pill" data-status-pill data-status="signed_out">
@@ -29,16 +28,14 @@ const { bookIds } = Astro.props;
 
 <style>
   .course-status-header {
-    background: linear-gradient(135deg, var(--surface-2), var(--surface));
-    border: 1px solid var(--line-soft);
-    border-radius: var(--radius-md);
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 8px;
     padding: 24px;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    box-shadow: var(--shadow-md);
-    position: relative;
-    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(36, 30, 22, 0.04);
     margin-bottom: 8px;
   }
 
@@ -49,14 +46,6 @@ const { bookIds } = Astro.props;
     }
   }
 
-  .course-status-header::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.03), transparent 70%);
-    pointer-events: none;
-  }
-
   .status-top {
     display: flex;
     justify-content: space-between;
@@ -65,19 +54,12 @@ const { bookIds } = Astro.props;
     z-index: 1;
   }
 
-  .status-kicker {
-    display: block;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    margin-bottom: 4px;
-  }
-
   .status-title {
     margin: 0;
-    font-size: 20px;
+    font-family: var(--serif);
+    font-size: 1.5rem;
     font-weight: 600;
+    letter-spacing: -0.02em;
   }
 
   .status-progress-container {
@@ -88,42 +70,34 @@ const { bookIds } = Astro.props;
   }
 
   .status-progress-bar {
-    height: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 999px;
+    height: 4px;
+    background: rgba(36, 30, 22, 0.1);
     overflow: hidden;
-    border: 1px solid var(--line-soft);
   }
 
   .status-progress-fill {
     height: 100%;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 999px;
-    transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+    background: var(--vermilion);
+    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* Color states based on status */
   .course-status-header[data-status="in_progress"] {
-    border-color: rgba(255, 198, 120, 0.4);
-    background: linear-gradient(135deg, rgba(30, 20, 10, 0.92), rgba(10, 8, 5, 0.94));
+    background: #fbf3ea;
   }
   .course-status-header[data-status="in_progress"] .status-progress-fill {
-    background: linear-gradient(90deg, #ff9a9a, #ffbf70);
-    box-shadow: 0 0 12px rgba(255, 170, 80, 0.3);
+    background: var(--vermilion);
   }
 
   .course-status-header[data-status="read"] {
-    border-color: rgba(120, 240, 170, 0.4);
-    background: linear-gradient(135deg, rgba(12, 28, 18, 0.92), rgba(6, 10, 8, 0.94));
+    background: var(--moss-wash);
   }
   .course-status-header[data-status="read"] .status-progress-fill {
-    background: linear-gradient(90deg, #6bffb8, #bfffe0);
-    box-shadow: 0 0 12px rgba(100, 240, 170, 0.3);
+    background: var(--moss);
   }
 
   .status-stats {
-    font-size: 13px;
-    color: var(--muted);
+    font-size: 14px;
+    color: var(--ink-soft);
     font-variant-numeric: tabular-nums;
   }
 </style>

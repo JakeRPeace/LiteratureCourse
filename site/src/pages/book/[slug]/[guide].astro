@@ -47,24 +47,21 @@ const guideModule = systemGuide ? null : guideEntry?.module;
 const guideSource = systemGuide ? "supabase" : "markdown";
 const guideSourceLabel = resolveSourceLabel(guideSource);
 const guideLabel = systemGuide?.label || guideEntry?.label || "Guide";
-const guideStage = systemGuide?.stage || guideEntry?.stage || "Reading guide";
 const guideHtml = systemGuide ? renderMarkdownSafe(systemGuide.content) : null;
 ---
 <Base title={`${guideLabel} | ${book.title} | Literature Course Library`} authRequired={true}>
   <section class="stack">
     <div>
-      <a class="pill" href={`/book/${book.slug}`}>Back to book</a>
-      <h2 class="section-title">{guideLabel}</h2>
-      <p class="section-subtitle">{book.title} · {guideStage}</p>
+      <a class="back-link" href={`/book/${book.slug}`}>Back to book</a>
       <span class="data-source-pill">{guideSourceLabel}</span>
     </div>
 
     <div class="section-divider"></div>
 
     {guideHtml ? (
-      <div class="card guide-content" set:html={guideHtml} />
+      <div class="reading guide-content" set:html={guideHtml} />
     ) : guideModule ? (
-      <div class="card guide-content">
+      <div class="reading guide-content">
         <guideModule.Content />
       </div>
     ) : (

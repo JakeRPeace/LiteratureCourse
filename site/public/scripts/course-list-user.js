@@ -43,7 +43,7 @@ function buildCourseRow(course, stats) {
   coverWrap.className = `data-cover ${coverList.length ? "is-stack" : "is-empty"}`;
 
   if (coverList.length) {
-    const selected = coverList.slice().sort(() => 0.5 - Math.random()).slice(0, 3);
+    const selected = coverList.slice(0, 3);
     selected.forEach((url) => {
       const item = document.createElement("div");
       item.className = "cover-stack-item";

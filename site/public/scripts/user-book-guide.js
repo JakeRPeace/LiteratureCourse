@@ -2,6 +2,7 @@ import { supabase } from "./supabase.js";
 import { marked } from "https://cdn.jsdelivr.net/npm/marked@12.0.2/+esm";
 import DOMPurify from "https://cdn.jsdelivr.net/npm/dompurify@3.1.6/+esm";
 import { getSession } from "./session-store.js";
+import { stripHeadingIcons } from "./strip-heading-icons.js";
 
 function getParams() {
   const params = new URLSearchParams(window.location.search);
@@ -125,6 +126,7 @@ async function loadGuidePage() {
   if (contentEl) {
     const html = marked.parse(guide.content_md || "");
     contentEl.innerHTML = DOMPurify.sanitize(html);
+    stripHeadingIcons(contentEl);
   }
 
   if (courseTitle && courseRow?.title) {

@@ -11,10 +11,11 @@ window.addEventListener("DOMContentLoaded", () => {
     const courses = JSON.parse(root.dataset.courses || "[]");
 
     const setMessage = (message) => {
-      cards.forEach((card) => {
+      cards.forEach((card, index) => {
         const title = card.querySelector("[data-course-title]");
         const count = card.querySelector("[data-course-count]");
         const bar = card.querySelector("[data-course-bar]");
+        card.hidden = index > 0;
         if (title) title.textContent = message;
         if (count) count.textContent = "";
         if (bar) bar.style.width = "0%";
@@ -29,11 +30,14 @@ window.addEventListener("DOMContentLoaded", () => {
         const bar = card.querySelector("[data-course-bar]");
 
         if (!course) {
-          if (title) title.textContent = "No course data.";
+          card.hidden = true;
+          if (title) title.textContent = "";
           if (count) count.textContent = "";
           if (bar) bar.style.width = "0%";
           return;
         }
+
+        card.hidden = false;
 
         const total = course.totalBooks || 0;
         const read = course.readCount || 0;

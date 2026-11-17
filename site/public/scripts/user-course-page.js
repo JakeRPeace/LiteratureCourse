@@ -27,19 +27,9 @@ function buildDocCard(courseId, doc, sourceLabel) {
   card.dataset.docType = doc.doc_type || "other";
   card.dataset.docSource = "user";
 
-  const top = document.createElement("div");
-  top.className = "course-doc-top";
-
-  const kicker = document.createElement("span");
-  kicker.className = "course-doc-kicker";
-  kicker.textContent = doc.stage || "Course material";
-
   const action = document.createElement("span");
   action.className = "course-doc-action";
-  action.textContent = "Open ->";
-
-  top.appendChild(kicker);
-  top.appendChild(action);
+  action.textContent = "Open";
 
   const title = document.createElement("div");
   title.className = "course-doc-title";
@@ -52,6 +42,10 @@ function buildDocCard(courseId, doc, sourceLabel) {
   const meta = document.createElement("div");
   meta.className = "course-doc-meta";
 
+  const stageChip = document.createElement("span");
+  stageChip.className = "course-doc-chip";
+  stageChip.textContent = doc.stage || "Course material";
+
   const chip = document.createElement("span");
   chip.className = "course-doc-chip";
   chip.textContent = courseId;
@@ -60,10 +54,11 @@ function buildDocCard(courseId, doc, sourceLabel) {
   sourcePill.className = "data-source-pill";
   sourcePill.textContent = sourceLabel;
 
+  meta.appendChild(stageChip);
   meta.appendChild(chip);
+  meta.appendChild(action);
   meta.appendChild(sourcePill);
 
-  card.appendChild(top);
   card.appendChild(title);
   card.appendChild(excerpt);
   card.appendChild(meta);

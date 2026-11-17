@@ -2,6 +2,7 @@
 import Base from "../../layouts/Base.astro";
 import StatusWidget from "../../components/StatusWidget.astro";
 import { getCourses, getBookBySlug } from "../../lib/content.js";
+import { monogram } from "../../lib/monogram.js";
 import { resolveSourceLabel } from "../../lib/source-labels.js";
 import { slugify } from "../../lib/slug.js";
 import {
@@ -36,8 +37,6 @@ const bookSource = systemBook ? "supabase" : "markdown";
 const bookSourceLabel = resolveSourceLabel(bookSource);
 
 const systemGuides = await loadSystemBookGuides(book.id);
-const guideSource = systemGuides ? "supabase" : "markdown";
-const guideSourceLabel = resolveSourceLabel(guideSource);
 
 const markdownCourse = markdownCourses.find((c) => c.id === book.courseId) || null;
 const course = courses.find((c) => c.id === book.courseId) || markdownCourse || {
@@ -66,7 +65,7 @@ const guideCards =
 >
   <section class="stack">
     <div>
-      <a class="pill" href={`/course/${course.slug}`}>Back to course</a>
+      <a class="back-link" href={`/course/${course.slug}`}>Back to course</a>
     </div>
     <div class="book-hero">
       <div class={`book-cover ${book.coverUrl ? "" : "is-empty"}`}>
@@ -74,16 +73,17 @@ const guideCards =
           <img
             src={book.coverUrl}
             alt={`Cover of ${book.title}`}
+            data-monogram={monogram(book.title, book.author)}
             loading="lazy"
             decoding="async"
           />
-        ) : null}
+        ) : (
+          <span class="cover-monogram" aria-hidden="true">{monogram(book.title, book.author)}</span>
+        )}
       </div>
       <div class="book-intro">
         <h2 class="section-title">{book.title}</h2>
-        <p class="section-subtitle">
-          {book.author ? `${book.author} · ` : ""}{book.id}
-        </p>
+        {book.author ? <p class="section-subtitle">{book.author}</p> : null}
         <span class="data-source-pill">{bookSourceLabel}</span>
       </div>
     </div>
@@ -105,22 +105,18 @@ const guideCards =
       <div class="guide-grid">
         {guideCards.map((guide) => (
           <a
-            class="card guide-card"
+            class="guide-card"
             href={`/book/${book.slug}/${guide.slug}`}
             data-guide-type={guide.guideType || "other"}
           >
-            <div class="guide-card-top">
-              <span class="guide-kicker">{guide.stage}</span>
-              <span class="guide-action">Open -&gt;</span>
-            </div>
             <div class="guide-title">{guide.label}</div>
             <p class="guide-excerpt">
               {guide.excerpt || "Open for the full guide and prompts."}
             </p>
             <div class="guide-meta">
+              <span class="guide-chip">{guide.stage}</span>
               {guide.order ? <span class="guide-chip">Guide {guide.order}</span> : null}
-              <span class="guide-chip">{book.id}</span>
-              <span class="data-source-pill">{guideSourceLabel}</span>
+              <span class="guide-action">Open</span>
             </div>
           </a>
         ))}

@@ -149,14 +149,46 @@ function getExtension(contentType) {
   return ".jpg";
 }
 
+const fetchAttempts = 3;
+
+function isTransientFetchError(error) {
+  const code = error?.cause?.code || error?.code || "";
+  return (
+    error?.name === "TimeoutError" ||
+    error?.message === "fetch failed" ||
+    ["ECONNRESET", "ETIMEDOUT", "EAI_AGAIN", "ECONNREFUSED", "UND_ERR_SOCKET"].includes(code)
+  );
+}
+
+async function fetchWithRetry(url) {
+  let lastError = null;
+  for (let attempt = 0; attempt < fetchAttempts; attempt += 1) {
+    try {
+      const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+      if (response.status === 429 || response.status >= 500) {
+        lastError = new Error(`HTTP ${response.status} for ${url}`);
+      } else {
+        return response;
+      }
+    } catch (error) {
+      if (!isTransientFetchError(error)) throw error;
+      lastError = error;
+    }
+    if (attempt < fetchAttempts - 1) {
+      await new Promise((resolve) => setTimeout(resolve, 400 * (attempt + 1)));
+    }
+  }
+  throw lastError;
+}
+
 async function fetchJson(url) {
-  const response = await fetch(url);
+  const response = await fetchWithRetry(url);
   if (!response.ok) return null;
   return response.json();
 }
 
 async function downloadCover(url, slug) {
-  const response = await fetch(url);
+  const response = await fetchWithRetry(url);
   if (!response.ok) return null;
 
   const contentType = response.headers.get("content-type") || "";
@@ -284,7 +316,15 @@ async function main() {
       return;
     }
 
-    const coverEntry = await resolveCover(book, existingEntry);
+    let coverEntry = null;
+    try {
+      coverEntry = await resolveCover(book, existingEntry);
+    } catch (error) {
+      missing += 1;
+      const detail = error?.cause?.code || error?.message || "request failed";
+      console.warn(`[cover] ${book.title}: ${detail}`);
+      return;
+    }
     if (!coverEntry) {
       missing += 1;
       return;
