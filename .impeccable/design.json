@@ -1,0 +1,633 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-17T20:55:00.000Z",
+  "title": "Design System: Literature Course Library",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Bone Paper",
+        "canonical": "oklch(95.3% 0.016 86.4)",
+        "tonalRamp": [
+          "#0e0b05",
+          "#28251c",
+          "#464239",
+          "#656157",
+          "#868278",
+          "#a9a49a",
+          "#cec9be",
+          "#f3eee3"
+        ]
+      },
+      "paper-raised": {
+        "role": "neutral",
+        "displayName": "Raised Paper",
+        "canonical": "oklch(97.7% 0.011 84.6)",
+        "tonalRamp": [
+          "#0d0b06",
+          "#28251f",
+          "#45423b",
+          "#64615a",
+          "#85827b",
+          "#a8a49d",
+          "#cdc9c1",
+          "#f2eee6"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Iron Ink",
+        "canonical": "oklch(23.9% 0.017 74.8)",
+        "tonalRamp": [
+          "#0f0a04",
+          "#2a241c",
+          "#484138",
+          "#676057",
+          "#898177",
+          "#aba499",
+          "#d0c8bd",
+          "#f6ede2"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Soft Iron",
+        "canonical": "oklch(44.2% 0.023 67.2)",
+        "tonalRamp": [
+          "#120903",
+          "#2d2319",
+          "#4b4035",
+          "#6a5f54",
+          "#8c8074",
+          "#afa396",
+          "#d4c7ba",
+          "#f9ecdf"
+        ]
+      },
+      "shelf": {
+        "role": "secondary",
+        "displayName": "Library Green",
+        "canonical": "oklch(31.2% 0.025 170.8)",
+        "tonalRamp": [
+          "#020e0a",
+          "#182923",
+          "#354740",
+          "#54665f",
+          "#748780",
+          "#96aaa3",
+          "#bacfc7",
+          "#dff4ec"
+        ]
+      },
+      "shelf-ink": {
+        "role": "neutral",
+        "displayName": "Shelf Bone",
+        "canonical": "oklch(95.3% 0.016 86.4)",
+        "tonalRamp": [
+          "#0e0b05",
+          "#28251c",
+          "#464239",
+          "#656157",
+          "#868278",
+          "#a9a49a",
+          "#cec9be",
+          "#f3eee3"
+        ]
+      },
+      "shelf-muted": {
+        "role": "neutral",
+        "displayName": "Shelf Dust",
+        "canonical": "oklch(86.0% 0.024 82.1)",
+        "tonalRamp": [
+          "#100a02",
+          "#2b2418",
+          "#484134",
+          "#686052",
+          "#898172",
+          "#aca494",
+          "#d1c8b8",
+          "#f7eddd"
+        ]
+      },
+      "vermilion": {
+        "role": "primary",
+        "displayName": "Vermilion",
+        "canonical": "oklch(47.7% 0.142 29.7)",
+        "tonalRamp": [
+          "#320000",
+          "#570000",
+          "#7c1109",
+          "#a2392d",
+          "#c95c4d",
+          "#f17f6f",
+          "#ffa492",
+          "#ffc9b6"
+        ]
+      },
+      "vermilion-wash": {
+        "role": "primary",
+        "displayName": "Vermilion Wash",
+        "canonical": "oklch(93.2% 0.021 36.0)",
+        "tonalRamp": [
+          "#130806",
+          "#2e221e",
+          "#4d3e3a",
+          "#6d5d59",
+          "#8e7e7a",
+          "#b1a19c",
+          "#d6c5c0",
+          "#fceae5"
+        ]
+      },
+      "moss": {
+        "role": "tertiary",
+        "displayName": "Reading Moss",
+        "canonical": "oklch(43.2% 0.071 156.2)",
+        "tonalRamp": [
+          "#001301",
+          "#002f16",
+          "#1c4d32",
+          "#3d6d50",
+          "#5e8f71",
+          "#80b393",
+          "#a4d8b6",
+          "#c9fddb"
+        ]
+      },
+      "moss-wash": {
+        "role": "tertiary",
+        "displayName": "Moss Wash",
+        "canonical": "oklch(94.3% 0.014 155.6)",
+        "tonalRamp": [
+          "#070d09",
+          "#202722",
+          "#3c443f",
+          "#5b645e",
+          "#7c857f",
+          "#9ea8a1",
+          "#c2ccc5",
+          "#e7f1ea"
+        ]
+      },
+      "brass": {
+        "role": "tertiary",
+        "displayName": "Brass",
+        "canonical": "oklch(54.8% 0.086 77.0)",
+        "tonalRamp": [
+          "#1d0200",
+          "#3b1d00",
+          "#5b3b00",
+          "#7c5a21",
+          "#9f7b44",
+          "#c39e66",
+          "#e9c289",
+          "#ffe8ad"
+        ]
+      },
+      "brass-wash": {
+        "role": "tertiary",
+        "displayName": "Brass Wash",
+        "canonical": "oklch(92.8% 0.037 84.6)",
+        "tonalRamp": [
+          "#120900",
+          "#2d230e",
+          "#4b412b",
+          "#6b6049",
+          "#8d8169",
+          "#b0a48b",
+          "#d5c8ae",
+          "#faedd3"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Iron Line",
+        "canonical": "rgba(36, 30, 22, 0.14)",
+        "tonalRamp": [
+          "#0f0a04",
+          "#2a241c",
+          "#484138",
+          "#676057",
+          "#898177",
+          "#aba499",
+          "#d0c8bd",
+          "#f6ede2"
+        ]
+      },
+      "line-soft": {
+        "role": "neutral",
+        "displayName": "Soft Iron Line",
+        "canonical": "rgba(36, 30, 22, 0.1)",
+        "tonalRamp": [
+          "#0f0a04",
+          "#2a241c",
+          "#484138",
+          "#676057",
+          "#898177",
+          "#aba499",
+          "#d0c8bd",
+          "#f6ede2"
+        ]
+      },
+      "line-strong": {
+        "role": "neutral",
+        "displayName": "Strong Iron Line",
+        "canonical": "rgba(36, 30, 22, 0.28)",
+        "tonalRamp": [
+          "#0f0a04",
+          "#2a241c",
+          "#484138",
+          "#676057",
+          "#898177",
+          "#aba499",
+          "#d0c8bd",
+          "#f6ede2"
+        ]
+      },
+      "progress-paper": {
+        "role": "neutral",
+        "displayName": "Progress Paper",
+        "canonical": "oklch(96.8% 0.015 70.9)",
+        "tonalRamp": [
+          "#0f0a05",
+          "#2a241d",
+          "#47413a",
+          "#676058",
+          "#888179",
+          "#aba49b",
+          "#d0c8bf",
+          "#f5ede4"
+        ]
+      },
+      "cover-board": {
+        "role": "neutral",
+        "displayName": "Cover Board",
+        "canonical": "oklch(89.8% 0.029 82.6)",
+        "tonalRamp": [
+          "#110a00",
+          "#2c2414",
+          "#4a4130",
+          "#6a604f",
+          "#8b816f",
+          "#aea491",
+          "#d3c8b4",
+          "#f8edd9"
+        ]
+      },
+      "cover-leaf": {
+        "role": "neutral",
+        "displayName": "Fan Leaf",
+        "canonical": "oklch(92.2% 0.029 82.6)",
+        "tonalRamp": [
+          "#110a00",
+          "#2c2414",
+          "#4a4130",
+          "#69604f",
+          "#8b816f",
+          "#aea491",
+          "#d3c8b4",
+          "#f8edd9"
+        ]
+      },
+      "selection": {
+        "role": "neutral",
+        "displayName": "Brass Selection",
+        "canonical": "oklch(86.7% 0.064 89.2)",
+        "tonalRamp": [
+          "#160800",
+          "#312300",
+          "#504015",
+          "#706035",
+          "#928155",
+          "#b5a377",
+          "#dac89a",
+          "#ffedbe"
+        ]
+      },
+      "code-paper": {
+        "role": "neutral",
+        "displayName": "Code Paper",
+        "canonical": "oklch(92.7% 0.026 84.6)",
+        "tonalRamp": [
+          "#100a01",
+          "#2b2416",
+          "#494132",
+          "#686051",
+          "#8a8171",
+          "#aca493",
+          "#d1c8b7",
+          "#f7eedb"
+        ]
+      },
+      "score-idle": {
+        "role": "neutral",
+        "displayName": "Score Idle",
+        "canonical": "oklch(82.4% 0.028 80.2)",
+        "tonalRamp": [
+          "#110a01",
+          "#2c2415",
+          "#4a4132",
+          "#6a6050",
+          "#8b8170",
+          "#aea392",
+          "#d3c8b6",
+          "#f8edda"
+        ]
+      },
+      "score-track": {
+        "role": "neutral",
+        "displayName": "Score Track",
+        "canonical": "oklch(88.9% 0.028 81.5)",
+        "tonalRamp": [
+          "#110a01",
+          "#2c2415",
+          "#4a4131",
+          "#69604f",
+          "#8b8170",
+          "#aea491",
+          "#d3c8b5",
+          "#f8edda"
+        ]
+      },
+      "idle-clay": {
+        "role": "neutral",
+        "displayName": "Idle Clay",
+        "canonical": "oklch(74.7% 0.028 76.7)",
+        "tonalRamp": [
+          "#120901",
+          "#2d2316",
+          "#4b4032",
+          "#6a5f50",
+          "#8c8070",
+          "#afa392",
+          "#d4c7b6",
+          "#f9eddb"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The shelf title. Spectral 600, tight leading, tracking -0.03em."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section titles on the paper."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Sheet titles, guide links, and row titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Karla chrome: the page default, navigation, and metadata."
+      },
+      "reading": {
+        "displayName": "Reading",
+        "purpose": "Spectral prose for a guide, 1.125rem on a 68ch measure."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Karla at 15px for navigation. Buttons use the same size at weight 700."
+      }
+    },
+    "shadows": [
+      {
+        "name": "rest",
+        "value": "0 8px 16px rgba(36, 30, 22, 0.04)",
+        "purpose": "Raised sheets, course rows, and the course status sheet at rest."
+      },
+      {
+        "name": "lift",
+        "value": "0 18px 32px rgba(36, 30, 22, 0.12)",
+        "purpose": "Hovered rows, open menus, the dialog, and the toast."
+      },
+      {
+        "name": "button",
+        "value": "0 8px 16px rgba(36, 30, 22, 0.12)",
+        "purpose": "Button hover, after a 1px rise."
+      },
+      {
+        "name": "cover",
+        "value": "3px 6px 12px rgba(36, 30, 22, 0.16)",
+        "purpose": "A small cover on a book row."
+      },
+      {
+        "name": "fan-leaf",
+        "value": "2px 4px 8px rgba(36, 30, 22, 0.18)",
+        "purpose": "Each leaf in a course cover fan."
+      },
+      {
+        "name": "book-cover",
+        "value": "8px 16px 28px rgba(36, 30, 22, 0.18)",
+        "purpose": "The cover on a book page."
+      },
+      {
+        "name": "score-thumb",
+        "value": "0 4px 8px rgba(36, 30, 22, 0.2)",
+        "purpose": "The round score thumb."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-shelf",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The only authored curve: rows, the cover fan, the title rule, buttons, and the course progress fill."
+      },
+      {
+        "name": "duration-button",
+        "value": "0.25s",
+        "purpose": "Button rise."
+      },
+      {
+        "name": "duration-row",
+        "value": "0.35s",
+        "purpose": "Row and linked-sheet lift."
+      },
+      {
+        "name": "duration-fan",
+        "value": "0.45s",
+        "purpose": "Cover fan and the vermilion rule under a title."
+      },
+      {
+        "name": "duration-progress",
+        "value": "0.6s",
+        "purpose": "Course progress fill."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "shelf",
+        "value": "800px"
+      },
+      {
+        "name": "status",
+        "value": "720px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Vermilion place-mark for the one primary action: sign in, send, create.",
+      "html": "<button class=\"ds-btn-primary\" type=\"button\">Sign in</button>",
+      "css": ".ds-btn-primary { font-family: var(--sans, \"Karla\", \"Avenir Next\", \"Segoe UI\", sans-serif); font-size: 15px; font-weight: 700; background: var(--vermilion, #9d3428); color: var(--paper, #f4efe4); border: 1px solid var(--vermilion, #9d3428); border-radius: 6px; padding: 10px 14px; cursor: pointer; transition: transform 0.25s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)), box-shadow 0.25s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)); }\n.ds-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 16px rgba(36, 30, 22, 0.12); }\n.ds-btn-primary:focus-visible { outline: 2px solid var(--brass, #8d6a32); outline-offset: 3px; }\n.ds-btn-primary:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }\n@media (prefers-reduced-motion: reduce) { .ds-btn-primary:hover { transform: none; } }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Quiet action on paper: sign up, guest, and the dialog's secondary controls.",
+      "html": "<button class=\"ds-btn-secondary\" type=\"button\">Sign up</button>",
+      "css": ".ds-btn-secondary { font-family: var(--sans, \"Karla\", \"Avenir Next\", \"Segoe UI\", sans-serif); font-size: 15px; font-weight: 700; background: transparent; color: var(--ink, #241e16); border: 1px solid var(--line-strong, rgba(36, 30, 22, 0.28)); border-radius: 6px; padding: 10px 14px; cursor: pointer; box-shadow: none; transition: transform 0.25s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)), box-shadow 0.25s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)); }\n.ds-btn-secondary:hover { transform: translateY(-1px); box-shadow: 0 8px 16px rgba(36, 30, 22, 0.12); }\n.ds-btn-secondary:focus-visible { outline: 2px solid var(--brass, #8d6a32); outline-offset: 3px; }\n.ds-btn-secondary:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }\n@media (prefers-reduced-motion: reduce) { .ds-btn-secondary:hover { transform: none; } }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "text-field",
+      "description": "Account and dialog field: bone paper, strong iron line, Karla.",
+      "html": "<label class=\"ds-field\"><span>Email</span><input class=\"ds-input\" type=\"email\" placeholder=\"you@library.test\" /></label>",
+      "css": ".ds-field { display: grid; gap: 6px; color: var(--ink-soft, #5c5146); font-family: var(--sans, \"Karla\", \"Avenir Next\", \"Segoe UI\", sans-serif); font-size: 14px; }\n.ds-input { padding: 10px 12px; border-radius: 6px; border: 1px solid var(--line-strong, rgba(36, 30, 22, 0.28)); background: var(--paper, #f4efe4); color: var(--ink, #241e16); font-family: var(--sans, \"Karla\", \"Avenir Next\", \"Segoe UI\", sans-serif); font-size: 15px; }\n.ds-input::placeholder { color: var(--ink-soft, #5c5146); opacity: 1; }\n.ds-input:focus-visible { outline: 2px solid var(--brass, #8d6a32); outline-offset: 3px; }"
+    },
+    {
+      "name": "Mast",
+      "kind": "nav",
+      "refersTo": "mast",
+      "description": "Full-bleed library-green header with the Spectral wordmark and Karla links.",
+      "html": "<header class=\"ds-mast\"><div class=\"ds-mast-inner\"><a class=\"ds-wordmark\" href=\"/\">Literature Course Library</a><nav class=\"ds-nav-links\"><a href=\"/\">Courses</a><a href=\"/docs\">Docs</a><a href=\"/deploy\">Deploy</a></nav><nav class=\"ds-nav-actions\"><a href=\"/login\">Login</a></nav></div></header>",
+      "css": ".ds-mast { background: var(--shelf, #24352f); color: var(--shelf-ink, #f4efe4); }\n.ds-mast-inner { max-width: 1120px; margin: 0 auto; padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }\n.ds-wordmark { font-family: var(--serif, \"Spectral\", \"Iowan Old Style\", \"Palatino Linotype\", Palatino, serif); font-weight: 600; font-size: 1.25rem; letter-spacing: -0.03em; line-height: 1.15; color: var(--shelf-ink, #f4efe4); text-decoration: none; }\n.ds-nav-links, .ds-nav-actions { display: flex; align-items: center; gap: 18px; }\n.ds-nav-links a, .ds-nav-actions a { color: var(--shelf-muted, #d9d0c0); font-family: var(--sans, \"Karla\", \"Avenir Next\", \"Segoe UI\", sans-serif); font-size: 15px; font-weight: 500; text-decoration: none; }\n.ds-nav-links a:hover, .ds-nav-actions a:hover { color: var(--shelf-ink, #f4efe4); }\n.ds-nav-links a:focus-visible, .ds-nav-actions a:focus-visible, .ds-wordmark:focus-visible { outline: 2px solid var(--brass, #8d6a32); outline-offset: 3px; }"
+    },
+    {
+      "name": "Shelf Row",
+      "kind": "card",
+      "refersTo": "shelf-row",
+      "description": "Course row: cover fan, Spectral title, summary, count, and stamp. Hover lifts the fan and draws the vermilion rule.",
+      "html": "<a class=\"ds-row\" href=\"/course/modern\"><span class=\"ds-cover\"><span class=\"ds-leaf\"></span><span class=\"ds-leaf\"></span><span class=\"ds-leaf\"><span class=\"ds-mono\">ML</span></span></span><span class=\"ds-main\"><span class=\"ds-title\">Modern Literature</span><span class=\"ds-sub\">A shelf of the long modern novel, read one book at a time.</span></span><span class=\"ds-meta\"><span class=\"ds-count\">6 books</span></span></a>",
+      "css": ".ds-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 16px 18px; border-radius: 8px; border: 1px solid var(--line, rgba(36, 30, 22, 0.14)); background: var(--paper-raised, #fbf7ef); box-shadow: 0 8px 16px rgba(36, 30, 22, 0.04); color: var(--ink, #241e16); text-decoration: none; transition: transform 0.35s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)), box-shadow 0.35s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)); }\n.ds-row:hover, .ds-row:focus-visible { transform: translateY(-3px); box-shadow: var(--shadow-lift, 0 18px 32px rgba(36, 30, 22, 0.12)); }\n.ds-row:focus-visible { outline: 2px solid var(--brass, #8d6a32); outline-offset: 3px; }\n.ds-cover { position: relative; width: 58px; height: 84px; flex-shrink: 0; }\n.ds-leaf { position: absolute; inset: 0; border-radius: 3px; background: #efe4d0; box-shadow: 2px 4px 8px rgba(36, 30, 22, 0.18); transform-origin: bottom center; transition: transform 0.45s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)); display: grid; place-items: center; }\n.ds-leaf:nth-child(1) { z-index: 1; transform: rotate(-11deg) translateX(-4px); background: #e7dcc8; }\n.ds-leaf:nth-child(2) { z-index: 2; transform: rotate(-5deg) translateX(-2px); }\n.ds-leaf:nth-child(3) { z-index: 3; transform: rotate(0); }\n.ds-row:hover .ds-leaf:nth-child(1), .ds-row:focus-visible .ds-leaf:nth-child(1) { transform: rotate(-16deg) translate(-8px, -2px); }\n.ds-row:hover .ds-leaf:nth-child(2), .ds-row:focus-visible .ds-leaf:nth-child(2) { transform: rotate(-8deg) translate(-3px, -1px); }\n.ds-mono { font-family: var(--serif, \"Spectral\", \"Iowan Old Style\", \"Palatino Linotype\", Palatino, serif); font-size: 1.7rem; color: var(--shelf, #24352f); }\n.ds-main { display: grid; gap: 4px; min-width: 0; }\n.ds-title { position: relative; width: fit-content; max-width: 100%; font-family: var(--serif, \"Spectral\", \"Iowan Old Style\", \"Palatino Linotype\", Palatino, serif); font-size: 1.2rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }\n.ds-title::after { content: \"\"; position: absolute; left: 0; bottom: -3px; height: 1px; width: 100%; background: var(--vermilion, #9d3428); transform: scaleX(0); transform-origin: left center; transition: transform 0.45s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)); }\n.ds-row:hover .ds-title::after, .ds-row:focus-visible .ds-title::after { transform: scaleX(1); }\n.ds-sub, .ds-count { color: var(--ink-soft, #5c5146); font-family: var(--sans, \"Karla\", \"Avenir Next\", \"Segoe UI\", sans-serif); font-size: 14px; }\n.ds-count { font-weight: 500; }\n@media (prefers-reduced-motion: reduce) {\n  .ds-row:hover, .ds-row:focus-visible { transform: none; }\n  .ds-row:hover .ds-leaf:nth-child(1), .ds-row:focus-visible .ds-leaf:nth-child(1) { transform: rotate(-11deg) translateX(-4px); }\n  .ds-row:hover .ds-leaf:nth-child(2), .ds-row:focus-visible .ds-leaf:nth-child(2) { transform: rotate(-5deg) translateX(-2px); }\n}"
+    },
+    {
+      "name": "Status Stamp",
+      "kind": "chip",
+      "refersTo": "status-stamp",
+      "description": "Uppercase place stamp: not started, in progress, or read.",
+      "html": "<div class=\"ds-stamps\"><span class=\"ds-stamp\"><span class=\"ds-dot\"></span>Not started</span><span class=\"ds-stamp ds-stamp-progress\"><span class=\"ds-dot\"></span>In progress</span><span class=\"ds-stamp ds-stamp-read\"><span class=\"ds-dot\"></span>Read</span></div>",
+      "css": ".ds-stamps { display: flex; flex-wrap: wrap; gap: 8px; }\n.ds-stamp { display: inline-flex; align-items: center; gap: 8px; padding: 4px 8px; border-radius: 2px; border: 1px solid currentColor; background: transparent; color: var(--ink-soft, #5c5146); font-family: var(--sans, \"Karla\", \"Avenir Next\", \"Segoe UI\", sans-serif); font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }\n.ds-dot { width: 8px; height: 8px; border-radius: 999px; background: #b7ab9a; }\n.ds-stamp-progress { color: var(--vermilion, #9d3428); background: var(--vermilion-wash, #f6e4df); border-color: rgba(157, 52, 40, 0.35); }\n.ds-stamp-progress .ds-dot { background: var(--vermilion, #9d3428); }\n.ds-stamp-read { color: var(--moss, #2c5c40); background: var(--moss-wash, #e5efe8); border-color: rgba(44, 92, 64, 0.3); }\n.ds-stamp-read .ds-dot { background: var(--moss, #2c5c40); }"
+    },
+    {
+      "name": "Course Status",
+      "kind": "card",
+      "refersTo": "course-status",
+      "description": "Course sheet with a Spectral title, a stamp, and one square progress rule.",
+      "html": "<section class=\"ds-course\" data-state=\"in_progress\"><div class=\"ds-course-top\"><h3 class=\"ds-course-title\">In the middle of the shelf</h3><span class=\"ds-stamp ds-stamp-progress\"><span class=\"ds-dot\"></span>In progress</span></div><div class=\"ds-bar\"><span></span></div><div class=\"ds-stats\">2 of 6 read</div></section>",
+      "css": ".ds-course { background: #fbf3ea; border: 1px solid var(--line, rgba(36, 30, 22, 0.14)); border-radius: 8px; padding: 24px; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 8px 16px rgba(36, 30, 22, 0.04); color: var(--ink, #241e16); }\n.ds-course[data-state=\"read\"] { background: var(--moss-wash, #e5efe8); }\n.ds-course-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }\n.ds-course-title { margin: 0; font-family: var(--serif, \"Spectral\", \"Iowan Old Style\", \"Palatino Linotype\", Palatino, serif); font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em; }\n.ds-stamp { display: inline-flex; align-items: center; gap: 8px; padding: 4px 8px; border-radius: 2px; border: 1px solid currentColor; font-family: var(--sans, \"Karla\", \"Avenir Next\", \"Segoe UI\", sans-serif); font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }\n.ds-stamp-progress { color: var(--vermilion, #9d3428); background: var(--vermilion-wash, #f6e4df); border-color: rgba(157, 52, 40, 0.35); }\n.ds-dot { width: 8px; height: 8px; border-radius: 999px; background: var(--vermilion, #9d3428); }\n.ds-bar { height: 4px; background: rgba(36, 30, 22, 0.1); overflow: hidden; }\n.ds-bar span { display: block; height: 100%; width: 42%; background: var(--vermilion, #9d3428); }\n.ds-course[data-state=\"read\"] .ds-bar span { background: var(--moss, #2c5c40); }\n.ds-stats { font-family: var(--sans, \"Karla\", \"Avenir Next\", \"Segoe UI\", sans-serif); font-size: 14px; color: var(--ink-soft, #5c5146); font-variant-numeric: tabular-nums; }"
+    },
+    {
+      "name": "Guide Row",
+      "kind": "card",
+      "refersTo": "guide-row",
+      "description": "A guide link on the bare paper: hairline, Spectral title, vermilion action, no card shadow.",
+      "html": "<a class=\"ds-guide\" href=\"/book/example/guide\"><span class=\"ds-guide-title\">Chapter notes</span><span class=\"ds-guide-excerpt\">How the opening chapter places the reader, and what to watch before the turn.</span><span class=\"ds-guide-action\">Read the guide</span></a>",
+      "css": ".ds-guide { display: flex; flex-direction: column; gap: 8px; max-width: 68ch; padding: 18px 0; border-bottom: 1px solid var(--line, rgba(36, 30, 22, 0.14)); background: transparent; color: var(--ink, #241e16); text-decoration: none; }\n.ds-guide-title { font-family: var(--serif, \"Spectral\", \"Iowan Old Style\", \"Palatino Linotype\", Palatino, serif); font-size: 1.35rem; font-weight: 600; letter-spacing: -0.02em; }\n.ds-guide-excerpt { color: var(--ink-soft, #5c5146); font-family: var(--sans, \"Karla\", \"Avenir Next\", \"Segoe UI\", sans-serif); font-size: 15px; line-height: 1.5; }\n.ds-guide-action { color: var(--vermilion, #9d3428); font-family: var(--sans, \"Karla\", \"Avenir Next\", \"Segoe UI\", sans-serif); font-weight: 700; font-size: 14px; }\n.ds-guide:focus-visible { outline: 2px solid var(--brass, #8d6a32); outline-offset: 3px; }"
+    },
+    {
+      "name": "Reading Status",
+      "kind": "input",
+      "refersTo": "raised-sheet",
+      "description": "The book's own sheet: a status select and a score slider that recolors with vermilion, brass, and moss.",
+      "html": "<div class=\"ds-status\"><div class=\"ds-status-title\">Your status</div><div class=\"ds-status-grid\"><label class=\"ds-status-field\"><span>Status</span><span class=\"ds-select-wrap\"><select class=\"ds-select\"><option>In progress</option><option>Not started</option><option>Read</option></select><span class=\"ds-caret\"></span></span></label><label class=\"ds-status-field\"><span class=\"ds-score-label\"><span>Score</span><output class=\"ds-score-value\">1.5</output></span><input class=\"ds-range\" type=\"range\" min=\"0\" max=\"5\" step=\"0.25\" value=\"1.5\" aria-label=\"Score\" /></label></div></div>",
+      "css": ".ds-status { background: var(--paper-raised, #fbf7ef); border: 1px solid var(--line, rgba(36, 30, 22, 0.14)); border-radius: 8px; padding: 22px; box-shadow: 0 8px 16px rgba(36, 30, 22, 0.04); color: var(--ink, #241e16); }\n.ds-status-title { font-family: var(--serif, \"Spectral\", \"Iowan Old Style\", \"Palatino Linotype\", Palatino, serif); font-weight: 600; font-size: clamp(1.7rem, 3vw, 2.15rem); letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 16px; }\n.ds-status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 18px; }\n.ds-status-field { display: grid; gap: 8px; font-family: var(--sans, \"Karla\", \"Avenir Next\", \"Segoe UI\", sans-serif); font-size: 14px; color: var(--ink-soft, #5c5146); font-weight: 700; }\n.ds-select-wrap { position: relative; }\n.ds-select { width: 100%; appearance: none; padding: 10px 36px 10px 12px; border-radius: 6px; border: 1px solid var(--line-strong, rgba(36, 30, 22, 0.28)); background: var(--paper, #f4efe4); font-family: var(--sans, \"Karla\", \"Avenir Next\", \"Segoe UI\", sans-serif); font-size: 15px; font-weight: 600; color: var(--ink, #241e16); }\n.ds-select:focus-visible, .ds-range:focus-visible { outline: 2px solid var(--brass, #8d6a32); outline-offset: 3px; }\n.ds-caret { position: absolute; right: 12px; top: 50%; width: 8px; height: 8px; border-right: 2px solid var(--ink-soft, #5c5146); border-bottom: 2px solid var(--ink-soft, #5c5146); transform: translateY(-55%) rotate(45deg); pointer-events: none; }\n.ds-score-label { display: flex; justify-content: space-between; align-items: baseline; }\n.ds-score-value { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--vermilion, #9d3428); }\n.ds-range { --percent: 30%; width: 100%; appearance: none; height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--vermilion, #9d3428) 0%, var(--vermilion, #9d3428) var(--percent), #e4d9c6 var(--percent), #e4d9c6 100%); }\n.ds-range::-webkit-slider-thumb { appearance: none; width: 24px; height: 24px; border-radius: 50%; background: var(--vermilion, #9d3428); border: 2px solid var(--paper, #f4efe4); box-shadow: 0 4px 8px rgba(36, 30, 22, 0.2); }\n.ds-range::-moz-range-track { height: 6px; border-radius: 999px; background: #e4d9c6; }\n.ds-range::-moz-range-progress { height: 6px; border-radius: 999px; background: var(--vermilion, #9d3428); }\n.ds-range::-moz-range-thumb { width: 24px; height: 24px; border-radius: 50%; background: var(--vermilion, #9d3428); border: 2px solid var(--paper, #f4efe4); box-shadow: 0 4px 8px rgba(36, 30, 22, 0.2); }"
+    },
+    {
+      "name": "Dialog",
+      "kind": "custom",
+      "refersTo": "dialog",
+      "description": "Course creator: bone paper, 12px corner, lift shadow, iron scrim.",
+      "html": "<div class=\"ds-stage\"><div class=\"ds-dialog\"><div class=\"ds-dialog-title\">Course Creator</div><p class=\"ds-dialog-sub\">Describe the course you want. We will draft a 3-book outline.</p><div class=\"ds-log\"><div class=\"ds-msg ds-msg-user\">A short course on exile and the modern novel.</div></div><div class=\"ds-dialog-actions\"><button class=\"ds-btn-secondary\" type=\"button\">Close</button><button class=\"ds-btn-primary\" type=\"button\">Send</button></div></div></div>",
+      "css": ".ds-stage { background: rgba(36, 30, 22, 0.46); padding: 24px; }\n.ds-dialog { width: min(680px, 92vw); border: 1px solid var(--line-strong, rgba(36, 30, 22, 0.28)); border-radius: 12px; padding: 20px; background: var(--paper, #f4efe4); color: var(--ink, #241e16); box-shadow: var(--shadow-lift, 0 18px 32px rgba(36, 30, 22, 0.12)); display: grid; gap: 16px; }\n.ds-dialog-title { font-family: var(--serif, \"Spectral\", \"Iowan Old Style\", \"Palatino Linotype\", Palatino, serif); font-size: 1.4rem; font-weight: 600; }\n.ds-dialog-sub { margin: 0; color: var(--ink-soft, #5c5146); font-family: var(--sans, \"Karla\", \"Avenir Next\", \"Segoe UI\", sans-serif); font-size: 14px; }\n.ds-log { padding: 12px; background: var(--paper-raised, #fbf7ef); border: 1px solid var(--line, rgba(36, 30, 22, 0.14)); border-radius: 8px; }\n.ds-msg { padding: 10px 12px; border-radius: 8px; background: var(--paper, #f4efe4); border: 1px solid var(--line, rgba(36, 30, 22, 0.14)); font-family: var(--sans, \"Karla\", \"Avenir Next\", \"Segoe UI\", sans-serif); font-size: 15px; line-height: 1.45; }\n.ds-msg-user { background: var(--brass-wash, #f3e6cc); border-color: rgba(141, 106, 50, 0.35); }\n.ds-dialog-actions { display: flex; justify-content: flex-end; gap: 8px; }\n.ds-btn-primary, .ds-btn-secondary { font-family: var(--sans, \"Karla\", \"Avenir Next\", \"Segoe UI\", sans-serif); font-size: 15px; font-weight: 700; border-radius: 6px; padding: 10px 14px; cursor: pointer; }\n.ds-btn-primary { background: var(--vermilion, #9d3428); color: var(--paper, #f4efe4); border: 1px solid var(--vermilion, #9d3428); }\n.ds-btn-secondary { background: transparent; color: var(--ink, #241e16); border: 1px solid var(--line-strong, rgba(36, 30, 22, 0.28)); }\n.ds-btn-primary:focus-visible, .ds-btn-secondary:focus-visible { outline: 2px solid var(--brass, #8d6a32); outline-offset: 3px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Private Ledger",
+    "overview": "The Literature Course Library is a private ledger of one real canon. The page should feel like a warm reading room, the independent-bookstore shelf a reader walks back into. Density is a column of books on bone paper, not a grid of metrics. A library-green band carries the name across the top and the colophon across the bottom. Iron ink does the reading. Vermilion marks the place.\n\nSpectral carries the library's name, the titles, and the guide. Karla carries navigation, buttons, fields, stamps, and metadata. A course row is a raised sheet: a cover fan, a title, a summary, a book count, and a status stamp. Hover or focus lifts that sheet, opens the fan, and draws one vermilion rule under the title. A guide then sits in a 68ch Spectral measure on the bare paper. Status stays a steady stamp: not started, in progress, or read. A score, when it exists, stays on that book's own sheet.\n\nColor is flat. There is no glass and no second theme. Depth is a soft ink shadow under a raised sheet, a stronger lift when the row is active, and a warmer shadow under a cover because the cover is an object on the shelf. The shelf refuses the dark glass dashboard and the floating pill.",
+    "keyCharacteristics": [
+      "Bone paper page, full-bleed library green on the header and colophon, iron ink for text",
+      "Spectral for the name, titles, and reading; Karla for chrome",
+      "Vermilion for the place-mark and the primary button; brass for focus; moss when a book is read",
+      "Flat color, a soft lift on rows, and the cover fan with one vermilion rule",
+      "Status as a steady uppercase stamp",
+      "Guides set in a 68ch Spectral measure on the bare paper"
+    ],
+    "rules": [
+      {
+        "name": "The Place-Mark Rule",
+        "body": "Vermilion is the place: the progress fill, the primary button, reading links, the back link, and the single rule under a hovered title. It is not a page fill or a card fill.",
+        "section": "colors"
+      },
+      {
+        "name": "The Stamp Palette Rule",
+        "body": "Not started is quiet iron on transparent paper. In progress is vermilion on its wash, and the row or course sheet turns to progress paper. Read is moss on its wash, and a finished course rule turns moss.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Voices Rule",
+        "body": "Spectral carries the library's name, titles, and the guide. Karla carries navigation, buttons, fields, stamps, and metadata. Do not swap them.",
+        "section": "typography"
+      },
+      {
+        "name": "The Reading Measure Rule",
+        "body": "A guide is Spectral at 1.125rem, line-height 1.7, inside 68ch, on the paper with no card behind the prose.",
+        "section": "typography"
+      },
+      {
+        "name": "The Full-Bleed Band Rule",
+        "body": "Library green runs edge to edge in the header and the colophon. The column stops at 1120px, with 24px gutters that become 16px below 800px.",
+        "section": "layout"
+      },
+      {
+        "name": "The Soft Lift Rule",
+        "body": "Raised sheets rest on a faint ink shadow. Hover and focus lift a row 3px into the stronger shadow. Covers keep their own object shadow. There is no zero-blur hard shadow and no glass blur.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Stillness Rule",
+        "body": "When the reader prefers reduced motion, transitions collapse and the row, the linked sheet, and the button do not move.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Corner Scale Rule",
+        "body": "Stamps are 2px, fan leaves are 3px, covers are 4px, controls are 6px, sheets are 8px, and the dialog is 12px. Progress rules are square-ended.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Cover Fan Rule",
+        "body": "Hover or focus on a course row opens the cover fan and draws one vermilion rule under the title.",
+        "section": "components"
+      },
+      {
+        "name": "The Brass Focus Rule",
+        "body": "Links, buttons, summaries, and fields take a 2px brass outline, 3px outside the edge.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "Do set the page on bone paper and run library green full-bleed through the header and the colophon.",
+      "Do set the wordmark, titles, and guide prose in Spectral, and set navigation, buttons, fields, and stamps in Karla.",
+      "Do keep a guide in a 68ch Spectral measure at 1.125rem and line-height 1.7, on the paper, with no sheet behind the prose.",
+      "Do mark the place with vermilion: the progress fill, the primary button, reading links, and the single rule under a hovered course title.",
+      "Do mark keyboard focus with a 2px brass outline, 3px outside the control.",
+      "Do stamp status in uppercase Karla at 12px, weight 700, tracking 0.06em, with a 2px corner.",
+      "Do lift a course row on hover and focus, open the cover fan, and draw the vermilion rule. Drop that motion when the reader prefers reduced motion.",
+      "Do keep body text at or above 4.5:1 against its paper."
+    ],
+    "donts": [
+      "Don't build a dark glass dashboard. There is no dark theme, no backdrop blur, and no translucent panel over the paper.",
+      "Don't use a floating pill for navigation, buttons, or status. A status dot and a score thumb stay circular because they are points on a control.",
+      "Don't fill a page or a card with vermilion. The wash belongs to the in-progress stamp.",
+      "Don't set the guide in Karla, and don't set buttons or stamps in Spectral.",
+      "Don't use a zero-blur hard offset shadow.",
+      "Don't replace the progress rule with a ring, a sparkline, or a scoreboard. A score stays on the book's own sheet."
+    ]
+  }
+}
