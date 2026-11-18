@@ -1,7 +1,7 @@
 import { supabase } from "./supabase.js";
 import { getSession, onSessionChange } from "./session-store.js";
-import { shelfLooks } from "./book-look.js";
-import { buildSpine, buildStatusPill } from "./book-dom.js";
+import { bookLook, faceOutIndex, shelfLooks } from "./book-look.js";
+import { buildFaceOut, buildSpine, buildStatusPill } from "./book-dom.js";
 
 const summaryFallback = "Short course overview available in the syllabus.";
 let loadSequence = 0;
@@ -60,20 +60,40 @@ function buildCourseRow(course, books) {
   head.append(plate, el("p", "shelf-summary", course.summary || summaryFallback), meta);
 
   const row = el("div", "shelf-books");
-  const looks = shelfLooks(books);
-  books.forEach((book, index) => {
+  // One book stands face-out (courses of four or more); the rest spine-out.
+  const faceAt = faceOutIndex(books, course.course_id);
+  const spineBooks = books.filter((_, index) => index !== faceAt);
+  const looks = shelfLooks(spineBooks, { scatter: true });
+  const bookHref = (book) => `/book/user?book_id=${encodeURIComponent(book.book_id)}`;
+  spineBooks.forEach((book, index) => {
     row.append(
       buildSpine({
         id: book.book_id,
         title: book.title || "Untitled Book",
         author: book.author || "",
         coverUrl: book.cover_url || "",
-        href: `/book/user?book_id=${encodeURIComponent(book.book_id)}`,
+        href: bookHref(book),
         look: looks[index],
         source: "user"
       })
     );
   });
+
+  const end = el("div", "shelf-end");
+  if (faceAt >= 0) {
+    const face = books[faceAt];
+    end.append(
+      buildFaceOut({
+        id: face.book_id,
+        title: face.title || "Untitled Book",
+        author: face.author || "",
+        coverUrl: face.cover_url || "",
+        href: bookHref(face),
+        look: bookLook(face.title || "Untitled Book", face.author || ""),
+        source: "user"
+      })
+    );
+  }
 
   const card = el("a", "shelf-card");
   card.href = courseHref;
@@ -82,7 +102,8 @@ function buildCourseRow(course, books) {
     el("span", "shelf-card-title", "Syllabus & reading order"),
     el("span", "shelf-card-action", "Open the course")
   );
-  row.append(card);
+  end.append(card);
+  row.append(end);
 
   shelf.append(head, row);
   return shelf;

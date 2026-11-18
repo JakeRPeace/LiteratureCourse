@@ -33,41 +33,53 @@ colors:
   idle-clay: "#b7ab9a"
 typography:
   display:
-    fontFamily: "Spectral, \"Iowan Old Style\", \"Palatino Linotype\", Palatino, serif"
-    fontSize: "clamp(2.6rem, 6vw, 4.6rem)"
-    fontWeight: 600
-    lineHeight: 0.95
-    letterSpacing: "-0.03em"
+    fontFamily: "Newsreader Variable, Newsreader, \"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, serif"
+    fontSize: "clamp(2.9rem, 6.4vw, 4.9rem)"
+    fontWeight: 400
+    lineHeight: 1
+    letterSpacing: "-0.018em"
   headline:
-    fontFamily: "Spectral, \"Iowan Old Style\", \"Palatino Linotype\", Palatino, serif"
-    fontSize: "clamp(1.7rem, 3vw, 2.15rem)"
-    fontWeight: 600
+    fontFamily: "Newsreader Variable, Newsreader, \"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, serif"
+    fontSize: "clamp(1.65rem, 2.8vw, 2.05rem)"
+    fontWeight: 450
     lineHeight: 1.15
-    letterSpacing: "-0.02em"
+    letterSpacing: "-0.008em"
   title:
-    fontFamily: "Spectral, \"Iowan Old Style\", \"Palatino Linotype\", Palatino, serif"
-    fontSize: "1.35rem"
-    fontWeight: 600
+    fontFamily: "Newsreader Variable, Newsreader, \"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, serif"
+    fontSize: "1.45rem"
+    fontWeight: 450
     lineHeight: 1.2
-    letterSpacing: "-0.02em"
+    letterSpacing: "-0.005em"
+  wordmark:
+    fontFamily: "Newsreader Variable, Newsreader, \"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, serif"
+    fontSize: "0.9rem"
+    fontWeight: 400
+    lineHeight: 1.35
+    letterSpacing: "0.2em"
   body:
-    fontFamily: "Karla, \"Avenir Next\", \"Segoe UI\", sans-serif"
+    fontFamily: "Instrument Sans Variable, Instrument Sans, \"Avenir Next\", \"Segoe UI\", system-ui, sans-serif"
     fontSize: "16px"
     fontWeight: 400
     lineHeight: 1.5
     letterSpacing: "normal"
   reading:
-    fontFamily: "Spectral, \"Iowan Old Style\", \"Palatino Linotype\", Palatino, serif"
-    fontSize: "1.125rem"
+    fontFamily: "Newsreader Variable, Newsreader, \"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, serif"
+    fontSize: "1.18rem"
     fontWeight: 400
-    lineHeight: 1.7
+    lineHeight: 1.65
     letterSpacing: "normal"
   label:
-    fontFamily: "Karla, \"Avenir Next\", \"Segoe UI\", sans-serif"
+    fontFamily: "Instrument Sans Variable, Instrument Sans, \"Avenir Next\", \"Segoe UI\", system-ui, sans-serif"
     fontSize: "15px"
-    fontWeight: 500
+    fontWeight: 600
     lineHeight: 1.5
-    letterSpacing: "normal"
+    letterSpacing: "0.01em"
+  catalogue:
+    fontFamily: "Courier Prime, \"Courier New\", ui-monospace, monospace"
+    fontSize: "13px"
+    fontWeight: 400
+    lineHeight: 1.4
+    letterSpacing: "0.06em"
 rounded:
   stamp: "2px"
   leaf: "3px"
@@ -168,7 +180,7 @@ The Literature Course Library is a light, lived-in independent bookshop that hap
 **Key Characteristics**
 
 - Warm white wall, a flat green sign band, pale oak boards, off-white paper cards
-- Spectral for names, titles, and reading; Karla for furniture (labels, buttons, stamps)
+- Newsreader for names, titles, and reading; Instrument Sans for furniture (labels, buttons, nav); Courier Prime for catalogue details (course numbers, counts, stamps)
 - Every book is bound in a flat cloth colour chosen from its title, whether or not cover art exists
 - Vermilion marks the place, moss marks a finished book, brass is focus and small labels
 - Flat colour and soft shadow for the room; texture is reserved for book spines. No glass, no dark theme
@@ -204,13 +216,16 @@ The Literature Course Library is a light, lived-in independent bookshop that hap
 
 ## Typography
 
-Spectral (400, 400 italic, 600, 700) is the voice of the shop and the books. Karla (400, 500, 700) is the voice of the furniture. They do not trade jobs.
+Newsreader (variable, optical size on, 400 to 650, italic) is the voice of the shop and the books: headings, ledes, long reading. Instrument Sans (400 to 700) is the voice of the furniture: labels, nav, buttons, fields. Courier Prime (400) is the typewriter, used sparingly for catalogue details: course numbers, counts, status stamps. They do not trade jobs.
 
-- **Display**: Spectral 600, clamp(2.6rem, 6vw, 4.4rem), tracking -0.03em. Page titles are clamp(2.1rem, 4.6vw, 3.2rem).
-- **Section title**: Spectral 600, clamp(1.5rem, 2.6vw, 1.9rem).
-- **Reading**: Spectral 400, 1.125rem, line-height 1.7, 68ch measure.
-- **Eyebrow and stamp**: Karla 700, 11.5 to 12px, uppercase, tracking 0.08 to 0.14em.
-- **Body and controls**: Karla, 15 to 16px.
+- **Wordmark**: Newsreader 400, 0.9rem, uppercase, tracking 0.2em, like a name painted over the door. 0.72rem and 0.15em on phones so it stays on one line beside "Sign out". The colophon name matches.
+- **Display**: Newsreader 400, clamp(2.9rem, 6.4vw, 4.9rem), tracking -0.018em. Page titles are 400, clamp(2.3rem, 4.8vw, 3.4rem), tracking -0.014em.
+- **Section title**: Newsreader 450, clamp(1.65rem, 2.8vw, 2.05rem). Card and shelf titles are 450, 1.45 to 1.65rem.
+- **Lede**: Newsreader italic, 1.2 to 1.4rem.
+- **Reading**: Newsreader 400, 1.18rem, line-height 1.65, 68ch measure. Bold in prose is 650.
+- **Eyebrow and label**: Instrument Sans 600, 11 to 12px, uppercase, tracking 0.1 to 0.14em.
+- **Catalogue**: Courier Prime 400, 11 to 13px, tracking 0.04 to 0.1em. Status stamps are uppercase.
+- **Body and controls**: Instrument Sans, 15 to 16px; buttons 600.
 
 ## Surfaces
 
@@ -245,5 +260,5 @@ Rows of spines and rows of covers have a fixed height, so shelf boards and ledge
 - Don't add props that do nothing (plants, mugs, cats). Every object on the page is a control or content.
 - Don't draw materials literally: no wood grain, noise, bevels, engraved plates, or stitched edges.
 - Don't use glass, backdrop blur, neon, or a dark theme.
-- Don't fill surfaces with vermilion, and don't set buttons or stamps in Spectral.
+- Don't fill surfaces with vermilion, and don't set buttons in the serif, and keep Courier Prime to catalogue details.
 - Don't replace the stamp or the progress rule with rings, sparklines, or scores on the shelf.

@@ -59,7 +59,7 @@ const courseNumber = (course.title.match(/\b(\d{3})\b/) || [])[1] || "";
   <section class="stack">
     <header class="page-head">
       <a class="back-link" href={`/#course-${course.slug}`}>Back to the shelves</a>
-      <p class="eyebrow">{courseNumber ? `Course ${courseNumber}` : "Course"}</p>
+      <p class="eyebrow eyebrow-number">{courseNumber ? `Course ${courseNumber}` : "Course"}</p>
       <h1 class="section-title page-title">{displayTitle}</h1>
       {course.summary ? <p class="section-subtitle">{course.summary}</p> : null}
     </header>

@@ -17,7 +17,7 @@ const linkProps = current
     };
 ---
 <Tag
-  class:list={["spine", look.long && "is-long", current && "is-out"]}
+  class:list={["spine", look.long && "is-long", current && "is-out", look.lean < 0 && "lean-l", look.lean > 0 && "lean-r", look.gap && "has-gap"]}
   style={look.style}
   data-band={look.band}
   data-type={look.type}

@@ -44,6 +44,8 @@ export function buildCover({ title = "", author = "", coverUrl = "", look, class
 export function buildSpine({ id, title = "", author = "", coverUrl = "", href, look, source = "", current = false }) {
   const spine = el(current ? "span" : "a", "spine");
   if (look?.long) spine.classList.add("is-long");
+  if (look?.lean) spine.classList.add(look.lean < 0 ? "lean-l" : "lean-r");
+  if (look?.gap) spine.classList.add("has-gap");
   if (look) {
     spine.style.cssText = look.style;
     spine.dataset.band = String(look.band);
@@ -107,4 +109,28 @@ export function buildLedgeBook({ id, title = "", author = "", sub = "", coverUrl
 
   item.append(buildCover({ title, author, coverUrl, look }), label);
   return item;
+}
+
+// A book standing face-out on a shelf: the cover, as a link to the book.
+// Mirrors the face-out markup in pages/index.astro.
+export function buildFaceOut({ id, title = "", author = "", coverUrl = "", href, look, source = "" }) {
+  const link = el("a", "shelf-face");
+  link.href = href;
+  if (look) link.style.cssText = look.style;
+  link.dataset.pick = "";
+  link.dataset.bookRow = "";
+  link.dataset.bookId = id;
+  link.dataset.status = "not_started";
+  link.dataset.title = title;
+  link.dataset.author = author;
+  link.dataset.cover = coverUrl || "";
+  if (source) link.dataset.bookSource = source;
+
+  const label = el("span", "visually-hidden", author ? `${title}, by ${author}. ` : `${title}. `);
+  const status = el("span", "", "Not started");
+  status.dataset.statusLabel = "";
+  label.append(status);
+
+  link.append(buildCover({ title, author, coverUrl, look }), hidden(el("span", "shelf-face-slip", "Out")), label);
+  return link;
 }

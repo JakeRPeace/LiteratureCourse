@@ -45,8 +45,9 @@
   --shadow: 0 1px 2px rgba(36, 30, 22, 0.06), 0 8px 20px rgba(36, 30, 22, 0.06);
   --shadow-lift: 0 2px 4px rgba(36, 30, 22, 0.08), 0 18px 34px rgba(36, 30, 22, 0.12);
 
-  --serif: "Spectral", "Iowan Old Style", "Palatino Linotype", Palatino, serif;
-  --sans: "Karla", "Avenir Next", "Segoe UI", sans-serif;
+  --serif: "Newsreader Variable", "Newsreader", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --sans: "Instrument Sans Variable", "Instrument Sans", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --mono: "Courier Prime", "Courier New", ui-monospace, monospace;
   --radius: 10px;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -78,6 +79,7 @@ body {
   font-family: var(--sans);
   font-size: 16px;
   line-height: 1.5;
+  font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -149,10 +151,11 @@ textarea:focus-visible {
 .wordmark,
 .login-wordmark {
   font-family: var(--serif);
-  font-weight: 600;
-  font-size: 1.3rem;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
+  font-weight: 400;
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  line-height: 1.35;
   color: var(--shelf-ink);
 }
 
@@ -174,6 +177,8 @@ textarea:focus-visible {
   color: var(--shelf-muted);
   font-size: 15px;
   font-weight: 500;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
 }
 
 .nav-links a:hover,
@@ -210,18 +215,19 @@ textarea:focus-visible {
 .course-switcher-label {
   color: var(--shelf-muted);
   font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .course-switcher-title {
-  max-width: 18ch;
+  max-width: 14ch;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-family: var(--serif);
-  font-weight: 600;
+  font-size: 15.5px;
+  font-weight: 500;
 }
 
 .caret {
@@ -263,8 +269,8 @@ textarea:focus-visible {
 
 .course-switcher-item-title {
   font-family: var(--serif);
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 500;
 }
 
 .course-switcher-item-sub {
@@ -312,9 +318,16 @@ textarea:focus-visible {
   margin: 0;
   color: var(--brass);
   font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+}
+
+.eyebrow-number {
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 0.1em;
 }
 
 .back-link {
@@ -323,7 +336,7 @@ textarea:focus-visible {
   gap: 8px;
   margin-bottom: 10px;
   color: var(--vermilion);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 15px;
 }
 
@@ -344,7 +357,7 @@ textarea:focus-visible {
 
 .text-link {
   color: var(--vermilion);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .section-header {
@@ -360,17 +373,18 @@ textarea:focus-visible {
 .section-title {
   margin: 0 0 4px;
   font-family: var(--serif);
-  font-weight: 600;
-  font-size: clamp(1.5rem, 2.6vw, 1.9rem);
-  letter-spacing: -0.02em;
+  font-weight: 450;
+  font-size: clamp(1.65rem, 2.8vw, 2.05rem);
+  letter-spacing: -0.008em;
   line-height: 1.15;
   text-wrap: balance;
 }
 
 .page-title {
-  font-size: clamp(2.1rem, 4.6vw, 3.2rem);
-  letter-spacing: -0.03em;
-  line-height: 1.02;
+  font-weight: 400;
+  font-size: clamp(2.3rem, 4.8vw, 3.4rem);
+  letter-spacing: -0.014em;
+  line-height: 1.06;
   margin-bottom: 8px;
 }
 
@@ -426,9 +440,10 @@ textarea:focus-visible {
   border: 1px solid currentColor;
   background: var(--paper-raised);
   color: var(--ink-soft);
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -473,10 +488,10 @@ textarea:focus-visible {
 .brand h1 {
   margin: 0 0 12px;
   font-family: var(--serif);
-  font-weight: 600;
-  font-size: clamp(2.6rem, 6vw, 4.4rem);
-  letter-spacing: -0.03em;
-  line-height: 0.95;
+  font-weight: 400;
+  font-size: clamp(2.9rem, 6.4vw, 4.9rem);
+  letter-spacing: -0.018em;
+  line-height: 1;
   text-wrap: balance;
 }
 
@@ -486,7 +501,7 @@ textarea:focus-visible {
   color: var(--ink-soft);
   font-family: var(--serif);
   font-style: italic;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   line-height: 1.4;
 }
 
@@ -507,7 +522,7 @@ textarea:focus-visible {
   color: var(--ink-soft);
   font-family: var(--sans);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -518,7 +533,7 @@ textarea:focus-visible {
   color: var(--ink);
   font-family: var(--serif);
   font-style: italic;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   line-height: 1.4;
 }
 
@@ -553,7 +568,7 @@ textarea:focus-visible {
   align-self: center;
   color: var(--ink-soft);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 /* ---------- The bookcase ---------- */
@@ -594,17 +609,18 @@ textarea:focus-visible {
 
 .shelf-number {
   color: var(--brass);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
 }
 
 .shelf-title {
   margin: 0;
   font-family: var(--serif);
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-size: 1.65rem;
+  font-weight: 450;
+  letter-spacing: -0.008em;
   line-height: 1.2;
 }
 
@@ -625,8 +641,9 @@ textarea:focus-visible {
 
 .shelf-count {
   color: var(--ink-soft);
+  font-family: var(--mono);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 400;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -1277,9 +1294,9 @@ a:hover > .course-doc-action::after {
 .status-title {
   margin: 0;
   font-family: var(--serif);
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-size: 1.65rem;
+  font-weight: 450;
+  letter-spacing: -0.008em;
   line-height: 1.15;
 }
 
@@ -1307,7 +1324,8 @@ a:hover > .course-doc-action::after {
 }
 
 .status-stats {
-  font-size: 14px;
+  font-family: var(--mono);
+  font-size: 13.5px;
   color: var(--ink-soft);
   font-variant-numeric: tabular-nums;
 }
@@ -1351,9 +1369,9 @@ a:hover > .course-doc-action::after {
 .course-doc-title {
   margin: 0;
   font-family: var(--serif);
-  font-size: 1.35rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-size: 1.45rem;
+  font-weight: 450;
+  letter-spacing: -0.005em;
   line-height: 1.2;
 }
 
@@ -1373,8 +1391,8 @@ a:hover > .course-doc-action::after {
 .course-doc-chip {
   color: var(--brass);
   font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
@@ -1557,7 +1575,7 @@ a:hover > .course-doc-action::after {
   color: var(--ink-soft);
   font-family: var(--serif);
   font-style: italic;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
 }
 
 /* The reader's card */
@@ -1584,7 +1602,7 @@ a:hover > .course-doc-action::after {
 .library-card-title {
   color: var(--brass);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -1606,7 +1624,7 @@ a:hover > .course-doc-action::after {
   gap: 8px;
   font-size: 13px;
   color: var(--ink-soft);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .score-field {
@@ -1621,9 +1639,10 @@ a:hover > .course-doc-action::after {
 }
 
 .score-value {
+  font-family: var(--mono);
   font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-weight: 400;
+  letter-spacing: 0.04em;
   color: var(--ink-soft);
 }
 
@@ -1635,7 +1654,7 @@ a:hover > .course-doc-action::after {
   width: 100%;
   appearance: none;
   padding: 11px 36px 11px 13px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .select-caret {
@@ -1749,7 +1768,7 @@ input:disabled {
   color: var(--oak);
   font-family: var(--serif);
   font-size: 2.4rem;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1;
 }
 
@@ -1762,8 +1781,9 @@ input:disabled {
 .reading,
 .guide-content {
   font-family: var(--serif);
-  font-size: 1.125rem;
-  line-height: 1.7;
+  font-size: 1.18rem;
+  line-height: 1.65;
+  font-optical-sizing: auto;
   color: var(--ink);
 }
 
@@ -1792,24 +1812,28 @@ input:disabled {
 
 .guide-content :is(h1, h2, h3, h4) {
   font-family: var(--serif);
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-weight: 450;
+  letter-spacing: -0.008em;
   line-height: 1.2;
   text-wrap: balance;
 }
 
+.guide-content :is(strong, b, th) {
+  font-weight: 650;
+}
+
 .guide-content h1 {
-  font-size: 2rem;
+  font-size: 2.15rem;
   margin: 0 0 0.6rem;
 }
 
 .guide-content h2 {
-  font-size: 1.55rem;
+  font-size: 1.65rem;
   margin: 2.2rem 0 0.5rem;
 }
 
 .guide-content h3 {
-  font-size: 1.25rem;
+  font-size: 1.32rem;
   margin: 1.6rem 0 0.4rem;
 }
 
@@ -1881,7 +1905,7 @@ input:disabled {
 }
 
 .card.guide-content {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
 }
 
 /* ---------- Buttons and fields ---------- */
@@ -1894,8 +1918,9 @@ button {
   border-radius: 999px;
   padding: 10px 18px;
   cursor: pointer;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 15px;
+  letter-spacing: 0.01em;
   transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), background-color 0.2s var(--ease);
 }
 
@@ -1968,7 +1993,7 @@ select {
   border-bottom: 1px solid var(--line);
   color: var(--brass);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -1978,7 +2003,7 @@ select {
   gap: 6px;
   color: var(--ink-soft);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .auth-actions {
@@ -2018,7 +2043,7 @@ select {
 
 .login-wordmark {
   display: block;
-  padding: 16px 24px;
+  padding: 18px 24px;
   background: var(--shelf);
 }
 
@@ -2045,10 +2070,10 @@ body[data-login-page="true"] .page {
 .login-brand h1 {
   margin: 0 0 12px;
   font-family: var(--serif);
-  font-weight: 600;
-  font-size: clamp(2.4rem, 5vw, 3.8rem);
-  letter-spacing: -0.03em;
-  line-height: 0.98;
+  font-weight: 400;
+  font-size: clamp(2.6rem, 5.2vw, 4.1rem);
+  letter-spacing: -0.016em;
+  line-height: 1;
   text-wrap: balance;
 }
 
@@ -2057,7 +2082,7 @@ body[data-login-page="true"] .page {
   color: var(--ink-soft);
   font-family: var(--serif);
   font-style: italic;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   max-width: 30ch;
 }
 
@@ -2084,9 +2109,9 @@ body[data-login-page="true"] .page {
 .counter-title {
   margin: 0 0 2px;
   font-family: var(--serif);
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-size: 1.65rem;
+  font-weight: 450;
+  letter-spacing: -0.008em;
 }
 
 .counter-copy,
@@ -2136,8 +2161,8 @@ body[data-login-page="true"] .page {
 
 .chat-title {
   font-family: var(--serif);
-  font-size: 1.4rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 450;
 }
 
 .chat-subtitle,
@@ -2244,8 +2269,10 @@ body[data-login-page="true"] .page {
 .colophon strong {
   color: var(--shelf-ink);
   font-family: var(--serif);
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
 }
 
 .colophon-tools {
@@ -2333,7 +2360,9 @@ body[data-login-page="true"] .page {
   .mast-inner .wordmark {
     grid-area: wordmark;
     margin-right: 0;
-    font-size: 1.15rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    line-height: 1.4;
     min-width: 0;
   }
 
@@ -2420,9 +2449,9 @@ body[data-login-page="true"] .page {
 
   .brand p {
     font-style: normal;
-    font-size: clamp(1.35rem, 6vw, 1.7rem);
-    font-weight: 600;
-    letter-spacing: -0.02em;
+    font-size: clamp(1.45rem, 6.4vw, 1.8rem);
+    font-weight: 450;
+    letter-spacing: -0.008em;
     line-height: 1.25;
     color: var(--ink);
     max-width: 22ch;
@@ -2447,7 +2476,7 @@ body[data-login-page="true"] .page {
   }
 
   .shelf-title {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
   }
 
   .shelf-meta {
@@ -2506,7 +2535,7 @@ body[data-login-page="true"] .page {
   }
 
   .book-author {
-    font-size: 1.15rem;
+    font-size: 1.25rem;
   }
 
   .course-status-header {
@@ -2544,7 +2573,7 @@ body[data-login-page="true"] .page {
   }
 
   .guide-content {
-    line-height: 1.75;
+    line-height: 1.65;
   }
 
   .guide-content :is(ul, ol) {
@@ -2577,6 +2606,8 @@ body[data-login-page="true"] .page {
 
   .login-wordmark {
     padding: 14px 16px;
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
   }
 
   .login-shell {

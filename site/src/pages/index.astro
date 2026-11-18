@@ -1,10 +1,11 @@
 ---
 import Base from "../layouts/Base.astro";
 import Spine from "../components/Spine.astro";
+import BookCover from "../components/BookCover.astro";
 import { getCourses } from "../lib/content.js";
 import { resolveSourceLabel } from "../lib/source-labels.js";
 import { loadSystemCourses } from "../lib/system-content.js";
-import { shelfLooks } from "../../public/scripts/book-look.js";
+import { bookLook, faceOutIndex, shelfLooks } from "../../public/scripts/book-look.js";
 
 const systemCourses = await loadSystemCourses();
 const courses = systemCourses ?? getCourses();
@@ -32,7 +33,13 @@ const sourceLabel = resolveSourceLabel(systemCourseSource);
       const courseNumber = (course.title.match(/\b(\d{3})\b/) || [])[1] || "";
       const summary = course.summary || "Short course overview available in the syllabus.";
       const books = course.books.filter((book) => book && book.title);
-      const looks = shelfLooks(books);
+      // One book per shelf stands face-out; the rest stand spine-out. A book
+      // is one object, so the face-out one is not also on the shelf as a spine.
+      const faceAt = faceOutIndex(books, course.slug);
+      const faceBook = faceAt >= 0 ? books[faceAt] : null;
+      const spineBooks = books.filter((_, index) => index !== faceAt);
+      const looks = shelfLooks(spineBooks, { scatter: true });
+      const faceLook = faceBook ? bookLook(faceBook.title, faceBook.author) : null;
       const total = course.books.length;
 
       return (
@@ -63,14 +70,39 @@ const sourceLabel = resolveSourceLabel(systemCourseSource);
             </div>
           </header>
           <div class="shelf-books">
-            {books.map((book, index) => (
+            {spineBooks.map((book, index) => (
               <Spine book={book} look={looks[index]} href={`/book/${book.slug}`} source={systemCourseSource} />
             ))}
-            <a class="shelf-card" href={`/course/${course.slug}`}>
-              <span class="shelf-card-eyebrow">{courseNumber ? `Course ${courseNumber}` : "Course"}</span>
-              <span class="shelf-card-title">Syllabus &amp; reading order</span>
-              <span class="shelf-card-action">Open the course</span>
-            </a>
+            <div class="shelf-end">
+              {faceBook ? (
+                <a
+                  class="shelf-face"
+                  href={`/book/${faceBook.slug}`}
+                  id={faceBook.slug ? `book-${faceBook.slug}` : undefined}
+                  style={faceLook.style}
+                  data-pick
+                  data-book-row
+                  data-book-id={faceBook.id}
+                  data-book-source={systemCourseSource}
+                  data-status="not_started"
+                  data-title={faceBook.title}
+                  data-author={faceBook.author || ""}
+                  data-cover={faceBook.coverUrl || ""}
+                >
+                  <BookCover title={faceBook.title} author={faceBook.author || ""} coverUrl={faceBook.coverUrl} look={faceLook} />
+                  <span class="shelf-face-slip" aria-hidden="true">Out</span>
+                  <span class="visually-hidden">
+                    {faceBook.title}{faceBook.author ? `, by ${faceBook.author}. ` : ". "}
+                    <span data-status-label>Not started</span>
+                  </span>
+                </a>
+              ) : null}
+              <a class="shelf-card" href={`/course/${course.slug}`}>
+                <span class="shelf-card-eyebrow">{courseNumber ? `Course ${courseNumber}` : "Course"}</span>
+                <span class="shelf-card-title">Syllabus &amp; reading order</span>
+                <span class="shelf-card-action">Open the course</span>
+              </a>
+            </div>
           </div>
         </article>
       );
