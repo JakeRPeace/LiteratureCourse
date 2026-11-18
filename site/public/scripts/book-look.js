@@ -41,17 +41,22 @@ export function bookLook(title = "", author = "", avoidCloth = -1) {
   let clothIndex = h % CLOTHS.length;
   if (clothIndex === avoidCloth) clothIndex = (clothIndex + 5) % CLOTHS.length;
   const { cloth, deep, foil } = CLOTHS[clothIndex];
-  // A spine is as thick as its title needs: about ten characters fit down
+  // A spine is as thick as its title needs: about nine characters fit down
   // the spine, so longer titles wrap onto more lines and get a wider book.
-  const lines = Math.min(4, Math.max(1, Math.ceil(String(title).length / 10)));
+  const lines = Math.min(4, Math.max(1, Math.ceil(String(title).length / 9)));
   const long = lines >= 3;
   const width = 24 + lines * (long ? 17 : 19) + ((h >>> 5) % 7);
   const height = 82 + ((h >>> 11) % 15);
-  const band = (h >>> 17) % 4;
+  // Binding (rules, label, two-tone, paperback, raised bands, plain) and
+  // lettering (roman, italic, or spaced capitals for short titles).
+  const band = (h >>> 17) % 6;
+  const short = String(title).length <= 8;
+  const type = short ? (h >>> 23) % 3 : (h >>> 23) % 2;
   return {
     clothIndex,
     long,
     band,
+    type,
     style: `--cloth:${cloth};--cloth-deep:${deep};--foil:${foil};--w:${width}px;--h:${height}%`
   };
 }

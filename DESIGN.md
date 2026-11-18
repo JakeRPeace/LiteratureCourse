@@ -161,7 +161,7 @@ components:
 
 **Creative North Star: "The Shop on the Corner"**
 
-The Literature Course Library is a light, lived-in independent bookshop that happens to hold one canon: warm white walls, pale oak shelves, books in plain cloth colours, paper cards. Think Rough Draft in Kingston or McNally Jackson in SoHo. The shop is represented, not rendered. Wood is a flat warm colour, paper is a flat off-white, and depth is a soft shadow. There is no wood grain, no noise, no bevels, and no brass hardware.
+The Literature Course Library is a light, lived-in independent bookshop that happens to hold one canon: warm white walls, pale oak shelves, books in plain cloth colours, paper cards. Think Rough Draft in Kingston or McNally Jackson in SoHo. The shop is represented, not rendered. Wood is a flat warm colour, paper is a flat off-white, and depth is a soft shadow. There is no wood grain, no noise, no bevels, and no brass hardware. The books are the exception: their spines are textured cloth, because they are what the reader came for.
 
 **The rule that organizes everything: picking a book takes it off the shelf.** A book is one object that is either standing on a shelf (spine out), facing out on a ledge, or lying on a table. Opening a book moves it from one to the other, and the place it left stays empty.
 
@@ -171,13 +171,13 @@ The Literature Course Library is a light, lived-in independent bookshop that hap
 - Spectral for names, titles, and reading; Karla for furniture (labels, buttons, stamps)
 - Every book is bound in a flat cloth colour chosen from its title, whether or not cover art exists
 - Vermilion marks the place, moss marks a finished book, brass is focus and small labels
-- Flat colour and soft shadow only. No textures, no glass, no dark theme
+- Flat colour and soft shadow for the room; texture is reserved for book spines. No glass, no dark theme
 
 ## The Book Object
 
 `site/public/scripts/book-look.js` is the single source for how a book looks. It hashes title and author into one of twelve cloths (cloth, a deeper edge, and a title ink that holds 4.5:1 on that cloth), a spine height, and a spine width that grows with the title so the title always fits. Neighbours on a shelf never share a cloth. The server (`Spine.astro`, `BookCover.astro`) and the browser (`book-dom.js`, for reader-made courses) both call it, so a title is bound the same way everywhere.
 
-- **Spine** (`.spine`): vertical Spectral title, surname in small Karla caps, thin rules at head and tail, flat colour. Stands in a slot of fixed row height.
+- **Spine** (`.spine`): the one place the shop is textured. Each spine is bookcloth: it rounds away at both edges, shows a fine weave, and is slightly rubbed at head and tail. The title hash also picks one of six bindings (stamped rules, a title label, two-tone cloth, a cream paperback with a colour block, raised bands, plain with a small device) and a lettering style (roman, italic, or spaced capitals for short titles), so a shelf looks collected, not generated. Stands in a slot of fixed row height.
 - **Cover** (`.book-cover`): 2:3 board with a hinge line, one page edge, and a thin frame. Cover art, when present, sits on top of the cloth cover and is removed if it fails to load, so there is never an empty cover.
 
 ## Picking a Book
@@ -226,7 +226,7 @@ Rows of spines and rows of covers have a fixed height, so shelf boards and ledge
 ## Elevation and Motion
 
 - Two shadows: a resting shadow and a lift shadow. Timber panels add a solid lower edge in oak. Books cast a soft offset shadow and show one page edge.
-- Spines are flat colour with a one-pixel edge so neighbours separate. Covers are flat colour with a single hinge line and a thin frame.
+- Spines carry cloth texture and rounded shading (see The Book Object). Covers are flat colour with a single hinge line and a thin frame.
 - Buttons are flat pills: vermilion for the primary action, outlined for the rest.
 - One curve, `cubic-bezier(0.16, 1, 0.3, 1)`. Hover lifts take 0.35s, the pick takes about 0.5s.
 - Under `prefers-reduced-motion`, transitions and transforms are dropped.

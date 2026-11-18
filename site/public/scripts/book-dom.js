@@ -47,6 +47,7 @@ export function buildSpine({ id, title = "", author = "", coverUrl = "", href, l
   if (look) {
     spine.style.cssText = look.style;
     spine.dataset.band = String(look.band);
+    spine.dataset.type = String(look.type ?? 0);
   }
   spine.dataset.pick = "";
   spine.dataset.title = title;

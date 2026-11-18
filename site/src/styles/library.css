@@ -672,6 +672,7 @@ textarea:focus-visible {
 }
 
 .spine-body {
+  --spine-shadow: 2px 0 3px -1px rgba(36, 30, 22, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.22);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -680,47 +681,170 @@ textarea:focus-visible {
   gap: 10px;
   width: 100%;
   height: var(--h, 88%);
-  padding: 22px 0 20px;
+  padding: 24px 0 20px;
   overflow: hidden;
-  border-radius: 3px 3px 0 0;
-  background: var(--cloth, #a84f34);
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.12), inset 1px 0 0 rgba(255, 255, 255, 0.14);
+  border-radius: 4px 4px 1px 1px;
+  /* Bookcloth: the spine rounds away at both edges, the weave catches the
+     light, and the head and tail are a little rubbed. */
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.26) 0%,
+      rgba(0, 0, 0, 0.06) 9%,
+      rgba(255, 255, 255, 0.12) 28%,
+      rgba(255, 255, 255, 0.03) 52%,
+      rgba(0, 0, 0, 0.08) 82%,
+      rgba(0, 0, 0, 0.24) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.16) 0,
+      rgba(255, 255, 255, 0) 7px,
+      rgba(0, 0, 0, 0) calc(100% - 12px),
+      rgba(0, 0, 0, 0.2) 100%
+    ),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0 1px, rgba(0, 0, 0, 0) 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.05) 0 1px, rgba(0, 0, 0, 0) 1px 3px),
+    var(--cloth, #a84f34);
+  box-shadow: var(--spine-shadow);
   transform-origin: 50% 100%;
   transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
 }
 
-/* foil rules at head and tail */
 .spine-body::before,
 .spine-body::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
+  pointer-events: none;
+}
+
+/* Binding 0: stamped double rules at head and tail */
+.spine[data-band="0"] .spine-body::before,
+.spine[data-band="0"] .spine-body::after {
   height: 5px;
   border-top: 1px solid currentColor;
   border-bottom: 1px solid currentColor;
-  opacity: 0.55;
+  opacity: 0.6;
 }
 
-.spine-body::before {
+.spine[data-band="0"] .spine-body::before {
+  top: 10px;
+}
+
+.spine[data-band="0"] .spine-body::after {
+  bottom: 9px;
+}
+
+/* Binding 1: a title label, like a leather lettering piece */
+.spine[data-band="1"] .spine-title {
+  flex: 0 1 auto;
+  padding: 9px 5px;
+  background: var(--cloth-deep);
+  box-shadow: 0 0 0 1px currentColor, 0 0 0 3px var(--cloth-deep);
+  border-radius: 1px;
+}
+
+.spine[data-band="1"] .spine-body {
+  justify-content: flex-start;
+  gap: 14px;
+}
+
+.spine[data-band="1"] .spine-author {
+  margin-top: auto;
+}
+
+.spine[data-band="1"]:not([data-foil-dark]) .spine-title {
+  color: var(--foil);
+}
+
+/* Binding 2: two-tone, darker cloth at head and tail */
+.spine[data-band="2"] .spine-body::before,
+.spine[data-band="2"] .spine-body::after {
+  height: 16px;
+  background: var(--cloth-deep);
+  opacity: 0.85;
+}
+
+.spine[data-band="2"] .spine-body::before {
+  top: 0;
+  border-bottom: 1px solid currentColor;
+}
+
+.spine[data-band="2"] .spine-body::after {
+  bottom: 0;
+  border-top: 1px solid currentColor;
+}
+
+/* Binding 3: a paperback. Cream paper, ink type, a block of colour up top. */
+.spine[data-band="3"] {
+  color: var(--ink);
+}
+
+.spine[data-band="3"] .spine-body {
+  padding-top: 34px;
+  border-radius: 2px 2px 1px 1px;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.16) 0%,
+      rgba(0, 0, 0, 0) 12%,
+      rgba(255, 255, 255, 0.3) 40%,
+      rgba(0, 0, 0, 0) 70%,
+      rgba(0, 0, 0, 0.14) 100%
+    ),
+    repeating-linear-gradient(90deg, rgba(120, 90, 50, 0.05) 0 1px, rgba(0, 0, 0, 0) 1px 5px),
+    #f4ecd9;
+}
+
+.spine[data-band="3"] .spine-body::before {
+  top: 0;
+  height: 22px;
+  background: var(--cloth);
+}
+
+.spine[data-band="3"] .spine-body::after {
+  bottom: 0;
+  height: 6px;
+  background: var(--cloth);
+}
+
+.spine[data-band="3"] .spine-author {
+  color: var(--ink-soft);
+}
+
+/* Binding 4: raised bands across the spine */
+.spine[data-band="4"] .spine-body::before,
+.spine[data-band="4"] .spine-body::after {
+  height: 3px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(0, 0, 0, 0.3));
+  box-shadow: 0 7px 0 -1px rgba(0, 0, 0, 0.22), 0 8px 0 -1px rgba(255, 255, 255, 0.14);
+}
+
+.spine[data-band="4"] .spine-body::before {
   top: 9px;
 }
 
-.spine-body::after {
+.spine[data-band="4"] .spine-body::after {
+  bottom: 14px;
+}
+
+/* Binding 5: plain cloth with a small stamped device at the foot */
+.spine[data-band="5"] .spine-body::after {
+  left: 50%;
+  right: auto;
   bottom: 8px;
+  width: 7px;
+  height: 7px;
+  margin-left: -3.5px;
+  border: 1px solid currentColor;
+  transform: rotate(45deg);
+  opacity: 0.7;
 }
 
-.spine[data-band="1"] .spine-body::after,
-.spine[data-band="3"] .spine-body::before {
-  height: 0;
-  border-bottom: 0;
-}
-
-.spine[data-band="2"] .spine-body::before,
-.spine[data-band="2"] .spine-body::after {
-  height: 9px;
-  background: currentColor;
-  opacity: 0.4;
+.spine[data-band="5"] .spine-body {
+  padding-bottom: 26px;
 }
 
 .spine-title {
@@ -740,6 +864,25 @@ textarea:focus-visible {
   font-size: 13.5px;
 }
 
+/* Lettering varies from book to book, as it does on a real shelf. */
+.spine[data-type="1"] .spine-title {
+  font-style: italic;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.spine[data-type="1"].is-long .spine-title {
+  font-size: 14px;
+}
+
+.spine[data-type="2"] .spine-title {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
 .spine-author {
   flex: 0 0 auto;
   max-height: 48%;
@@ -756,10 +899,7 @@ textarea:focus-visible {
 @media (hover: hover) {
   .spine:hover .spine-body {
     transform: translateY(-12px);
-    box-shadow:
-      inset -1px 0 0 rgba(0, 0, 0, 0.12),
-      inset 1px 0 0 rgba(255, 255, 255, 0.14),
-      0 14px 14px -8px rgba(36, 30, 22, 0.35);
+    box-shadow: var(--spine-shadow), 0 16px 14px -8px rgba(36, 30, 22, 0.4);
   }
 }
 
