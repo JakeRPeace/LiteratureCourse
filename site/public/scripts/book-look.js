@@ -71,7 +71,7 @@ export function bookLook(title = "", author = "", avoidCloth = -1) {
   // down it, so longer titles wrap onto more lines and get a wider book.
   const lines = Math.min(4, Math.max(1, Math.ceil(String(title).length / 17)));
   const long = lines >= 3;
-  const width = 17 + lines * 14 + (band === 1 ? 9 : 0) + ((h >>> 5) % 7);
+  const width = 20 + lines * 15 + (band === 1 ? 9 : 0) + ((h >>> 5) % 8);
   const height = 80 + ((h >>> 11) % 17);
   // How far forward it sits: most flush, a few set back a touch.
   const back = (h >>> 3) % 8;

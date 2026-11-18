@@ -52,8 +52,14 @@
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* shelf geometry */
-  --row: 236px;
-  --board: 12px;
+  --row: 288px;
+  --board: 14px;
+  /* the board's lit top, its front edge, and the shade inside a bay */
+  --board-top: #e9d6ae;
+  --board-top-back: #dcc499;
+  --board-front: #d6b787;
+  --board-front-low: #c3a073;
+  --bay-shade: 36, 30, 22;
 }
 
 * {
@@ -655,19 +661,34 @@ textarea:focus-visible {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
-  column-gap: 3px;
+  column-gap: 1px;
   row-gap: var(--board);
-  padding: 0 22px var(--board);
-  border-radius: 10px 10px 4px 4px;
-  background: repeating-linear-gradient(
+  padding: 0 28px var(--board);
+  border-radius: 8px 8px 3px 3px;
+  /* Each bay is recessed: the shelf above throws a soft shadow down its top,
+     the case sides shade the edges, and the board shows a lit top (where the
+     books stand, 9px deep) and a darker front edge. All flat colour. */
+  background-color: var(--case-back);
+  background-image: repeating-linear-gradient(
     180deg,
-    var(--case-back) 0,
-    var(--case-back) var(--row),
-    var(--oak-light) var(--row),
-    var(--oak-light) calc(var(--row) + 3px),
-    var(--oak) calc(var(--row) + 3px),
-    var(--oak) calc(var(--row) + var(--board))
+    rgba(var(--bay-shade), 0.26) 0,
+    rgba(var(--bay-shade), 0.11) 12px,
+    rgba(var(--bay-shade), 0.04) 46px,
+    rgba(var(--bay-shade), 0) 96px,
+    rgba(var(--bay-shade), 0) calc(var(--row) - 9px),
+    var(--board-top-back) calc(var(--row) - 9px),
+    var(--board-top-back) calc(var(--row) - 7px),
+    var(--board-top) calc(var(--row) - 7px),
+    var(--board-top) calc(var(--row) + 1px),
+    #f6ead0 calc(var(--row) + 1px),
+    #f6ead0 calc(var(--row) + 2px),
+    var(--board-front) calc(var(--row) + 2px),
+    var(--board-front-low) calc(var(--row) + var(--board))
   );
+  box-shadow:
+    inset 16px 0 18px -14px rgba(var(--bay-shade), 0.2),
+    inset -16px 0 18px -14px rgba(var(--bay-shade), 0.2),
+    0 1px 0 rgba(var(--bay-shade), 0.1);
 }
 
 /* ---------- A book, spine out ---------- */
@@ -677,8 +698,11 @@ textarea:focus-visible {
   flex: 0 0 auto;
   display: flex;
   align-items: flex-end;
-  width: var(--w, 46px);
+  width: var(--w, 40px);
   height: var(--row);
+  /* --d is how far back it sits (0 flush, 1 set back): a little shorter on
+     the board, a little darker. */
+  padding-bottom: calc(var(--d, 0) * 6px);
   color: var(--foil, #ecd49a);
   scroll-margin-top: 30vh;
   -webkit-tap-highlight-color: transparent;
@@ -688,30 +712,71 @@ textarea:focus-visible {
   outline: none;
 }
 
+/* Its soft contact shadow on the board, left behind when the book lifts */
+.spine::before {
+  content: "";
+  position: absolute;
+  left: -3px;
+  right: -4px;
+  bottom: calc(var(--d, 0) * 6px - 4px);
+  height: 11px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 50%, rgba(var(--bay-shade), 0.5) 0, rgba(var(--bay-shade), 0) 72%);
+  pointer-events: none;
+}
+
+/* One book leans on its neighbour, into a small gap; another stands apart. */
+.spine.lean-l {
+  margin-left: 15px;
+  transform: rotate(var(--lean, -4deg));
+  transform-origin: 0 100%;
+}
+
+.spine.lean-r {
+  margin-right: 15px;
+  transform: rotate(var(--lean, 4deg));
+  transform-origin: 100% 100%;
+}
+
+.spine.has-gap {
+  margin-left: 20px;
+}
+
+/* A book that is out leaves an upright gap, not a leaning one */
+.spine.lean-l[data-status="in_progress"],
+.spine.lean-r[data-status="in_progress"],
+.spine.lean-l.is-out,
+.spine.lean-r.is-out {
+  transform: none;
+}
+
 .spine-body {
-  --spine-shadow: 2px 0 3px -1px rgba(36, 30, 22, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  --spine-shadow: 3px 0 6px -2px rgba(var(--bay-shade), 0.4), -1px 0 3px -1px rgba(var(--bay-shade), 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   height: var(--h, 88%);
-  padding: 24px 0 20px;
+  padding: 20px 0 16px;
   overflow: hidden;
-  border-radius: 4px 4px 1px 1px;
+  border-radius: 3px 3px 1px 1px;
   /* Bookcloth: the spine rounds away at both edges, the weave catches the
-     light, and the head and tail are a little rubbed. */
+     light, and the head and tail are a little rubbed. Books set back sit in
+     a little shade. */
   background:
+    linear-gradient(rgba(30, 24, 16, calc(var(--d, 0) * 0.17)), rgba(30, 24, 16, calc(var(--d, 0) * 0.17))),
     linear-gradient(
       90deg,
-      rgba(0, 0, 0, 0.26) 0%,
-      rgba(0, 0, 0, 0.06) 9%,
-      rgba(255, 255, 255, 0.12) 28%,
+      rgba(0, 0, 0, 0.22) 0%,
+      rgba(0, 0, 0, 0.05) 11%,
+      rgba(255, 255, 255, 0.11) 30%,
       rgba(255, 255, 255, 0.03) 52%,
-      rgba(0, 0, 0, 0.08) 82%,
-      rgba(0, 0, 0, 0.24) 100%
+      rgba(0, 0, 0, 0.07) 82%,
+      rgba(0, 0, 0, 0.2) 100%
     ),
     linear-gradient(
       180deg,
@@ -740,14 +805,14 @@ textarea:focus-visible {
 /* Binding 0: stamped double rules at head and tail */
 .spine[data-band="0"] .spine-body::before,
 .spine[data-band="0"] .spine-body::after {
-  height: 5px;
+  height: 4px;
   border-top: 1px solid currentColor;
   border-bottom: 1px solid currentColor;
-  opacity: 0.6;
+  opacity: 0.45;
 }
 
 .spine[data-band="0"] .spine-body::before {
-  top: 10px;
+  top: 9px;
 }
 
 .spine[data-band="0"] .spine-body::after {
@@ -757,15 +822,16 @@ textarea:focus-visible {
 /* Binding 1: a title label, like a leather lettering piece */
 .spine[data-band="1"] .spine-title {
   flex: 0 1 auto;
-  padding: 9px 5px;
+  padding: 7px 4px;
   background: var(--cloth-deep);
-  box-shadow: 0 0 0 1px currentColor, 0 0 0 3px var(--cloth-deep);
+  box-shadow: 0 0 0 1px color-mix(in srgb, currentColor 45%, transparent);
   border-radius: 1px;
 }
 
 .spine[data-band="1"] .spine-body {
   justify-content: flex-start;
-  gap: 14px;
+  gap: 12px;
+  padding-top: 22px;
 }
 
 .spine[data-band="1"] .spine-author {
@@ -779,9 +845,9 @@ textarea:focus-visible {
 /* Binding 2: two-tone, darker cloth at head and tail */
 .spine[data-band="2"] .spine-body::before,
 .spine[data-band="2"] .spine-body::after {
-  height: 16px;
+  height: 14px;
   background: var(--cloth-deep);
-  opacity: 0.85;
+  opacity: 0.8;
 }
 
 .spine[data-band="2"] .spine-body::before {
@@ -800,7 +866,7 @@ textarea:focus-visible {
 }
 
 .spine[data-band="3"] .spine-body {
-  padding-top: 34px;
+  padding-top: 30px;
   border-radius: 2px 2px 1px 1px;
   background:
     linear-gradient(
@@ -817,7 +883,7 @@ textarea:focus-visible {
 
 .spine[data-band="3"] .spine-body::before {
   top: 0;
-  height: 22px;
+  height: 19px;
   background: var(--cloth);
 }
 
@@ -834,9 +900,9 @@ textarea:focus-visible {
 /* Binding 4: raised bands across the spine */
 .spine[data-band="4"] .spine-body::before,
 .spine[data-band="4"] .spine-body::after {
-  height: 3px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(0, 0, 0, 0.3));
-  box-shadow: 0 7px 0 -1px rgba(0, 0, 0, 0.22), 0 8px 0 -1px rgba(255, 255, 255, 0.14);
+  height: 2px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(0, 0, 0, 0.28));
+  box-shadow: 0 5px 0 -0.5px rgba(0, 0, 0, 0.18), 0 6px 0 -0.5px rgba(255, 255, 255, 0.12);
 }
 
 .spine[data-band="4"] .spine-body::before {
@@ -852,16 +918,16 @@ textarea:focus-visible {
   left: 50%;
   right: auto;
   bottom: 8px;
-  width: 7px;
-  height: 7px;
-  margin-left: -3.5px;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
   border: 1px solid currentColor;
   transform: rotate(45deg);
-  opacity: 0.7;
+  opacity: 0.5;
 }
 
 .spine[data-band="5"] .spine-body {
-  padding-bottom: 26px;
+  padding-bottom: 24px;
 }
 
 .spine-title {
@@ -871,46 +937,46 @@ textarea:focus-visible {
   overflow: hidden;
   writing-mode: vertical-rl;
   font-family: var(--serif);
-  font-size: 15px;
+  font-size: 11.5px;
   font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: 0.01em;
+  line-height: 1.22;
+  letter-spacing: 0.015em;
 }
 
 .spine.is-long .spine-title {
-  font-size: 13.5px;
+  font-size: 11px;
 }
 
 /* Lettering varies from book to book, as it does on a real shelf. */
 .spine[data-type="1"] .spine-title {
   font-style: italic;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 12.5px;
 }
 
 .spine[data-type="1"].is-long .spine-title {
-  font-size: 14px;
+  font-size: 11.5px;
 }
 
 .spine[data-type="2"] .spine-title {
   font-family: var(--sans);
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
 .spine-author {
   flex: 0 0 auto;
-  max-height: 48%;
+  max-height: 40%;
   overflow: hidden;
   writing-mode: vertical-rl;
   white-space: nowrap;
-  font-size: 9px;
+  font-size: 8.5px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  opacity: 0.85;
+  opacity: 0.8;
 }
 
 @media (hover: hover) {
@@ -932,9 +998,9 @@ textarea:focus-visible {
   position: absolute;
   left: 50%;
   bottom: 6px;
-  width: 13px;
-  height: 13px;
-  margin-left: -6.5px;
+  width: 11px;
+  height: 11px;
+  margin-left: -5.5px;
   border-radius: 50%;
   background: var(--moss);
   border: 2px solid var(--paper-raised);
@@ -956,19 +1022,19 @@ textarea:focus-visible {
   position: absolute;
   left: 50%;
   bottom: 0;
-  width: 22px;
-  height: 56%;
-  margin-left: -11px;
-  padding-top: 12px;
+  width: 20px;
+  height: 46%;
+  margin-left: -10px;
+  padding-top: 10px;
   border-radius: 3px 3px 0 0;
   border-top: 5px solid var(--vermilion);
   background: var(--paper-raised);
   color: var(--vermilion);
   writing-mode: vertical-rl;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.2em;
-  line-height: 22px;
+  line-height: 20px;
   text-transform: uppercase;
   box-shadow: 0 1px 3px rgba(36, 30, 22, 0.2);
   transform: rotate(4deg);
@@ -1026,43 +1092,147 @@ textarea:focus-visible {
   }
 }
 
-/* The pamphlet propped at the end of each shelf */
+/* The right-hand end of a shelf: one book facing out, and a small card */
+.shelf-end {
+  flex: 0 0 auto;
+  align-self: flex-end;
+  display: flex;
+  align-items: flex-end;
+  gap: 22px;
+  height: var(--row);
+  margin-left: auto;
+  padding-bottom: 3px;
+}
+
+/* A book facing out: the cover, propped on the board */
+.shelf-face {
+  position: relative;
+  display: block;
+  width: clamp(112px, 12vw, 150px);
+  margin-bottom: 1px;
+  scroll-margin-top: 30vh;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.shelf-face::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  right: -10px;
+  bottom: -5px;
+  height: 13px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 50%, rgba(var(--bay-shade), 0.5) 0, rgba(var(--bay-shade), 0) 72%);
+  pointer-events: none;
+}
+
+.shelf-face:focus-visible {
+  outline: none;
+}
+
+.shelf-face > .book-cover {
+  transform-origin: 50% 100%;
+  box-shadow: 3px 3px 0 var(--paper-raised), 4px 4px 0 var(--cloth-deep, #7d3a26), 6px 3px 12px -2px rgba(var(--bay-shade), 0.34);
+}
+
+@media (hover: hover) {
+  .shelf-face:hover > .book-cover {
+    transform: translateY(-8px) rotate(-1deg);
+    box-shadow: 3px 3px 0 var(--paper-raised), 4px 4px 0 var(--cloth-deep, #7d3a26), 10px 18px 18px -6px rgba(var(--bay-shade), 0.36);
+  }
+}
+
+.shelf-face:focus-visible > .book-cover {
+  transform: translateY(-8px);
+  outline: 2px solid var(--brass);
+  outline-offset: 4px;
+}
+
+.shelf-face.is-pulling > .book-cover {
+  animation: pull-cover 0.5s var(--ease) forwards;
+}
+
+:root:not(.is-picking) .shelf-face:target > .book-cover {
+  animation: settle 0.7s var(--ease) 0.1s backwards;
+}
+
+:root:not(.is-picking) .shelf-face:target > .book-cover,
+.shelf-face.is-picked > .book-cover {
+  view-transition-name: picked-book;
+}
+
+/* In progress means out: the cover is on the table, a slip holds its place. */
+.shelf-face-slip {
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 24px;
+  height: 90px;
+  margin-left: -12px;
+  padding-top: 12px;
+  border-radius: 3px 3px 0 0;
+  border-top: 5px solid var(--vermilion);
+  background: var(--paper-raised);
+  color: var(--vermilion);
+  writing-mode: vertical-rl;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  line-height: 24px;
+  text-transform: uppercase;
+  box-shadow: 0 1px 3px rgba(36, 30, 22, 0.2);
+}
+
+.shelf-face[data-status="in_progress"] > .book-cover {
+  visibility: hidden;
+}
+
+.shelf-face[data-status="in_progress"] > .shelf-face-slip {
+  display: block;
+}
+
+.shelf-face[data-status="in_progress"] .cover-ribbon {
+  display: none;
+}
+
+/* A small card at the end of each shelf: quiet, it opens the course */
 .shelf-card {
   flex: 0 0 auto;
   align-self: flex-end;
   display: grid;
   align-content: space-between;
-  gap: 8px;
-  width: 136px;
-  height: calc(var(--row) * 0.68);
-  margin-left: auto;
-  margin-bottom: 10px;
-  padding: 14px 14px 12px;
-  border-radius: 6px;
-  background: var(--paper-raised);
+  gap: 6px;
+  width: 108px;
+  margin-bottom: 3px;
+  padding: 11px 12px 10px;
+  border-radius: 4px;
+  background: rgba(255, 253, 248, 0.78);
+  border: 1px solid var(--line-soft);
   color: var(--ink);
-  box-shadow: var(--shadow);
-  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  box-shadow: 1px 2px 5px -2px rgba(var(--bay-shade), 0.22);
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), background-color 0.35s var(--ease);
 }
 
 .shelf-card:hover,
 .shelf-card:focus-visible {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
+  background: var(--paper-raised);
   box-shadow: var(--shadow-lift);
 }
 
 .shelf-card-eyebrow {
   color: var(--brass);
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 10px;
+  font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .shelf-card-title {
   font-family: var(--serif);
-  font-size: 1.05rem;
-  font-weight: 600;
+  font-size: 0.92rem;
+  font-weight: 500;
   line-height: 1.15;
 }
 
@@ -1095,6 +1265,11 @@ a:hover > .course-doc-action::after {
   transform: translateX(3px) rotate(45deg);
 }
 
+.shelf-card .shelf-card-action {
+  font-size: 12.5px;
+  gap: 5px;
+}
+
 /* The tag that names a spine under the pointer */
 .shelf-tip {
   position: fixed;
@@ -1120,7 +1295,7 @@ a:hover > .course-doc-action::after {
 .shelf-tip-title {
   font-family: var(--serif);
   font-size: 1.02rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.2;
 }
 
@@ -1194,9 +1369,9 @@ a:hover > .course-doc-action::after {
 .cover-title {
   font-family: var(--serif);
   font-size: clamp(10px, 11.5cqw, 34px);
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.08;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
   text-wrap: balance;
   overflow-wrap: break-word;
 }
@@ -1508,8 +1683,8 @@ a:hover > .course-doc-action::after {
 .ledge-title {
   font-family: var(--serif);
   font-size: 1.02rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-weight: 500;
+  letter-spacing: 0;
   line-height: 1.2;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -2341,8 +2516,8 @@ body[data-login-page="true"] .page {
 
 @media (max-width: 800px) {
   :root {
-    --row: 200px;
-    --board: 10px;
+    --row: 252px;
+    --board: 12px;
   }
 
   .mast-inner {
@@ -2491,7 +2666,7 @@ body[data-login-page="true"] .page {
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scrollbar-width: none;
-    padding-inline: 10px;
+    padding-inline: 14px;
     column-gap: 1px;
   }
 
@@ -2500,20 +2675,20 @@ body[data-login-page="true"] .page {
   }
 
   .spine {
-    width: calc(var(--w, 46px) - 6px);
+    width: calc(var(--w, 40px) - 2px);
   }
 
-  .spine-title {
-    font-size: 13px;
+  .shelf-end {
+    margin-left: 14px;
+    gap: 16px;
   }
 
-  .spine.is-long .spine-title {
-    font-size: 12px;
+  .shelf-face {
+    width: 96px;
   }
 
   .shelf-card {
-    width: 124px;
-    margin-left: 12px;
+    width: 104px;
   }
 
   .back-link {

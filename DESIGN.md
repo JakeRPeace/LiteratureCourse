@@ -187,9 +187,9 @@ The Literature Course Library is a light, lived-in independent bookshop that hap
 
 ## The Book Object
 
-`site/public/scripts/book-look.js` is the single source for how a book looks. It hashes title and author into one of twelve cloths (cloth, a deeper edge, and a title ink that holds 4.5:1 on that cloth), a spine height, and a spine width that grows with the title so the title always fits. Neighbours on a shelf never share a cloth. The server (`Spine.astro`, `BookCover.astro`) and the browser (`book-dom.js`, for reader-made courses) both call it, so a title is bound the same way everywhere.
+`site/public/scripts/book-look.js` is the single source for how a book looks. It hashes title and author into one of fourteen cloths, weighted so most books are neutrals (cloth, a deeper edge, and a title ink that holds 4.5:1 on that cloth), a tall spine (about 1:6 to 1:8) and a width that grows with the title so it wraps onto one to four short lines. Neighbours on a shelf never share a cloth. `shelfLooks(books, { scatter: true })` also picks, from the titles, one gently leaning book and sometimes a small gap, and `faceOutIndex` picks the one book per shelf that stands face-out. The server (`Spine.astro`, `BookCover.astro`) and the browser (`book-dom.js`, for reader-made courses) both call it, so a title is bound the same way everywhere.
 
-- **Spine** (`.spine`): the one place the shop is textured. Each spine is bookcloth: it rounds away at both edges, shows a fine weave, and is slightly rubbed at head and tail. The title hash also picks one of six bindings (stamped rules, a title label, two-tone cloth, a cream paperback with a colour block, raised bands, plain with a small device) and a lettering style (roman, italic, or spaced capitals for short titles), so a shelf looks collected, not generated. Stands in a slot of fixed row height.
+- **Spine** (`.spine`): the one place the shop is textured. Each spine is bookcloth: it rounds away at both edges, shows a fine weave, and is slightly rubbed at head and tail. Lettering is small (about 11 to 12px, author 8.5px) with real margins; the hover tag carries the full title. The title hash also picks one of six bindings, weighted toward plain (stamped rules, a title label, two-tone cloth, a cream paperback with a colour block, raised bands, plain with a small device) and a lettering style (mostly roman, some italic, spaced capitals only on short titles). A few books sit a touch further back: shorter, a little darker, with a softer contact shadow. Stands in a slot of fixed row height.
 - **Cover** (`.book-cover`): 2:3 board with a hinge line, one page edge, and a thin frame. Cover art, when present, sits on top of the cloth cover and is removed if it fails to load, so there is never an empty cover.
 
 ## Picking a Book
@@ -210,7 +210,7 @@ The Literature Course Library is a light, lived-in independent bookshop that hap
 - **Vermilion** (#9d3428): the place-mark. Primary button, links, ribbons, the Out slip, progress fill.
 - **Reading Moss** (#2c5c40): a finished book or course.
 - **Brass** (#7d6030): focus ring, eyebrows, course numbers.
-- **Cloths**: twelve earthy book colours (terracotta, sage, ochre, ink blue, linen, olive, clay rose, forest, plum, dusty blue, charcoal, chestnut), each with a title ink that holds 4.5:1.
+- **Cloths**: mostly neutrals a literary shelf really has (cream, ivory, black, charcoal, navy, oxblood, deep green, grey-blue, kraft, stone), with only occasional accents (mustard, terracotta, teal, dusty rose). Each has a title ink that holds 4.5:1.
 
 **The Place-Mark Rule.** Vermilion is where the reader is. It is never a page or card fill.
 
@@ -230,7 +230,7 @@ Newsreader (variable, optical size on, 400 to 650, italic) is the voice of the s
 ## Surfaces
 
 - **Header and colophon**: flat shop green, serif wordmark. The header is sticky. Course and book menus are outlined pills on the green.
-- **Shelves** (home): one open oak shelf per course on the wall. Above it sit the course number, name (links to the course), one-line summary, count, and status. Books stand spine out on a pale shelf back. A small card at the end of each shelf opens the course. On phones each shelf is a single row that scrolls sideways.
+- **Shelves** (home): one open oak shelf per course on the wall. Above it sit the course number, name (links to the course), one-line summary, count, and status. Each shelf is a recessed bay: a soft shadow from the shelf above falls down its top, the case sides are shaded, and the board shows a lit top surface and a darker front edge, all flat colour. Books stand spine out, touching, with a soft contact shadow, one leaning book and sometimes a gap. One book of the course stands face-out on the right (a `.book-cover` link, not also a spine), beside a small quiet card that opens the course. On phones each shelf is a single row that scrolls sideways.
 - **Reading table** (home): a timber panel holding the books in progress, face up.
 - **Ledges** (course): books face out on oak ledges in reading order, with title, author, and status below each. In progress shows a ribbon; read shows a moss seal.
 - **Cards**: "Your place in this course", the Reader's card (status and score), the Library card (sign in), course materials, and the three numbered study guides are plain paper cards with a hairline border and a soft shadow.
