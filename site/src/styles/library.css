@@ -36,6 +36,8 @@
 
 html {
   scrollbar-color: var(--shelf) var(--paper);
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 ::selection {
@@ -46,6 +48,8 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
+  max-width: 100%;
+  overflow-x: clip;
   background:
     radial-gradient(ellipse at top, rgba(255, 250, 240, 0.7), transparent 55%),
     linear-gradient(180deg, #f7f1e6 0%, var(--paper) 38%, #efe6d6 100%);
@@ -280,6 +284,7 @@ textarea:focus-visible {
   max-width: 1120px;
   margin: 0 auto;
   padding: 36px 24px 72px;
+  overflow-x: clip;
 }
 
 .hero {
@@ -419,6 +424,8 @@ textarea:focus-visible {
   gap: 10px;
   padding: 16px var(--shelf-pad) 26px;
   border-radius: 10px;
+  overflow: clip;
+  isolation: isolate;
   background:
     linear-gradient(180deg, rgba(255, 244, 228, 0.22), transparent 42%),
     repeating-linear-gradient(
@@ -1409,15 +1416,29 @@ select {
 
   .course-switcher summary {
     width: 100%;
+    max-width: 100%;
     min-height: 44px;
     padding: 10px 12px;
     border-radius: 6px;
     justify-content: space-between;
+    overflow: hidden;
+  }
+
+  .course-switcher-label {
+    flex-shrink: 0;
   }
 
   .course-switcher-title {
     max-width: none;
     flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .course-switcher .caret {
+    flex-shrink: 0;
   }
 
   .course-switcher-menu {
@@ -1436,6 +1457,75 @@ select {
 
   .page {
     padding: 20px 16px 56px;
+    overflow-x: clip;
+    max-width: 100%;
+  }
+
+  .mast,
+  .mast-inner,
+  .colophon,
+  .colophon-inner,
+  .data-list,
+  .book-hero,
+  .login-shell,
+  .login-card {
+    max-width: 100%;
+  }
+
+  .data-list {
+    --shelf-pad: 10px;
+    padding: 12px var(--shelf-pad) 22px;
+    overflow: hidden;
+  }
+
+  .data-row {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .data-row:hover .cover-stack-item:nth-child(1),
+  .data-row:focus-visible .cover-stack-item:nth-child(1) {
+    transform: rotate(-14deg) translate(-4px, -2px);
+  }
+
+  .data-row:hover .cover-stack-item:nth-child(2),
+  .data-row:focus-visible .cover-stack-item:nth-child(2) {
+    transform: rotate(-7deg) translate(-2px, -1px);
+  }
+
+  .data-row:hover .data-cover:not(.is-stack),
+  .data-row:focus-visible .data-cover:not(.is-stack) {
+    transform: translateY(-4px) rotate(-2deg);
+  }
+
+  .data-row.is-pulling .data-cover:not(.is-stack) {
+    transform: translate3d(8px, -10px, 0) rotateY(-16deg) rotate(-1deg) scale(1.04);
+  }
+
+  .data-row.is-pulling .cover-stack-item:nth-child(1) {
+    transform: rotate(-16deg) translate(-6px, -8px) scale(1.02);
+  }
+
+  .data-row.is-pulling .cover-stack-item:nth-child(2) {
+    transform: rotate(-9deg) translate(-3px, -6px) scale(1.03);
+  }
+
+  .data-row.is-pulling .cover-stack-item:nth-child(3) {
+    transform: translate3d(10px, -12px, 0) rotateY(-18deg) scale(1.06);
+  }
+
+  .data-cover::after {
+    right: 0;
+    width: 3px;
+  }
+
+  .book-cover {
+    overflow: hidden;
+  }
+
+  .book-cover::after {
+    right: 0;
+    width: 5px;
   }
 
   .hero {
