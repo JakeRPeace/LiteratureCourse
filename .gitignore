@@ -1,1 +1,12 @@
 node_modules/
+
+# Local secrets. setup.sh copies these from the main checkout.
+.env
+.env.*
+!.env.example
+!site/.env.example
+
+# Written per workspace by .paradev/setup.sh
+.paradev/.dev-port
+.paradev/ports.json
+
