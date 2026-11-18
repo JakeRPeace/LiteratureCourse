@@ -1,65 +1,21 @@
 ---
-import { getCourses } from "../lib/content.js";
-import { loadSystemCourses } from "../lib/system-content.js";
-import "@fontsource/spectral/latin-400.css";
-import "@fontsource/spectral/latin-400-italic.css";
-import "@fontsource/spectral/latin-600.css";
-import "@fontsource/spectral/latin-700.css";
-import "@fontsource/spectral/latin-ext-400.css";
-import "@fontsource/spectral/latin-ext-400-italic.css";
-import "@fontsource/spectral/latin-ext-600.css";
-import "@fontsource/spectral/latin-ext-700.css";
-import "@fontsource/karla/latin-400.css";
-import "@fontsource/karla/latin-500.css";
-import "@fontsource/karla/latin-700.css";
-import "@fontsource/karla/latin-ext-400.css";
-import "@fontsource/karla/latin-ext-500.css";
-import "@fontsource/karla/latin-ext-700.css";
+import "@fontsource-variable/newsreader/opsz.css";
+import "@fontsource-variable/newsreader/opsz-italic.css";
+import "@fontsource-variable/instrument-sans/wght.css";
+import "@fontsource/courier-prime/latin-400.css";
+import "@fontsource/courier-prime/latin-ext-400.css";
 import "../styles/library.css";
 const {
   title = "Literature Courses",
   showAuth = true,
   showNav = true,
-  showHero = false,
   authRequired = false,
   loginPage = false,
   courseSwitcher = null,
   bookSwitcher = null,
-  heroCourses: heroCoursesInput = null,
   showSourcePills: showSourcePillsProp = null
 } = Astro.props;
 
-const normalizeHeroCourses = (courses) =>
-  (Array.isArray(courses) ? courses : [])
-    .filter((course) => course && course.id && course.title)
-    .map((course) => ({
-      id: course.id,
-      title: course.title,
-      totalBooks:
-        typeof course.totalBooks === "number"
-          ? course.totalBooks
-          : Array.isArray(course.books)
-            ? course.books.length
-            : 0
-    }));
-
-let heroCourses = heroCoursesInput ? normalizeHeroCourses(heroCoursesInput) : null;
-if (!heroCourses && showHero) {
-  const systemCourses = await loadSystemCourses();
-  if (systemCourses) {
-    heroCourses = normalizeHeroCourses(systemCourses);
-  } else {
-    heroCourses = normalizeHeroCourses(
-      getCourses().map((course) => ({
-        id: course.id,
-        title: course.title,
-        totalBooks: course.books.length
-      }))
-    );
-  }
-}
-heroCourses = heroCourses || [];
-const heroSlots = Array.from({ length: 3 });
 const showSourcePills =
   typeof showSourcePillsProp === "boolean"
     ? showSourcePillsProp
@@ -70,7 +26,7 @@ const showSourcePills =
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#24352f" />
+    <meta name="theme-color" content="#2c4437" />
     <script>
       window.__SUPABASE__ = {
         url: import.meta.env.PUBLIC_SUPABASE_URL,
@@ -171,26 +127,6 @@ const showSourcePills =
     ) : null}
 
     <div class="page">
-      {showHero ? (
-        <section class="hero">
-          <div class="brand">
-            <h1>Literature Course Library</h1>
-            <p>Pull a course from the shelf, read the guide, and keep your place.</p>
-          </div>
-          <div class="hero-visual" data-course-progress data-courses={JSON.stringify(heroCourses)}>
-            {heroSlots.map((_, index) => (
-              <div class="mini-card" data-progress-card hidden={index > 0}>
-                <div class="mini-row">
-                  <span data-course-title>Sign in to see your place.</span>
-                  <span data-course-count></span>
-                </div>
-                <div class="mini-bar"><span data-course-bar style="width: 0%"></span></div>
-              </div>
-            ))}
-          </div>
-        </section>
-      ) : null}
-
       <slot />
 
     </div>
@@ -206,13 +142,13 @@ const showSourcePills =
         </div>
       </footer>
     )}
-    {showHero ? <script type="module" src="/scripts/course-progress.js"></script> : null}
     {authRequired ? <script type="module" src="/scripts/auth-guard.js"></script> : null}
     {showAuth ? <script type="module" src="/scripts/nav-auth.js"></script> : null}
     {loginPage ? <script type="module" src="/scripts/login-redirect.js"></script> : null}
     <script type="module" src="/scripts/course-switcher-user.js"></script>
     <script type="module" src="/scripts/strip-heading-icons.js"></script>
     <script type="module" src="/scripts/cover-fallback.js"></script>
+    <script type="module" src="/scripts/shelf.js"></script>
     <script type="module" src="/scripts/shelf-pull.js"></script>
   </body>
 </html>

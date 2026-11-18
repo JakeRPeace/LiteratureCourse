@@ -1,65 +1,115 @@
 import { supabase } from "./supabase.js";
 import { getSession, onSessionChange } from "./session-store.js";
+import { applyStatus } from "./status-ui.js";
+import { buildCover } from "./book-dom.js";
 
-const statusLabels = {
-  not_started: "Not started",
-  in_progress: "In progress",
-  read: "Read"
-};
+// The home bookcase: stamps every shelf and spine with the reader's status,
+// and lays the books in progress out on the reading table.
 
-function applyStatus(row, status, labelOverride) {
-  row.dataset.status = status;
-  const pill = row.querySelector("[data-status-pill]");
-  if (!pill) return;
-  pill.dataset.status = status;
-  const label = pill.querySelector("[data-status-label]");
-  if (label) {
-    label.textContent = labelOverride || statusLabels[status] || statusLabels.not_started;
-  }
+const TABLE_LIMIT = 5;
+
+function collect() {
+  return {
+    shelves: Array.from(document.querySelectorAll("[data-course-row]")),
+    books: Array.from(document.querySelectorAll("[data-course-row] [data-book-row]"))
+  };
 }
 
-function deriveStatus(statuses, total) {
+function deriveStatus(read, inProgress, total) {
   if (!total) return "not_started";
-  const inProgress = statuses.filter((status) => status === "in_progress").length;
-  const read = statuses.filter((status) => status === "read").length;
-  if (inProgress > 0) return "in_progress";
-  if (read > 0 && read === total) return "read";
-  if (read > 0) return "in_progress";
+  if (read >= total) return "read";
+  if (read > 0 || inProgress > 0) return "in_progress";
   return "not_started";
 }
 
-function collectRows() {
-  const rows = Array.from(document.querySelectorAll("[data-course-row]"));
-  const courseMap = new Map();
+function countLabel(read, total) {
+  if (read > 0) return `${read} of ${total} read`;
+  return `${total} ${total === 1 ? "book" : "books"}`;
+}
 
-  rows.forEach((row) => {
-    const courseId = row.dataset.courseId;
-    if (!courseId) return;
-    const totalBooks = Number(row.dataset.totalBooks || 0);
-    if (!courseMap.has(courseId)) {
-      courseMap.set(courseId, { rows: [], totalBooks, statuses: [] });
-    }
-    courseMap.get(courseId).rows.push(row);
+function renderTable(spines, message) {
+  const table = document.querySelector("[data-reading-table]");
+  if (!table) return;
+  const list = table.querySelector("[data-table-books]");
+  const empty = table.querySelector("[data-table-empty]");
+  list.replaceChildren();
+
+  if (!spines.length) {
+    list.hidden = true;
+    empty.hidden = false;
+    empty.textContent = message;
+    return;
+  }
+
+  spines.slice(0, TABLE_LIMIT).forEach((spine) => {
+    const title = spine.dataset.title || "";
+    const author = spine.dataset.author || "";
+    const link = document.createElement("a");
+    link.className = "table-book";
+    link.href = spine.href;
+    link.setAttribute("aria-label", `Continue ${title}${author ? ` by ${author}` : ""}`);
+    link.append(
+      buildCover({
+        title,
+        author,
+        coverUrl: spine.dataset.cover,
+        look: { style: spine.style.cssText }
+      })
+    );
+    list.append(link);
   });
 
-  return { rows, courseMap };
+  if (spines.length > TABLE_LIMIT) {
+    const more = document.createElement("span");
+    more.className = "table-more";
+    more.textContent = `+${spines.length - TABLE_LIMIT} more`;
+    list.append(more);
+  }
+
+  list.hidden = false;
+  empty.hidden = true;
 }
 
-function setLoggedOut(rows) {
-  rows.forEach((row) => applyStatus(row, "signed_out", "Sign in to track"));
+function render(statusMap) {
+  const { shelves, books } = collect();
+
+  books.forEach((book) => {
+    applyStatus(book, statusMap.get(book.dataset.bookId) || "not_started");
+  });
+
+  shelves.forEach((shelf) => {
+    const spines = Array.from(shelf.querySelectorAll("[data-book-row]"));
+    const total = Number(shelf.dataset.totalBooks) || spines.length;
+    const read = spines.filter((spine) => spine.dataset.status === "read").length;
+    const inProgress = spines.filter((spine) => spine.dataset.status === "in_progress").length;
+    applyStatus(shelf, deriveStatus(read, inProgress, total));
+    const count = shelf.querySelector("[data-shelf-count]");
+    if (count) count.textContent = countLabel(read, total);
+  });
+
+  renderTable(
+    books.filter((book) => book.dataset.status === "in_progress"),
+    "Nothing out at the moment. Pull a book from the shelf to start."
+  );
 }
 
-function setError(rows) {
-  rows.forEach((row) => applyStatus(row, "error", "Status unavailable"));
+function renderUnavailable(status, label, message) {
+  const { shelves, books } = collect();
+  books.forEach((book) => applyStatus(book, "not_started"));
+  shelves.forEach((shelf) => applyStatus(shelf, status, label));
+  renderTable([], message);
 }
+
+let loadSequence = 0;
 
 async function loadStatuses() {
-  const { rows, courseMap } = collectRows();
-  if (!rows.length) return;
+  const sequence = ++loadSequence;
+  if (!collect().shelves.length) return;
 
   const session = await getSession();
+  if (sequence !== loadSequence) return;
   if (!session) {
-    setLoggedOut(rows);
+    renderUnavailable("signed_out", "Sign in to track", "Sign in to see what you have out.");
     return;
   }
 
@@ -68,22 +118,17 @@ async function loadStatuses() {
     .select("book_id, status")
     .eq("user_id", session.user.id);
 
+  if (sequence !== loadSequence) return;
   if (error) {
-    setError(rows);
+    renderUnavailable("error", "Status unavailable", "Your place could not be loaded just now.");
     return;
   }
 
+  const statusMap = new Map();
   (data || []).forEach((entry) => {
-    const courseId = (entry.book_id || "").split(/[\\/]/)[0];
-    const course = courseMap.get(courseId);
-    if (!course) return;
-    course.statuses.push(entry.status || "not_started");
+    if (entry?.book_id) statusMap.set(entry.book_id, entry.status || "not_started");
   });
-
-  courseMap.forEach((course) => {
-    const status = deriveStatus(course.statuses, course.totalBooks);
-    course.rows.forEach((row) => applyStatus(row, status));
-  });
+  render(statusMap);
 }
 
 window.addEventListener("DOMContentLoaded", () => {

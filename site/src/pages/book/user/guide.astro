@@ -29,18 +29,15 @@ const bookSwitcher = {
 <Base
   title="Guide | Literature Course Library"
   authRequired={true}
-  heroCourses={courses}
   courseSwitcher={courseSwitcher}
   bookSwitcher={bookSwitcher}
 >
   <section class="stack" data-user-book-guide>
-    <div>
+    <div class="page-head">
       <a class="back-link" href="/" data-user-book-guide-back>Back to book</a>
-      <h2 class="section-title" data-user-book-guide-title>Loading guide...</h2>
+      <h1 class="section-title page-title" data-user-book-guide-title>Loading guide...</h1>
       <span class="data-source-pill">User</span>
     </div>
-
-    <div class="section-divider"></div>
 
     <div class="reading guide-content" data-user-book-guide-content></div>
     <div class="card" data-user-book-guide-error hidden>

@@ -2,7 +2,9 @@
 import Base from "../../layouts/Base.astro";
 import StatusWidget from "../../components/StatusWidget.astro";
 import { getCourses, getBookBySlug } from "../../lib/content.js";
-import { monogram } from "../../lib/monogram.js";
+import BookCover from "../../components/BookCover.astro";
+import Spine from "../../components/Spine.astro";
+import { shelfLooks } from "../../../public/scripts/book-look.js";
 import { resolveSourceLabel } from "../../lib/source-labels.js";
 import { slugify } from "../../lib/slug.js";
 import {
@@ -47,13 +49,19 @@ const course = courses.find((c) => c.id === book.courseId) || markdownCourse || 
 const systemCourseBooks = await loadSystemCourseBooks(book.courseId);
 const courseBooks = systemCourseBooks ?? markdownCourse?.books ?? course.books ?? [];
 
+const shelfBooks = courseBooks.some((entry) => entry.slug === book.slug) ? courseBooks : [];
+const looks = shelfLooks(shelfBooks);
+const bookLookIndex = shelfBooks.findIndex((entry) => entry.slug === book.slug);
+const look = bookLookIndex >= 0 ? looks[bookLookIndex] : shelfLooks([book])[0];
+const courseTitleParts = (course.title || "").split(" - ");
+const courseDisplayTitle = course.courseType || courseTitleParts.slice(1).join(" - ") || course.title;
+
 const guideCards =
   systemGuides ?? (markdownBook?.guides ?? []).filter((guide) => guide.module);
 ---
 <Base
   title={`${book.title} | Literature Course Library`}
   authRequired={true}
-  heroCourses={courses}
   courseSwitcher={{
     current: course,
     courses
@@ -64,42 +72,30 @@ const guideCards =
   }}
 >
   <section class="stack">
-    <div>
-      <a class="back-link" href={`/course/${course.slug}`}>Back to course</a>
-    </div>
-    <div class="book-hero">
-      <div class={`book-cover ${book.coverUrl ? "" : "is-empty"}`}>
-        {book.coverUrl ? (
-          <img
-            src={book.coverUrl}
-            alt={`Cover of ${book.title}`}
-            data-monogram={monogram(book.title, book.author)}
-            loading="lazy"
-            decoding="async"
-          />
-        ) : (
-          <span class="cover-monogram" aria-hidden="true">{monogram(book.title, book.author)}</span>
-        )}
-      </div>
+    <div class="reading-desk">
+      <BookCover
+        class="book-cover--hero"
+        title={book.title}
+        author={book.author}
+        coverUrl={book.coverUrl}
+        look={look}
+      />
       <div class="book-intro">
-        <h2 class="section-title">{book.title}</h2>
-        {book.author ? <p class="section-subtitle">{book.author}</p> : null}
+        <a class="back-link" href={`/course/${course.slug}#book-${book.slug}`}>Put it back on the shelf</a>
+        <p class="eyebrow">{courseDisplayTitle}</p>
+        <h1 class="section-title page-title">{book.title}</h1>
+        {book.author ? <p class="book-author">{book.author}</p> : null}
         <span class="data-source-pill">{bookSourceLabel}</span>
+        <StatusWidget bookId={book.id} />
       </div>
     </div>
-
-    <div class="section-divider"></div>
-
-    <StatusWidget bookId={book.id} />
 
     <div class="section-header">
       <div>
-        <h3 class="section-title">Study Guides</h3>
-        <p class="section-subtitle">Explore the reading flow without drowning in full text.</p>
+        <h2 class="section-title">Study Guides</h2>
+        <p class="section-subtitle">One for before, one for alongside, one for after.</p>
       </div>
     </div>
-
-    <div class="section-divider"></div>
 
     {guideCards.length ? (
       <div class="guide-grid">
@@ -109,15 +105,12 @@ const guideCards =
             href={`/book/${book.slug}/${guide.slug}`}
             data-guide-type={guide.guideType || "other"}
           >
+            <span class="guide-chip">{guide.stage}</span>
             <div class="guide-title">{guide.label}</div>
             <p class="guide-excerpt">
               {guide.excerpt || "Open for the full guide and prompts."}
             </p>
-            <div class="guide-meta">
-              <span class="guide-chip">{guide.stage}</span>
-              {guide.order ? <span class="guide-chip">Guide {guide.order}</span> : null}
-              <span class="guide-action">Open</span>
-            </div>
+            <span class="guide-action">Open</span>
           </a>
         ))}
       </div>
@@ -126,5 +119,33 @@ const guideCards =
         <p>No study guides are available yet for this book.</p>
       </div>
     )}
+
+    {shelfBooks.length > 1 ? (
+      <>
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">The shelf it came from</h2>
+            <p class="section-subtitle">
+              <a class="text-link" href={`/course/${course.slug}`}>{courseDisplayTitle}</a>, with a gap where this one lives.
+            </p>
+          </div>
+        </div>
+        <div class="bookcase bookcase--mini">
+          <div class="shelf">
+            <div class="shelf-books">
+              {shelfBooks.map((entry, index) => (
+                <Spine
+                  book={entry}
+                  look={looks[index]}
+                  href={`/book/${entry.slug}`}
+                  current={entry.slug === book.slug}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </>
+    ) : null}
   </section>
+  <script type="module" src="/scripts/course-book-status.js"></script>
 </Base>

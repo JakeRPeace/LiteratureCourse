@@ -1,6 +1,3 @@
 # Literature Course Agent Rules
 
-This repository uses a central rule file to ensure consistency across different AI agents. 
-
-**PLEASE REFER TO AND FOLLOW THE RULES IN:**
-[.agent/CORE_RULES.md](.agent/CORE_RULES.md)
+Follow [AGENTS.md](AGENTS.md).

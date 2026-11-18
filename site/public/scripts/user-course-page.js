@@ -1,5 +1,7 @@
 import { supabase } from "./supabase.js";
 import { getSession } from "./session-store.js";
+import { shelfLooks } from "./book-look.js";
+import { buildLedgeBook } from "./book-dom.js";
 
 function getCourseId() {
   const params = new URLSearchParams(window.location.search);
@@ -20,16 +22,16 @@ function setError(message) {
 
 function buildDocCard(courseId, doc, sourceLabel) {
   const card = document.createElement("a");
-  card.className = "card course-doc-card";
+  card.className = "course-doc-card";
   card.href = `/course/user/doc?course_id=${encodeURIComponent(courseId)}&doc=${encodeURIComponent(
     doc.slug
   )}`;
   card.dataset.docType = doc.doc_type || "other";
   card.dataset.docSource = "user";
 
-  const action = document.createElement("span");
-  action.className = "course-doc-action";
-  action.textContent = "Open";
+  const stageChip = document.createElement("span");
+  stageChip.className = "course-doc-chip";
+  stageChip.textContent = doc.stage || "Course material";
 
   const title = document.createElement("div");
   title.className = "course-doc-title";
@@ -39,104 +41,29 @@ function buildDocCard(courseId, doc, sourceLabel) {
   excerpt.className = "course-doc-excerpt";
   excerpt.textContent = doc.excerpt || "Open for the full course document.";
 
-  const meta = document.createElement("div");
-  meta.className = "course-doc-meta";
-
-  const stageChip = document.createElement("span");
-  stageChip.className = "course-doc-chip";
-  stageChip.textContent = doc.stage || "Course material";
-
-  const chip = document.createElement("span");
-  chip.className = "course-doc-chip";
-  chip.textContent = courseId;
-
   const sourcePill = document.createElement("span");
   sourcePill.className = "data-source-pill";
   sourcePill.textContent = sourceLabel;
 
-  meta.appendChild(stageChip);
-  meta.appendChild(chip);
-  meta.appendChild(action);
-  meta.appendChild(sourcePill);
+  const action = document.createElement("span");
+  action.className = "course-doc-action";
+  action.textContent = "Open";
 
-  card.appendChild(title);
-  card.appendChild(excerpt);
-  card.appendChild(meta);
-
+  card.append(stageChip, title, excerpt, sourcePill, action);
   return card;
 }
 
-function buildBookRow(courseId, book, sourceLabel) {
-  const row = document.createElement("a");
-  row.className = "data-row";
-  row.href = `/book/user?book_id=${encodeURIComponent(book.book_id)}`;
-  row.setAttribute("data-book-row", "");
-  row.dataset.bookId = book.book_id;
-  row.dataset.status = "not_started";
-  row.dataset.bookSource = "user";
-
-  const body = document.createElement("div");
-  body.className = "data-body";
-
-  const cover = document.createElement("div");
-  cover.className = `data-cover ${book.cover_url ? "" : "is-empty"}`;
-
-  if (book.cover_url) {
-    const img = document.createElement("img");
-    img.src = book.cover_url;
-    img.alt = `Cover of ${book.title}`;
-    img.loading = "lazy";
-    img.decoding = "async";
-    cover.appendChild(img);
-  }
-
-  const main = document.createElement("div");
-  main.className = "data-main";
-
-  const title = document.createElement("div");
-  title.className = "data-title";
-  title.textContent = book.title || "Untitled Book";
-
-  const sub = document.createElement("div");
-  sub.className = "data-sub";
-  sub.textContent = book.book_id;
-
-  const sourcePill = document.createElement("span");
-  sourcePill.className = "data-source-pill";
-  sourcePill.textContent = sourceLabel;
-
-  main.appendChild(title);
-  main.appendChild(sub);
-  main.appendChild(sourcePill);
-
-  body.appendChild(cover);
-  body.appendChild(main);
-
-  const meta = document.createElement("div");
-  meta.className = "data-meta";
-
-  const statusPill = document.createElement("span");
-  statusPill.className = "status-pill";
-  statusPill.dataset.statusPill = "";
-  statusPill.dataset.status = "not_started";
-
-  const dot = document.createElement("span");
-  dot.className = "status-dot";
-  dot.setAttribute("aria-hidden", "true");
-
-  const label = document.createElement("span");
-  label.className = "status-label";
-  label.dataset.statusLabel = "";
-  label.textContent = "Not started";
-
-  statusPill.appendChild(dot);
-  statusPill.appendChild(label);
-  meta.appendChild(statusPill);
-
-  row.appendChild(body);
-  row.appendChild(meta);
-
-  return row;
+function buildBookRow(book, look) {
+  return buildLedgeBook({
+    id: book.book_id,
+    title: book.title || "Untitled Book",
+    author: book.author || "",
+    sub: book.book_id,
+    coverUrl: book.cover_url || "",
+    href: `/book/user?book_id=${encodeURIComponent(book.book_id)}`,
+    look,
+    source: "user"
+  });
 }
 
 async function loadCoursePage() {
@@ -195,7 +122,7 @@ async function loadCoursePage() {
       .order("sort_order", { ascending: true }),
     supabase
       .from("books")
-      .select("book_id, title, cover_url, sort_order")
+      .select("book_id, title, author, cover_url, sort_order")
       .eq("course_id", course.course_id)
       .order("sort_order", { ascending: true })
   ]);
@@ -216,7 +143,8 @@ async function loadCoursePage() {
   } else {
     if (booksEmpty) booksEmpty.hidden = true;
     const fragment = document.createDocumentFragment();
-    books.forEach((book) => fragment.appendChild(buildBookRow(course.course_id, book, "User")));
+    const looks = shelfLooks(books);
+    books.forEach((book, index) => fragment.appendChild(buildBookRow(book, looks[index])));
     if (booksWrap) booksWrap.appendChild(fragment);
     window.dispatchEvent(new CustomEvent("book-rows-updated"));
   }

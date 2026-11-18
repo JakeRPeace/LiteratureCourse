@@ -1,0 +1,40 @@
+---
+import { surname } from "../../public/scripts/book-look.js";
+
+// A book standing spine-out on a shelf. `current` renders the empty slot the
+// open book came from.
+const { book, look, href, current = false, source = "" } = Astro.props;
+const Tag = current ? "span" : "a";
+const linkProps = current
+  ? { "aria-current": "page" }
+  : {
+      href,
+      id: book.slug ? `book-${book.slug}` : undefined,
+      "data-book-row": "",
+      "data-book-id": book.id,
+      "data-book-source": source || undefined,
+      "data-status": "not_started"
+    };
+---
+<Tag
+  class:list={["spine", look.long && "is-long", current && "is-out", look.lean < 0 && "lean-l", look.lean > 0 && "lean-r", look.gap && "has-gap"]}
+  style={look.style}
+  data-band={look.band}
+  data-type={look.type}
+  data-pick
+  data-title={book.title}
+  data-author={book.author || ""}
+  data-cover={book.coverUrl || ""}
+  {...linkProps}
+>
+  <span class="spine-body">
+    <span class="spine-title">{book.title}</span>
+    {book.author ? <span class="spine-author" aria-hidden="true">{surname(book.author)}</span> : null}
+    <span class="spine-mark" aria-hidden="true"></span>
+  </span>
+  <span class="spine-slip" aria-hidden="true">Out</span>
+  <span class="visually-hidden">
+    {book.author ? `by ${book.author}. ` : ". "}
+    <span data-status-label>{current ? "Open on the desk" : "Not started"}</span>
+  </span>
+</Tag>

@@ -1,5 +1,5 @@
 const PULL_MS = 460;
-const SELECTOR = "a.data-row[href], a.guide-card[href], a.course-doc-card[href]";
+const SELECTOR = "a.shelf-card[href], a.guide-card[href], a.course-doc-card[href]";
 
 function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
