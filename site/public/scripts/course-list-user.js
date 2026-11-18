@@ -1,5 +1,7 @@
 import { supabase } from "./supabase.js";
 import { getSession, onSessionChange } from "./session-store.js";
+import { shelfLooks } from "./book-look.js";
+import { buildSpine, buildStatusPill } from "./book-dom.js";
 
 const summaryFallback = "Short course overview available in the syllabus.";
 let loadSequence = 0;
@@ -25,93 +27,65 @@ function clearUserRows(list) {
   list.querySelectorAll('[data-course-source="user"]').forEach((row) => row.remove());
 }
 
-function buildCourseRow(course, stats) {
-  const row = document.createElement("a");
-  row.className = "data-row";
-  row.href = `/course/user?course_id=${encodeURIComponent(course.course_id)}`;
-  row.setAttribute("data-course-row", "");
-  row.dataset.courseId = course.course_id;
-  row.dataset.totalBooks = String(stats.total || 0);
-  row.dataset.status = "not_started";
-  row.dataset.courseSource = "user";
+function el(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined) node.textContent = text;
+  return node;
+}
 
-  const dataBody = document.createElement("div");
-  dataBody.className = "data-body";
-
-  const coverWrap = document.createElement("div");
-  const coverList = stats.covers || [];
-  coverWrap.className = `data-cover ${coverList.length ? "is-stack" : "is-empty"}`;
-
-  if (coverList.length) {
-    const selected = coverList.slice(0, 3);
-    selected.forEach((url) => {
-      const item = document.createElement("div");
-      item.className = "cover-stack-item";
-      const img = document.createElement("img");
-      img.src = url;
-      img.alt = "";
-      img.loading = "lazy";
-      img.decoding = "async";
-      item.appendChild(img);
-      coverWrap.appendChild(item);
-    });
-  }
-
-  const dataMain = document.createElement("div");
-  dataMain.className = "data-main";
-
-  const title = document.createElement("div");
-  title.className = "data-title";
+// A reader's own course gets a shelf like any other, built from its books.
+function buildCourseRow(course, books) {
+  const courseHref = `/course/user?course_id=${encodeURIComponent(course.course_id)}`;
   const titleParts = (course.title || "").split(" - ");
   const courseType = course.course_type || titleParts.slice(1).join(" - ");
-  title.textContent = courseType || course.title || "Untitled Course";
+  const displayTitle = courseType || course.title || "Untitled Course";
 
-  const summary = document.createElement("div");
-  summary.className = "data-sub";
-  summary.textContent = course.summary || summaryFallback;
+  const shelf = el("article", "shelf");
+  shelf.setAttribute("data-course-row", "");
+  shelf.dataset.courseId = course.course_id;
+  shelf.dataset.totalBooks = String(books.length);
+  shelf.dataset.status = "not_started";
+  shelf.dataset.courseSource = "user";
 
-  const sourcePill = document.createElement("span");
-  sourcePill.className = "data-source-pill";
-  sourcePill.textContent = "User";
+  const head = el("header", "shelf-head");
+  const plate = el("a", "shelf-plate");
+  plate.href = courseHref;
+  plate.append(el("h2", "shelf-title", displayTitle));
 
-  dataMain.appendChild(title);
-  dataMain.appendChild(summary);
-  dataMain.appendChild(sourcePill);
+  const meta = el("div", "shelf-meta");
+  const count = el("span", "shelf-count", `${books.length} ${books.length === 1 ? "book" : "books"}`);
+  count.dataset.shelfCount = "";
+  meta.append(el("span", "data-source-pill", "User"), count, buildStatusPill());
+  head.append(plate, el("p", "shelf-summary", course.summary || summaryFallback), meta);
 
-  dataBody.appendChild(coverWrap);
-  dataBody.appendChild(dataMain);
+  const row = el("div", "shelf-books");
+  const looks = shelfLooks(books);
+  books.forEach((book, index) => {
+    row.append(
+      buildSpine({
+        id: book.book_id,
+        title: book.title || "Untitled Book",
+        author: book.author || "",
+        coverUrl: book.cover_url || "",
+        href: `/book/user?book_id=${encodeURIComponent(book.book_id)}`,
+        look: looks[index],
+        source: "user"
+      })
+    );
+  });
 
-  const dataMeta = document.createElement("div");
-  dataMeta.className = "data-meta";
+  const card = el("a", "shelf-card");
+  card.href = courseHref;
+  card.append(
+    el("span", "shelf-card-eyebrow", "Your course"),
+    el("span", "shelf-card-title", "Syllabus & reading order"),
+    el("span", "shelf-card-action", "Open the course")
+  );
+  row.append(card);
 
-  const chip = document.createElement("span");
-  chip.className = "data-chip";
-  chip.textContent = course.title || "Untitled Course";
-
-  const statusPill = document.createElement("span");
-  statusPill.className = "status-pill";
-  statusPill.dataset.statusPill = "";
-  statusPill.dataset.status = "not_started";
-
-  const statusDot = document.createElement("span");
-  statusDot.className = "status-dot";
-  statusDot.setAttribute("aria-hidden", "true");
-
-  const statusLabel = document.createElement("span");
-  statusLabel.className = "status-label";
-  statusLabel.dataset.statusLabel = "";
-  statusLabel.textContent = "Not started";
-
-  statusPill.appendChild(statusDot);
-  statusPill.appendChild(statusLabel);
-
-  dataMeta.appendChild(chip);
-  dataMeta.appendChild(statusPill);
-
-  row.appendChild(dataBody);
-  row.appendChild(dataMeta);
-
-  return row;
+  shelf.append(head, row);
+  return shelf;
 }
 
 async function refreshMissingCovers(bookRows) {
@@ -205,24 +179,23 @@ async function loadUserCourses(list) {
   const courseIds = courses.map((course) => course.course_id);
   const { data: bookRows } = await supabase
     .from("books")
-    .select("course_id, book_id, title, author, cover_url")
-    .in("course_id", courseIds);
+    .select("course_id, book_id, title, author, cover_url, sort_order")
+    .in("course_id", courseIds)
+    .order("sort_order", { ascending: true });
 
   if (sequence !== loadSequence) return;
 
-  const statsMap = new Map();
+  const booksByCourse = new Map();
   (bookRows || []).forEach((book) => {
     if (!book?.course_id) return;
-    const entry = statsMap.get(book.course_id) || { total: 0, covers: [] };
-    entry.total += 1;
-    if (book.cover_url) entry.covers.push(book.cover_url);
-    statsMap.set(book.course_id, entry);
+    const entries = booksByCourse.get(book.course_id) || [];
+    entries.push(book);
+    booksByCourse.set(book.course_id, entries);
   });
 
   const fragment = document.createDocumentFragment();
   courses.forEach((course) => {
-    const stats = statsMap.get(course.course_id) || { total: 0, covers: [] };
-    fragment.appendChild(buildCourseRow(course, stats));
+    fragment.appendChild(buildCourseRow(course, booksByCourse.get(course.course_id) || []));
   });
 
   if (sequence !== loadSequence) return;
@@ -234,7 +207,7 @@ async function loadUserCourses(list) {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  const list = document.querySelector(".data-list");
+  const list = document.querySelector("[data-course-list]");
   if (!list) return;
 
   loadUserCourses(list);

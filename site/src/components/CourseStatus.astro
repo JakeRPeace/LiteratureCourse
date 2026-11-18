@@ -4,7 +4,8 @@ const { bookIds } = Astro.props;
 <div class="course-status-header" data-course-status data-book-ids={JSON.stringify(bookIds)} data-status="signed_out">
   <div class="status-top">
     <div class="status-info">
-      <h3 class="status-title" data-course-status-label>Sign in to see your place</h3>
+      <p class="eyebrow">Your place in this course</p>
+      <h2 class="status-title" data-course-status-label>Sign in to see your place</h2>
     </div>
     <div class="status-badge">
        <span class="status-pill" data-status-pill data-status="signed_out">
@@ -26,78 +27,3 @@ const { bookIds } = Astro.props;
 
 <script type="module" src="/scripts/course-status.js"></script>
 
-<style>
-  .course-status-header {
-    background: var(--paper-raised);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    box-shadow: 0 8px 16px rgba(36, 30, 22, 0.04);
-    margin-bottom: 8px;
-  }
-
-  @media (max-width: 720px) {
-    .course-status-header {
-      padding: 16px;
-      gap: 16px;
-    }
-  }
-
-  .status-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
-    z-index: 1;
-  }
-
-  .status-title {
-    margin: 0;
-    font-family: var(--serif);
-    font-size: 1.5rem;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-  }
-
-  .status-progress-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    z-index: 1;
-  }
-
-  .status-progress-bar {
-    height: 4px;
-    background: rgba(36, 30, 22, 0.1);
-    overflow: hidden;
-  }
-
-  .status-progress-fill {
-    height: 100%;
-    background: var(--vermilion);
-    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .course-status-header[data-status="in_progress"] {
-    background: #fbf3ea;
-  }
-  .course-status-header[data-status="in_progress"] .status-progress-fill {
-    background: var(--vermilion);
-  }
-
-  .course-status-header[data-status="read"] {
-    background: var(--moss-wash);
-  }
-  .course-status-header[data-status="read"] .status-progress-fill {
-    background: var(--moss);
-  }
-
-  .status-stats {
-    font-size: 14px;
-    color: var(--ink-soft);
-    font-variant-numeric: tabular-nums;
-  }
-</style>

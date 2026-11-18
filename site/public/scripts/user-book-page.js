@@ -1,5 +1,7 @@
 import { supabase } from "./supabase.js";
 import { getSession } from "./session-store.js";
+import { bookLook, shelfLooks } from "./book-look.js";
+import { buildSpine } from "./book-dom.js";
 
 function getBookId() {
   const params = new URLSearchParams(window.location.search);
@@ -14,21 +16,23 @@ function setError(message) {
   box.hidden = !message;
 }
 
-function updateCover(url, title) {
+function updateCover(book) {
   const cover = document.querySelector("[data-user-book-cover]");
   if (!cover) return;
-  cover.innerHTML = "";
-  if (!url) {
-    cover.classList.add("is-empty");
-    return;
-  }
-  cover.classList.remove("is-empty");
+  const title = book.title || "Untitled Book";
+  cover.style.cssText = bookLook(title, book.author || "").style;
+  const titleEl = cover.querySelector("[data-cover-title]");
+  const authorEl = cover.querySelector("[data-cover-author]");
+  if (titleEl) titleEl.textContent = title;
+  if (authorEl) authorEl.textContent = book.author || "";
+  cover.querySelectorAll("img").forEach((img) => img.remove());
+  if (!book.cover_url) return;
   const img = document.createElement("img");
-  img.src = url;
-  img.alt = `Cover of ${title}`;
-  img.loading = "lazy";
+  img.alt = "";
   img.decoding = "async";
-  cover.appendChild(img);
+  img.addEventListener("error", () => img.remove(), { once: true });
+  img.src = book.cover_url;
+  cover.querySelector(".cover-art")?.after(img);
 }
 
 function buildGuideCard(bookId, guide) {
@@ -40,9 +44,9 @@ function buildGuideCard(bookId, guide) {
   card.dataset.guideType = guide.guide_type || "other";
   card.dataset.guideSource = "user";
 
-  const action = document.createElement("span");
-  action.className = "guide-action";
-  action.textContent = "Open";
+  const stageChip = document.createElement("span");
+  stageChip.className = "guide-chip";
+  stageChip.textContent = guide.stage || "Reading guide";
 
   const title = document.createElement("div");
   title.className = "guide-title";
@@ -52,37 +56,45 @@ function buildGuideCard(bookId, guide) {
   excerpt.className = "guide-excerpt";
   excerpt.textContent = guide.excerpt || "Open for the full guide and prompts.";
 
-  const meta = document.createElement("div");
-  meta.className = "guide-meta";
-
-  const stageChip = document.createElement("span");
-  stageChip.className = "guide-chip";
-  stageChip.textContent = guide.stage || "Reading guide";
-  meta.appendChild(stageChip);
-
-  if (guide.sort_order) {
-    const chip = document.createElement("span");
-    chip.className = "guide-chip";
-    chip.textContent = `Guide ${guide.sort_order}`;
-    meta.appendChild(chip);
-  }
-
-  const bookChip = document.createElement("span");
-  bookChip.className = "guide-chip";
-  bookChip.textContent = bookId;
-  meta.appendChild(bookChip);
-  meta.appendChild(action);
-
   const sourcePill = document.createElement("span");
   sourcePill.className = "data-source-pill";
   sourcePill.textContent = "User";
-  meta.appendChild(sourcePill);
 
-  card.appendChild(title);
-  card.appendChild(excerpt);
-  card.appendChild(meta);
+  const action = document.createElement("span");
+  action.className = "guide-action";
+  action.textContent = "Open";
 
+  card.append(stageChip, title, excerpt, sourcePill, action);
   return card;
+}
+
+// The shelf this book came from, with its slot left empty.
+function renderShelf(books, currentId) {
+  const wrap = document.querySelector("[data-user-book-shelf]");
+  const row = document.querySelector("[data-user-book-shelf-books]");
+  if (!wrap || !row) return;
+  row.replaceChildren();
+  if (!books || books.length < 2) {
+    wrap.hidden = true;
+    return;
+  }
+  const looks = shelfLooks(books);
+  books.forEach((entry, index) => {
+    row.append(
+      buildSpine({
+        id: entry.book_id,
+        title: entry.title || "Untitled Book",
+        author: entry.author || "",
+        coverUrl: entry.cover_url || "",
+        href: `/book/user?book_id=${encodeURIComponent(entry.book_id)}`,
+        look: looks[index],
+        source: "user",
+        current: entry.book_id === currentId
+      })
+    );
+  });
+  wrap.hidden = false;
+  window.dispatchEvent(new CustomEvent("book-rows-updated"));
 }
 
 function buildBookSwitcherItem(book, isActive) {
@@ -137,7 +149,7 @@ async function loadBookPage() {
     metaEl.textContent = `${book.author ? `${book.author} · ` : ""}${book.book_id}`;
   }
   document.title = `${book.title} | Literature Course Library`;
-  updateCover(book.cover_url, book.title || "Book");
+  updateCover(book);
 
   const backLink = document.querySelector("[data-user-book-back]");
   if (backLink) {
@@ -173,13 +185,11 @@ async function loadBookPage() {
     bookSwitcher.dataset.currentCourseSource = "user";
   }
   if (bookTitle) bookTitle.textContent = book.title || "Untitled Book";
-  const bookMenuPromise = bookMenu
-    ? supabase
-        .from("books")
-        .select("book_id, title, sort_order")
-        .eq("course_id", book.course_id)
-        .order("sort_order", { ascending: true })
-    : Promise.resolve({ data: null });
+  const bookMenuPromise = supabase
+    .from("books")
+    .select("book_id, title, author, cover_url, sort_order")
+    .eq("course_id", book.course_id)
+    .order("sort_order", { ascending: true });
 
   const guidesWrap = document.querySelector("[data-user-book-guides]");
   const guidesEmpty = document.querySelector("[data-user-book-guides-empty]");
@@ -213,6 +223,8 @@ async function loadBookPage() {
       bookMenu.appendChild(fragment);
     }
   }
+
+  renderShelf(books, book.book_id);
 
   if (!guides || !guides.length) {
     if (guidesEmpty) guidesEmpty.hidden = false;

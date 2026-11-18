@@ -1,90 +1,91 @@
 ---
 import Base from "../layouts/Base.astro";
+import Spine from "../components/Spine.astro";
 import { getCourses } from "../lib/content.js";
-import { monogram } from "../lib/monogram.js";
 import { resolveSourceLabel } from "../lib/source-labels.js";
 import { loadSystemCourses } from "../lib/system-content.js";
+import { shelfLooks } from "../../public/scripts/book-look.js";
 
 const systemCourses = await loadSystemCourses();
 const courses = systemCourses ?? getCourses();
 const systemCourseSource = systemCourses ? "supabase" : "markdown";
 const sourceLabel = resolveSourceLabel(systemCourseSource);
 ---
-<Base title="Literature Course Library" authRequired={true} showHero={true} heroCourses={courses}>
-  <section class="stack">
-    <div class="section-header">
-      <div>
-        <h2 class="section-title">Courses</h2>
-        <p class="section-subtitle">Open a course, then keep your place as you read.</p>
-      </div>
+<Base title="Literature Course Library" authRequired={true}>
+  <section class="storefront">
+    <div class="brand">
+      <h1>Literature Course Library</h1>
+      <p>Pull a book from the shelf, read the guide, and keep your place.</p>
     </div>
-    <div class="card" data-course-chat-panel hidden>
-      <div class="section-title">Create a course with chat</div>
-      <p class="section-subtitle">Describe the course and we will draft a 3-book outline.</p>
-      <button type="button" data-course-chat-open>Open course creator</button>
-      <p class="section-subtitle" data-course-chat-note></p>
-    </div>
-    <div class="section-divider"></div>
-    <div class="data-list">
-      {courses.map((course) => {
-        const titleParts = course.title.split(" - ");
-        const courseType = course.courseType || titleParts.slice(1).join(" - ");
-        const displayTitle = courseType || course.title;
-        const summary = course.summary || "Short course overview available in the syllabus.";
+    <aside class="reading-table" data-reading-table aria-labelledby="reading-table-title">
+      <h2 class="table-title" id="reading-table-title">On your reading table</h2>
+      <div class="table-books" data-table-books hidden></div>
+      <p class="table-empty" data-table-empty>Finding your place…</p>
+    </aside>
+  </section>
 
-        const recentBooks = course.books.filter((book) => book.coverUrl).slice(0, 3);
-           
-        // Fallback if not enough covers, pick mostly ensuring we have at least one or use placeholders if needed
-        // If 0 covers, we keep is-empty.
-        
-        return (
-          <a
-            class="data-row"
-            href={`/course/${course.slug}`}
-            data-course-row
-            data-course-id={course.id}
-            data-total-books={course.books.length}
-            data-status="not_started"
-            data-course-source={systemCourseSource}
-          >
-            <div class="data-body">
-              <div class="data-cover is-stack">
-                 {(recentBooks.length > 0 ? recentBooks : [null, null, null]).map((book) => (
-                    <div class="cover-stack-item">
-                      {book ? (
-                        <img
-                          src={book.coverUrl}
-                          alt=""
-                          data-monogram={monogram(book.title || displayTitle, book.author)}
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      ) : (
-                        <span class="cover-monogram" aria-hidden="true">{monogram(displayTitle)}</span>
-                      )}
-                    </div>
-                 ))}
-              </div>
-              <div class="data-main">
-                <div class="data-title">{displayTitle}</div>
-                <div class="data-sub">{summary}</div>
-                <span class="data-source-pill">{sourceLabel}</span>
-              </div>
-            </div>
-            <div class="data-meta">
-              <span class="data-chip">
-                {course.books.length} {course.books.length === 1 ? "book" : "books"}
+  <section class="bookcase" aria-label="Courses" data-course-list>
+    {courses.map((course) => {
+      const titleParts = course.title.split(" - ");
+      const courseType = course.courseType || titleParts.slice(1).join(" - ");
+      const displayTitle = courseType || course.title;
+      const courseNumber = (course.title.match(/\b(\d{3})\b/) || [])[1] || "";
+      const summary = course.summary || "Short course overview available in the syllabus.";
+      const books = course.books.filter((book) => book && book.title);
+      const looks = shelfLooks(books);
+      const total = course.books.length;
+
+      return (
+        <article
+          class="shelf"
+          id={`course-${course.slug}`}
+          data-course-row
+          data-course-id={course.id}
+          data-total-books={total}
+          data-status="not_started"
+          data-course-source={systemCourseSource}
+        >
+          <header class="shelf-head">
+            <a class="shelf-plate" href={`/course/${course.slug}`}>
+              {courseNumber ? <span class="shelf-number">{courseNumber}</span> : null}
+              <h2 class="shelf-title">{displayTitle}</h2>
+            </a>
+            <p class="shelf-summary">{summary}</p>
+            <div class="shelf-meta">
+              <span class="data-source-pill">{sourceLabel}</span>
+              <span class="shelf-count" data-shelf-count>
+                {total} {total === 1 ? "book" : "books"}
               </span>
               <span class="status-pill" data-status-pill data-status="not_started">
                 <span class="status-dot" aria-hidden="true"></span>
                 <span class="status-label" data-status-label>Not started</span>
               </span>
             </div>
-          </a>
-        );
-      })}
-    </div>
+          </header>
+          <div class="shelf-books">
+            {books.map((book, index) => (
+              <Spine book={book} look={looks[index]} href={`/book/${book.slug}`} source={systemCourseSource} />
+            ))}
+            <a class="shelf-card" href={`/course/${course.slug}`}>
+              <span class="shelf-card-eyebrow">{courseNumber ? `Course ${courseNumber}` : "Course"}</span>
+              <span class="shelf-card-title">Syllabus &amp; reading order</span>
+              <span class="shelf-card-action">Open the course</span>
+            </a>
+          </div>
+        </article>
+      );
+    })}
   </section>
+
+  <section class="counter" data-course-chat-panel hidden>
+    <div>
+      <h2 class="counter-title">Ask at the counter</h2>
+      <p class="counter-copy">Describe the course you have in mind and we will pull three books for it.</p>
+      <p class="counter-note" data-course-chat-note></p>
+    </div>
+    <button type="button" data-course-chat-open>Open course creator</button>
+  </section>
+
   <dialog class="chat-modal" data-course-chat-modal>
     <div class="chat-modal-frame">
       <div class="chat-header">

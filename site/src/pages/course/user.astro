@@ -19,42 +19,42 @@ const courseSwitcher = {
 <Base
   title="Course | Literature Course Library"
   authRequired={true}
-  heroCourses={courses}
   courseSwitcher={courseSwitcher}
 >
   <section class="stack" data-user-course>
-    <div>
-      <a class="back-link" href="/">Back to courses</a>
-      <h2 class="section-title" data-user-course-title>Loading course...</h2>
+    <header class="page-head">
+      <a class="back-link" href="/">Back to the shelves</a>
+      <p class="eyebrow">Your course</p>
+      <h1 class="section-title page-title" data-user-course-title>Loading course...</h1>
       <p class="section-subtitle" data-user-course-id></p>
       <span class="data-source-pill">User</span>
-    </div>
+    </header>
 
-    <div class="section-divider"></div>
     <div class="card" data-user-course-error hidden>
       <p></p>
     </div>
 
     <div class="section-header">
       <div>
-        <h3 class="section-title">Course Materials</h3>
+        <h2 class="section-title">Course Materials</h2>
         <p class="section-subtitle">Scan the overview and syllabus before diving in.</p>
       </div>
     </div>
-
-    <div class="section-divider"></div>
 
     <div class="course-doc-grid" data-user-course-docs></div>
     <div class="card" data-user-course-docs-empty hidden>
       <p>No course documents are available yet.</p>
     </div>
 
-    <div class="card">
-      <h3>Books</h3>
-      <div class="data-list" data-user-course-books></div>
-      <div data-user-course-books-empty hidden>
-        <p>No books are available yet.</p>
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Books</h2>
+        <p class="section-subtitle">In reading order. Take one down to open its guides.</p>
       </div>
+    </div>
+    <div class="ledge-wall" data-user-course-books></div>
+    <div class="card" data-user-course-books-empty hidden>
+      <p>No books are available yet.</p>
     </div>
   </section>
   <script type="module" src="/scripts/user-course-page.js"></script>

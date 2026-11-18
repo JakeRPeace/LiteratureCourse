@@ -51,12 +51,10 @@ const guideHtml = systemGuide ? renderMarkdownSafe(systemGuide.content) : null;
 ---
 <Base title={`${guideLabel} | ${book.title} | Literature Course Library`} authRequired={true}>
   <section class="stack">
-    <div>
-      <a class="back-link" href={`/book/${book.slug}`}>Back to book</a>
+    <div class="page-head">
+      <a class="back-link" href={`/book/${book.slug}`}>Back to the book</a>
       <span class="data-source-pill">{guideSourceLabel}</span>
     </div>
-
-    <div class="section-divider"></div>
 
     {guideHtml ? (
       <div class="reading guide-content" set:html={guideHtml} />
