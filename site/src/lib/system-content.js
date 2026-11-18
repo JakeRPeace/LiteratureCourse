@@ -42,8 +42,9 @@ export async function loadSystemCourses() {
 
   const { data: bookRows, error: bookError } = await supabase
     .from("books")
-    .select("course_id, cover_url")
-    .in("course_id", courseIds);
+    .select("book_id, course_id, title, author, slug, cover_url, sort_order")
+    .in("course_id", courseIds)
+    .order("sort_order", { ascending: true });
 
   if (bookError) return null;
 
@@ -51,7 +52,14 @@ export async function loadSystemCourses() {
   (bookRows || []).forEach((book) => {
     if (!book?.course_id) return;
     const entries = bookMap.get(book.course_id) || [];
-    entries.push({ coverUrl: book.cover_url || null });
+    entries.push({
+      id: book.book_id,
+      courseId: book.course_id,
+      title: book.title,
+      author: book.author || "",
+      slug: book.slug,
+      coverUrl: book.cover_url || null
+    });
     bookMap.set(book.course_id, entries);
   });
 

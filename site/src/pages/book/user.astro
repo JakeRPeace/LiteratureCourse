@@ -1,6 +1,8 @@
 ---
 import Base from "../../layouts/Base.astro";
 import StatusWidget from "../../components/StatusWidget.astro";
+import BookCover from "../../components/BookCover.astro";
+import { bookLook } from "../../../public/scripts/book-look.js";
 import { getCourses } from "../../lib/content.js";
 import { loadSystemCourses } from "../../lib/system-content.js";
 
@@ -30,44 +32,52 @@ const bookSwitcher = {
 <Base
   title="Book | Literature Course Library"
   authRequired={true}
-  heroCourses={courses}
   courseSwitcher={courseSwitcher}
   bookSwitcher={bookSwitcher}
 >
   <section class="stack" data-user-book>
-    <div>
-      <a class="back-link" href="/" data-user-book-back>Back to course</a>
-    </div>
-    <div class="book-hero">
-      <div class="book-cover is-empty" data-user-book-cover></div>
+    <div class="reading-desk">
+      <BookCover class="book-cover--hero" title="" look={bookLook("", "")} data-user-book-cover />
       <div class="book-intro">
-        <h2 class="section-title" data-user-book-title>Loading book...</h2>
-        <p class="section-subtitle" data-user-book-meta></p>
+        <a class="back-link" href="/" data-user-book-back>Put it back on the shelf</a>
+        <p class="eyebrow">Your course</p>
+        <h1 class="section-title page-title" data-user-book-title>Loading book...</h1>
+        <p class="book-author" data-user-book-meta></p>
         <span class="data-source-pill">User</span>
+        <StatusWidget bookId="" />
       </div>
     </div>
-
-    <div class="section-divider"></div>
 
     <div class="card" data-user-book-error hidden>
       <p></p>
     </div>
 
-    <StatusWidget bookId="" />
-
     <div class="section-header">
       <div>
-        <h3 class="section-title">Study Guides</h3>
-        <p class="section-subtitle">Explore the reading flow without drowning in full text.</p>
+        <h2 class="section-title">Study Guides</h2>
+        <p class="section-subtitle">One for before, one for alongside, one for after.</p>
       </div>
     </div>
-
-    <div class="section-divider"></div>
 
     <div class="guide-grid" data-user-book-guides></div>
     <div class="card" data-user-book-guides-empty hidden>
       <p>No study guides are available yet for this book.</p>
     </div>
+
+    <div data-user-book-shelf hidden>
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">The shelf it came from</h2>
+          <p class="section-subtitle">The rest of this course, with a gap where this one lives.</p>
+        </div>
+      </div>
+      <div class="bookcase bookcase--mini">
+        <div class="shelf">
+          <div class="shelf-books" data-user-book-shelf-books></div>
+        </div>
+      </div>
+    </div>
   </section>
   <script type="module" src="/scripts/user-book-page.js"></script>
+  <script type="module" src="/scripts/course-book-status.js"></script>
 </Base>

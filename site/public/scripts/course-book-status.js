@@ -1,22 +1,6 @@
 import { supabase } from "./supabase.js";
 import { getSession, onSessionChange } from "./session-store.js";
-
-const statusLabels = {
-  not_started: "Not started",
-  in_progress: "In progress",
-  read: "Read"
-};
-
-function applyStatus(row, status, labelOverride) {
-  row.dataset.status = status;
-  const pill = row.querySelector("[data-status-pill]");
-  if (!pill) return;
-  pill.dataset.status = status;
-  const label = pill.querySelector("[data-status-label]");
-  if (label) {
-    label.textContent = labelOverride || statusLabels[status] || statusLabels.not_started;
-  }
-}
+import { applyStatus } from "./status-ui.js";
 
 function collectRows() {
   const rows = Array.from(document.querySelectorAll("[data-book-row]"));

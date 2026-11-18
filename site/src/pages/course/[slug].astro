@@ -2,7 +2,8 @@
 import Base from "../../layouts/Base.astro";
 import CourseStatus from "../../components/CourseStatus.astro";
 import { getCourses, getCourseBySlug } from "../../lib/content.js";
-import { monogram } from "../../lib/monogram.js";
+import BookCover from "../../components/BookCover.astro";
+import { shelfLooks } from "../../../public/scripts/book-look.js";
 import { resolveSourceLabel } from "../../lib/source-labels.js";
 import {
   loadSystemCourseBySlug,
@@ -42,53 +43,51 @@ const courseDocs = (systemDocs ?? markdownCourse?.docs ?? course.docs ?? []).fil
   (doc) => doc.docType !== "index"
 );
 const bookIds = courseBooks.map((book) => book.id);
+const looks = shelfLooks(courseBooks);
+const titleParts = course.title.split(" - ");
+const displayTitle = course.courseType || titleParts.slice(1).join(" - ") || course.title;
+const courseNumber = (course.title.match(/\b(\d{3})\b/) || [])[1] || "";
 ---
 <Base
   title={`${course.title} | Literature Course Library`}
   authRequired={true}
-  heroCourses={courses}
   courseSwitcher={{
     current: course,
     courses
   }}
 >
   <section class="stack">
-    <div>
-      <a class="back-link" href="/">Back to courses</a>
-      <h2 class="section-title">{course.title}</h2>
+    <header class="page-head">
+      <a class="back-link" href={`/#course-${course.slug}`}>Back to the shelves</a>
+      <p class="eyebrow eyebrow-number">{courseNumber ? `Course ${courseNumber}` : "Course"}</p>
+      <h1 class="section-title page-title">{displayTitle}</h1>
       {course.summary ? <p class="section-subtitle">{course.summary}</p> : null}
-    </div>
-
-    <div class="section-divider"></div>
+    </header>
 
     <CourseStatus bookIds={bookIds} />
 
     <div class="section-header">
       <div>
-        <h3 class="section-title">Course Materials</h3>
+        <h2 class="section-title">Course Materials</h2>
         <p class="section-subtitle">Scan the overview and syllabus before diving in.</p>
       </div>
     </div>
-
-    <div class="section-divider"></div>
 
     {courseDocs.length ? (
       <div class="course-doc-grid">
         {courseDocs.map((doc) => (
           <a
-            class="card course-doc-card"
+            class="course-doc-card"
             href={`/course/${course.slug}/${doc.slug}`}
             data-doc-type={doc.docType || "other"}
             data-doc-source={docsSource}
           >
+            <span class="course-doc-chip">{doc.stage}</span>
             <div class="course-doc-title">{doc.label}</div>
             <p class="course-doc-excerpt">
               {doc.excerpt || "Open for the full course document."}
             </p>
-            <div class="course-doc-meta">
-              <span class="course-doc-chip">{doc.stage}</span>
-              <span class="course-doc-action">Open</span>
-            </div>
+            <span class="course-doc-action">Open</span>
           </a>
         ))}
       </div>
@@ -99,46 +98,35 @@ const bookIds = courseBooks.map((book) => book.id);
     )}
 
     <div class="section-header">
-      <h3 class="section-title">Books</h3>
+      <div>
+        <h2 class="section-title">Books</h2>
+        <p class="section-subtitle">In reading order. Take one down to open its guides.</p>
+      </div>
     </div>
-    <div class="data-list">
-        {courseBooks.map((book) => (
-          <a
-            class="data-row"
-            href={`/book/${book.slug}`}
-            data-book-row
-            data-book-id={book.id}
-            data-status="not_started"
-            data-book-source={booksSource}
-          >
-            <div class="data-body">
-              <div class={`data-cover ${book.coverUrl ? "" : "is-empty"}`}>
-                {book.coverUrl ? (
-                  <img
-                    src={book.coverUrl}
-                    alt=""
-                    data-monogram={monogram(book.title, book.author)}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                ) : (
-                  <span class="cover-monogram" aria-hidden="true">{monogram(book.title, book.author)}</span>
-                )}
-              </div>
-              <div class="data-main">
-                <div class="data-title">{book.title}</div>
-                <div class="data-sub">{book.author || book.id}</div>
-                <span class="data-source-pill">{booksSourceLabel}</span>
-              </div>
-            </div>
-            <div class="data-meta">
-              <span class="status-pill" data-status-pill data-status="not_started">
-                <span class="status-dot" aria-hidden="true"></span>
-                <span class="status-label" data-status-label>Not started</span>
-              </span>
-            </div>
-          </a>
-        ))}
+    <div class="ledge-wall">
+      {courseBooks.map((book, index) => (
+        <a
+          class="ledge-book"
+          id={`book-${book.slug}`}
+          href={`/book/${book.slug}`}
+          data-pick
+          data-book-row
+          data-book-id={book.id}
+          data-status="not_started"
+          data-book-source={booksSource}
+        >
+          <BookCover title={book.title} author={book.author} coverUrl={book.coverUrl} look={looks[index]} />
+          <span class="ledge-label">
+            <span class="ledge-title">{book.title}</span>
+            <span class="ledge-author">{book.author || book.id}</span>
+            <span class="data-source-pill">{booksSourceLabel}</span>
+            <span class="status-pill" data-status-pill data-status="not_started">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span class="status-label" data-status-label>Not started</span>
+            </span>
+          </span>
+        </a>
+      ))}
     </div>
   </section>
   <script type="module" src="/scripts/course-book-status.js"></script>
