@@ -3,18 +3,18 @@
 // so the same title is always bound in the same cloth.
 
 const CLOTHS = [
-  { cloth: "#6f2a25", deep: "#4c1b17", foil: "#ecd49a" }, // oxblood
-  { cloth: "#2f4a3b", deep: "#1e3227", foil: "#ecd49a" }, // bottle green
-  { cloth: "#27384f", deep: "#172436", foil: "#ecd49a" }, // navy
-  { cloth: "#c2953c", deep: "#987226", foil: "#2a1d10" }, // mustard
-  { cloth: "#e4d8bd", deep: "#c4b594", foil: "#6a2620" }, // linen
-  { cloth: "#3b3733", deep: "#24211e", foil: "#eadfc8" }, // charcoal
-  { cloth: "#2a5558", deep: "#1a3c3f", foil: "#f1e6cf" }, // teal
-  { cloth: "#55324b", deep: "#392032", foil: "#ecd49a" }, // plum
-  { cloth: "#974a31", deep: "#733522", foil: "#fbf1dc" }, // terracotta
-  { cloth: "#84926f", deep: "#657353", foil: "#1c2617" }, // sage
-  { cloth: "#4c6481", deep: "#384c64", foil: "#f6eeda" }, // slate blue
-  { cloth: "#79532f", deep: "#593b1f", foil: "#f3dfae" } // saddle tan
+  { cloth: "#a84f34", deep: "#7d3a26", foil: "#fff7e6" }, // terracotta
+  { cloth: "#8a9a78", deep: "#6c7b5c", foil: "#1e2618" }, // sage
+  { cloth: "#d1a243", deep: "#a98030", foil: "#2a1d10" }, // ochre
+  { cloth: "#2f4156", deep: "#202e3e", foil: "#f6eeda" }, // ink blue
+  { cloth: "#efe4cc", deep: "#cdbf9f", foil: "#6a2620" }, // linen
+  { cloth: "#5f6b3f", deep: "#47502e", foil: "#fbf4df" }, // olive
+  { cloth: "#c98b76", deep: "#a36b58", foil: "#2a1710" }, // clay rose
+  { cloth: "#36513f", deep: "#263a2d", foil: "#f6eeda" }, // forest
+  { cloth: "#6a4257", deep: "#4c2e3e", foil: "#fbeede" }, // plum
+  { cloth: "#7d97a8", deep: "#5f7786", foil: "#16222b" }, // dusty blue
+  { cloth: "#3f3b37", deep: "#2a2724", foil: "#f1e7d2" }, // charcoal
+  { cloth: "#8a5a3a", deep: "#684228", foil: "#fdf1d8" } // chestnut
 ];
 
 function hash(value) {

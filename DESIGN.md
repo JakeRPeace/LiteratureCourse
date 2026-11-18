@@ -2,19 +2,16 @@
 name: Literature Course Library
 description: A private shelf for a structured reading canon.
 colors:
-  wall: "#ece2cf"
+  wall: "#faf5ec"
   paper: "#f4efe4"
   paper-raised: "#fbf7ef"
   ink: "#241e16"
   ink-soft: "#5c5146"
-  card-stock: "#f3e8cd"
-  shelf: "#22332d"
-  gilt: "#ecd9a0"
-  walnut: "#6a4426"
-  walnut-light: "#8f6236"
-  walnut-dark: "#4a2e18"
-  case-back: "#2e1d10"
-  oak: "#b98a52"
+  card-stock: "#fffaf0"
+  shelf: "#2c4437"
+  timber: "#ecd9b8"
+  case-back: "#f3ebdc"
+  oak: "#d9b98b"
   shelf-ink: "#f4efe4"
   shelf-muted: "#d9d0c0"
   vermilion: "#9d3428"
@@ -164,44 +161,44 @@ components:
 
 **Creative North Star: "The Shop on the Corner"**
 
-The Literature Course Library is an independent bookshop that happens to hold one canon. The interface is drawn as the things in that shop: a painted green fascia with gilt lettering, a walnut bookcase, cloth-bound books, oak display ledges, a reading desk, and paper slips. It leans skeuomorphic, and it stays tidy. Every material has a job, and nothing is on the page as decoration alone.
+The Literature Course Library is a light, lived-in independent bookshop that happens to hold one canon: warm white walls, pale oak shelves, books in plain cloth colours, paper cards. Think Rough Draft in Kingston or McNally Jackson in SoHo. The shop is represented, not rendered. Wood is a flat warm colour, paper is a flat off-white, and depth is a soft shadow. There is no wood grain, no noise, no bevels, and no brass hardware.
 
-**The rule that organizes everything: picking a book takes it off the shelf.** A book is one object that is either standing on a shelf (spine out), facing out on a ledge, or lying on a desk. Opening a book moves it from one to the other, and the place it left stays empty.
+**The rule that organizes everything: picking a book takes it off the shelf.** A book is one object that is either standing on a shelf (spine out), facing out on a ledge, or lying on a table. Opening a book moves it from one to the other, and the place it left stays empty.
 
 **Key Characteristics**
 
-- Warm plaster wall, green fascia and colophon, walnut case, oak ledges, cream paper
+- Warm white wall, a flat green sign band, pale oak boards, off-white paper cards
 - Spectral for names, titles, and reading; Karla for furniture (labels, buttons, stamps)
-- Every book is bound in a cloth chosen from its title, with a foil title, whether or not cover art exists
-- Vermilion marks the place, moss marks a finished book, brass is focus and engraving
-- Depth comes from light and shadow on real objects. No glass, no blur, no dark theme
+- Every book is bound in a flat cloth colour chosen from its title, whether or not cover art exists
+- Vermilion marks the place, moss marks a finished book, brass is focus and small labels
+- Flat colour and soft shadow only. No textures, no glass, no dark theme
 
 ## The Book Object
 
-`site/public/scripts/book-look.js` is the single source for how a book looks. It hashes title and author into one of twelve cloths (cloth, a deeper edge, and a foil ink that holds 4.5:1 on that cloth), a spine height, and a spine width that grows with the title so the title always fits. Neighbours on a shelf never share a cloth. The server (`Spine.astro`, `BookCover.astro`) and the browser (`book-dom.js`, for reader-made courses) both call it, so a title is bound the same way everywhere.
+`site/public/scripts/book-look.js` is the single source for how a book looks. It hashes title and author into one of twelve cloths (cloth, a deeper edge, and a title ink that holds 4.5:1 on that cloth), a spine height, and a spine width that grows with the title so the title always fits. Neighbours on a shelf never share a cloth. The server (`Spine.astro`, `BookCover.astro`) and the browser (`book-dom.js`, for reader-made courses) both call it, so a title is bound the same way everywhere.
 
-- **Spine** (`.spine`): vertical Spectral title, surname in small Karla caps, foil rules at head and tail, cylinder shading. Stands in a slot of fixed row height.
-- **Cover** (`.book-cover`): 2:3 board with a hinge, page edges, and a foil frame. Cover art, when present, sits on top of the cloth cover and is removed if it fails to load, so there is never an empty cover.
+- **Spine** (`.spine`): vertical Spectral title, surname in small Karla caps, thin rules at head and tail, flat colour. Stands in a slot of fixed row height.
+- **Cover** (`.book-cover`): 2:3 board with a hinge line, one page edge, and a thin frame. Cover art, when present, sits on top of the cloth cover and is removed if it fails to load, so there is never an empty cover.
 
 ## Picking a Book
 
 - **Hover or focus** a spine: it rises 12px out of the row, and a paper tag names it in full (title, author, status).
-- **Click**: the book leaves the shelf. In browsers with cross-document view transitions the spine or cover itself travels to the desk on the book page while its slot stays empty. Elsewhere the book tips, lifts out, and fades over about 0.4s before the page changes (`shelf.js`).
-- **On the book page** the book lies on the reading desk. Below, "The shelf it came from" shows the rest of the course with a gap and a slip where this book lives.
+- **Click**: the book leaves the shelf. In browsers with cross-document view transitions the spine or cover itself travels to the table on the book page while its slot stays empty. Elsewhere the book tips, lifts out, and fades over about 0.4s before the page changes (`shelf.js`).
+- **On the book page** the book lies on a timber table. Below, "The shelf it came from" shows the rest of the course with a gap and a slip where this book lives.
 - **"Put it back on the shelf"** returns to the course with the book as the link target, so it travels back and settles into its place.
 - **In progress means out.** A book marked In progress is on the reader's table: on the home bookcase its slot holds a vermilion-topped "Out" slip (still a link), and the book appears face-up on "On your reading table". Marking it Read puts it back with a moss sticker on the spine.
 - With reduced motion, none of this animates; links simply navigate.
 
 ## Colors
 
-- **Plaster Wall** (#ece2cf): the page, with fine grain and a lamp-warm glow at the top.
-- **Paper** (#f4efe4), **Raised Paper** (#fbf7ef), **Card Stock** (#f3e8cd): sheets, booklets, and index cards.
+- **Wall** (#faf5ec): the page. **Paper** (#fffdf8) and **Card Stock** (#fffaf0): cards and the reading sheet.
 - **Iron Ink** (#241e16) and **Soft Iron** (#5c5146): text.
-- **Shop Green** (#22332d): fascia and colophon, edged with a gilt pinstripe. **Gilt** (#ecd9a0) is the lettering on green and on walnut.
-- **Walnut** (#6a4426, light #8f6236, dark #4a2e18): the bookcase, reading table, desk, and counter. **Case Back** (#2e1d10) is the shadowed interior behind the spines. **Oak** (#b98a52): shelf boards and display ledges.
+- **Shop Green** (#2c4437): the header and colophon, flat, with wall-white lettering.
+- **Oak** (#d9b98b, light edge #e8d1aa): shelf boards and ledges. **Timber** (#ecd9b8): the reading table, the book table, and the counter. **Shelf Back** (#f3ebdc): the tint behind a row of spines.
 - **Vermilion** (#9d3428): the place-mark. Primary button, links, ribbons, the Out slip, progress fill.
 - **Reading Moss** (#2c5c40): a finished book or course.
-- **Brass** (#8d6a32): focus ring, eyebrows, engraved shelf plates, the score knob.
+- **Brass** (#7d6030): focus ring, eyebrows, course numbers.
+- **Cloths**: twelve earthy book colours (terracotta, sage, ochre, ink blue, linen, olive, clay rose, forest, plum, dusty blue, charcoal, chestnut), each with a title ink that holds 4.5:1.
 
 **The Place-Mark Rule.** Vermilion is where the reader is. It is never a page or card fill.
 
@@ -217,21 +214,20 @@ Spectral (400, 400 italic, 600, 700) is the voice of the shop and the books. Kar
 
 ## Surfaces
 
-- **Fascia (header) and colophon**: green paint with grain, gilt wordmark, gilt pinstripe. The header is sticky. Course and book menus are card-catalogue labels: cream card in a brass frame.
-- **Bookcase** (home): one walnut case, one shelf per course. Each shelf has an engraved brass plate (number and name, links to the course), a one-line summary, a count, and a status stamp. Books stand spine out. A pamphlet leans at the end of each shelf and opens the course. On phones each shelf is a single row that scrolls sideways.
-- **Reading table** (home): walnut top holding the books in progress, face up.
-- **Ledges** (course): books face out on oak ledges in reading order, with title, author, and stamp below each. In progress shows a ribbon; read shows a moss seal.
-- **Index cards**: "Your place in this course", the Reader's card (status and score), and the Library card (sign in) are card stock with a vermilion rule under the heading.
-- **Pamphlets and booklets**: course materials are paper pamphlets with a green top edge; study guides are three stitched booklets numbered I to III.
-- **Reading sheet**: a guide is one sheet of raised paper on the wall, with the prose at a 68ch measure.
+- **Header and colophon**: flat shop green, serif wordmark. The header is sticky. Course and book menus are outlined pills on the green.
+- **Shelves** (home): one open oak shelf per course on the wall. Above it sit the course number, name (links to the course), one-line summary, count, and status. Books stand spine out on a pale shelf back. A small card at the end of each shelf opens the course. On phones each shelf is a single row that scrolls sideways.
+- **Reading table** (home): a timber panel holding the books in progress, face up.
+- **Ledges** (course): books face out on oak ledges in reading order, with title, author, and status below each. In progress shows a ribbon; read shows a moss seal.
+- **Cards**: "Your place in this course", the Reader's card (status and score), the Library card (sign in), course materials, and the three numbered study guides are plain paper cards with a hairline border and a soft shadow.
+- **Reading sheet**: a guide is one paper card with the prose at a 68ch measure.
 
 Rows of spines and rows of covers have a fixed height, so shelf boards and ledges are drawn once as a repeating background and always land under each row when the layout wraps.
 
-## Elevation, Texture, Motion
+## Elevation and Motion
 
-- Texture is two inline SVG noise tiles (`--grain`, `--wood-grain`) layered over gradients. There are no image assets.
-- Paper rests on a short stacked-edge shadow plus a soft drop. Wood has a lit top edge and a dark lower edge. Books cast an offset shadow.
-- Buttons are pressable: lit top edge, solid lower edge, and they sink 2px when pressed.
+- Two shadows: a resting shadow and a lift shadow. Timber panels add a solid lower edge in oak. Books cast a soft offset shadow and show one page edge.
+- Spines are flat colour with a one-pixel edge so neighbours separate. Covers are flat colour with a single hinge line and a thin frame.
+- Buttons are flat pills: vermilion for the primary action, outlined for the rest.
 - One curve, `cubic-bezier(0.16, 1, 0.3, 1)`. Hover lifts take 0.35s, the pick takes about 0.5s.
 - Under `prefers-reduced-motion`, transitions and transforms are dropped.
 
@@ -242,11 +238,12 @@ Rows of spines and rows of covers have a fixed height, so shelf boards and ledge
 - Keep every book the same object in all three positions: spine, cover, desk.
 - Leave the gap. If a book is open or in progress, its slot stays empty.
 - Keep body text at or above 4.5:1, and keep the brass focus ring visible on every control.
-- Let the materials stop at the reading sheet. A guide is paper and type.
+- Let the shop stop at the reading sheet. A guide is paper and type.
 
 **Don't**
 
 - Don't add props that do nothing (plants, mugs, cats). Every object on the page is a control or content.
+- Don't draw materials literally: no wood grain, noise, bevels, engraved plates, or stitched edges.
 - Don't use glass, backdrop blur, neon, or a dark theme.
 - Don't fill surfaces with vermilion, and don't set buttons or stamps in Spectral.
 - Don't replace the stamp or the progress rule with rings, sparklines, or scores on the shelf.
