@@ -68,6 +68,8 @@
 
 html {
   scrollbar-color: var(--oak-dark) var(--wall);
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 ::selection {
@@ -78,6 +80,8 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
+  max-width: 100%;
+  overflow-x: clip;
   display: flex;
   flex-direction: column;
   background: var(--wall);
@@ -1211,13 +1215,20 @@ textarea:focus-visible {
   border: 1px solid var(--line-soft);
   color: var(--ink);
   box-shadow: 1px 2px 5px -2px rgba(var(--bay-shade), 0.22);
-  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), background-color 0.35s var(--ease);
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), background-color 0.35s var(--ease), opacity 0.28s var(--ease);
 }
 
 .shelf-card:hover,
 .shelf-card:focus-visible {
   transform: translateY(-3px);
   background: var(--paper-raised);
+  box-shadow: var(--shadow-lift);
+}
+
+.shelf-card.is-pulling {
+  pointer-events: none;
+  transform: perspective(720px) translateY(-7px) rotateX(4deg) scale(1.015);
+  opacity: 0.72;
   box-shadow: var(--shadow-lift);
 }
 
@@ -1525,7 +1536,7 @@ a:hover > .course-doc-action::after {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), opacity 0.28s var(--ease);
 }
 
 .course-doc-card:hover,
@@ -1533,6 +1544,14 @@ a:hover > .course-doc-action::after {
 .guide-card:hover,
 .guide-card:focus-visible {
   transform: translateY(-4px);
+  box-shadow: var(--shadow-lift);
+}
+
+.course-doc-card.is-pulling,
+.guide-card.is-pulling {
+  pointer-events: none;
+  transform: perspective(720px) translateY(-7px) rotateX(4deg) scale(1.015);
+  opacity: 0.72;
   box-shadow: var(--shadow-lift);
 }
 
@@ -2574,15 +2593,23 @@ body[data-login-page="true"] .page {
 
   .course-switcher summary {
     width: 100%;
+    max-width: 100%;
     min-height: 44px;
     padding: 8px 14px;
     border-radius: 10px;
     justify-content: space-between;
+    overflow: hidden;
+  }
+
+  .course-switcher-label,
+  .course-switcher .caret {
+    flex-shrink: 0;
   }
 
   .course-switcher-title {
     max-width: none;
     flex: 1 1 auto;
+    min-width: 0;
   }
 
   .course-switcher-menu {
@@ -2601,6 +2628,8 @@ body[data-login-page="true"] .page {
 
   .page {
     padding: 22px 16px 56px;
+    max-width: 100%;
+    overflow-x: clip;
   }
 
   .storefront {
@@ -2828,6 +2857,9 @@ body[data-login-page="true"] .page {
   .shelf-card:hover,
   .course-doc-card:hover,
   .guide-card:hover,
+  .shelf-card.is-pulling,
+  .course-doc-card.is-pulling,
+  .guide-card.is-pulling,
   button:hover,
   button:active {
     transform: none;

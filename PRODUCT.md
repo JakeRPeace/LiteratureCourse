@@ -50,6 +50,7 @@ The name is Literature Course Library. The owner asked that the interface feel w
 - Maintainer machinery (sources, deploy, stack) stays quiet on reader surfaces.
 - A return visit should feel like walking back into the same shop, not reloading a console.
 - Warmth never costs the words: study guides stay readable for a long sitting.
+- Taking a course or book should feel like lifting a volume from a real shelf, then get out of the way.
 
 ## Accessibility & Inclusion
 

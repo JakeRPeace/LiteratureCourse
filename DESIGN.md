@@ -196,6 +196,7 @@ The Literature Course Library is a light, lived-in independent bookshop that hap
 
 - **Hover or focus** a spine: it rises 12px out of the row, and a paper tag names it in full (title, author, status).
 - **Click**: the book leaves the shelf. In browsers with cross-document view transitions the spine or cover itself travels to the table on the book page while its slot stays empty. Elsewhere the book tips, lifts out, and fades over about 0.4s before the page changes (`shelf.js`).
+- Course, document, and guide links lift from their shelf or paper card for a brief pull before navigating. Modifier-clicks keep their normal browser behavior.
 - **On the book page** the book lies on a timber table. Below, "The shelf it came from" shows the rest of the course with a gap and a slip where this book lives.
 - **"Put it back on the shelf"** returns to the course with the book as the link target, so it travels back and settles into its place.
 - **In progress means out.** A book marked In progress is on the reader's table: on the home bookcase its slot holds a vermilion-topped "Out" slip (still a link), and the book appears face-up on "On your reading table". Marking it Read puts it back with a moss sticker on the spine.
